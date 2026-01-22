@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sentra Healthcare Solution - Diagnostic Referral Assistant</title>
+    
+    <!-- Fonts: Geist Sans untuk UI utama dan Satisfy untuk aksen tulisan tangan -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
+        background-color: #F5EFE6; 
+        color: #1A1F21; 
+        -webkit-font-smoothing: antialiased;
+        font-weight: 600;
+        overflow-x: hidden;
+      }
+      
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #E8DFCA; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #CBDCEB; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #6D94C5; 
+      }
+
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBDCEB; border-radius: 10px; }
+      
+      .font-black { font-weight: 900; }
+      .font-bold { font-weight: 700; }
+
+      @keyframes fade-out {
+        0% { opacity: 1; transform: scale(1); }
+        80% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(1.1); visibility: hidden; }
+      }
+      
+      .welcome-overlay {
+        animation: fade-out 3.5s forwards ease-in-out;
+      }
+
+      @keyframes text-slide-up {
+        0% { transform: translateY(20px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+
+      .animate-slide-up {
+        animation: text-slide-up 0.8s ease-out forwards;
+      }
+
+      .font-handwriting {
+        font-family: 'Satisfy', cursive;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'sentra-bg': '#F5EFE6',
+              'sentra-card': '#E8DFCA',
+              'sentra-primary': '#6D94C5',
+              'sentra-accent': '#CBDCEB',
+              'sentra-text': '#1A1F21',
+            },
+            fontFamily: {
+              sans: ['Geist Sans', 'sans-serif'],
+              handwriting: ['Satisfy', 'cursive'],
+            },
+          },
+        },
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
