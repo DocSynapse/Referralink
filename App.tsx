@@ -27,6 +27,7 @@ const App: React.FC = () => {
   const [searchError, setSearchError] = useState<string | null>(null);
   const [heroAnimationReady, setHeroAnimationReady] = useState(false);
   const heroSectionRef = React.useRef<HTMLDivElement>(null);
+  const referralinkRef = React.useRef<HTMLHeadingElement>(null);
   const now = new Date();
   const formattedDate = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
   const formattedTime = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
@@ -46,6 +47,15 @@ const App: React.FC = () => {
         duration: 0.3,
         ease: 'power1.out'
       });
+    }
+
+    // Animate Referralink separately (delay 300ms from splash complete)
+    if (referralinkRef.current) {
+      gsap.fromTo(
+        referralinkRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: 'power2.out' }
+      );
     }
 
     const timer = setTimeout(() => {
@@ -134,13 +144,11 @@ const App: React.FC = () => {
                 </TextBlockAnimation>
             </div>
 
-            {/* Main title: Referralink */}
-            <div className="mb-6">
-                <TextBlockAnimation blockColor="#002147" animateOnScroll={false} delay={0.3} duration={0.8} isEnabled={heroAnimationReady}>
-                    <h1 className="font-saans-title">
-                        Referralink
-                    </h1>
-                </TextBlockAnimation>
+            {/* Main title: Referralink (split color) */}
+            <div className="mb-6 flex justify-center">
+                <h1 ref={referralinkRef} className="font-saans-title opacity-0">
+                    <span style={{ color: '#002147' }}>Referra</span><span style={{ color: '#FF4500' }}>link</span>
+                </h1>
             </div>
 
             {/* Subtitle text */}
