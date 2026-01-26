@@ -1,6 +1,6 @@
 <div align="center">
 
-![Referralink Banner](https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6)
+<img src="public/SS1.png" alt="Referralink Dashboard" width="800" />
 
 # 🔗 Referralink
 
