@@ -123,7 +123,7 @@ const App: React.FC = () => {
     <div className="font-sans selection:bg-slate-300 bg-[#E0E5EC] text-[#4A5568]">
       {showSplash && (
         <SplashScreen
-          onComplete={() => {
+          onPortalSelect={(portal) => {
             setShowSplash(false);
             setHeroAnimationReady(true);
           }}
