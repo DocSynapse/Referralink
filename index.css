@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+:root {
+  /* FONT SYSTEM */
+  --font-body: "Geist", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* SOFT UI VARIABLES */
+  --bg-color: #E0E5EC;
+  --text-main: #4A5568;
+  --text-highlight: #002147; 
+  --accent-color: #FF4500; 
+  
+  --shadow-light: #ffffff;
+  --shadow-dark: #cbd5e1; 
+  
+  /* ULTRA-MINIMAL NEUMORPHISM */
+  --neu-shadow-out: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+  --neu-shadow-in: inset 1px 1px 3px var(--shadow-dark), inset -1px -1px 3px var(--shadow-light);
+  --neu-shadow-flat: 1px 1px 2px var(--shadow-dark), -1px -1px 2px var(--shadow-light);
+}
+
+* {
+  font-family: var(--font-body);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* TYPOGRAPHY UTILITIES */
+.font-display { font-family: var(--font-body); }
+.font-technical { font-family: var(--font-mono); }
+
+/* TYPOGRAPHY SCALE */
+.title-primary {
+  font-size: 2.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+}
+
+.body-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.font-signature {
+  font-family: "Caveat", "Allura", "Lucida Handwriting", "Segoe Script", cursive;
+  font-weight: 400;
+}
+
+[class*="text-[10px]"],
+[class*="text-[11px]"],
+[class*="text-[12px]"],
+[class*="text-[13px]"],
+[class*="text-[14px]"],
+[class*="text-[15px]"] {
+  font-family: var(--font-mono) !important;
+}
+
+.font-saans {
+  font-family: "saans", "Geist", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgb(20, 20, 20);
+}
+
+.font-saans-title {
+  font-family: "saans", "saans Fallback", "Geist", sans-serif;
+  font-weight: 652;
+  font-size: 80px;
+  line-height: 80px;
+  color: #002147; /* Oxford Blue */
+}
+
+.font-clinical-header {
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  color: rgb(74, 85, 104);
+}
+
+/* UTILITIES (Crisp & Minimal) */
+.neu-flat {
+  background: var(--bg-color);
+  box-shadow: var(--neu-shadow-flat);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.8);
+  transition: outline 0.1s ease;
+}
+
+.neu-flat:hover {
+  outline: 1px solid var(--accent-color);
+  outline-offset: 0px;
+}
+
+.neu-pressed {
+  background: var(--bg-color);
+  box-shadow: var(--neu-shadow-in);
+  border-radius: 12px;
+  border: none;
+  transition: outline 0.1s ease;
+}
+
+.neu-pressed:hover {
+  outline: 1px solid var(--accent-color);
+  outline-offset: 0px;
+}
+
+.neu-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--bg-color);
+  box-shadow: var(--neu-shadow-flat);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-highlight);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.m3-grid-bg {
+  background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.text-oxford { color: var(--text-highlight); }
+.text-accent { color: var(--accent-color); }
+
+h2[data-role="triage-title"] {
+  font-size: 3rem !important;
+  font-family: var(--font-body) !important;
+  letter-spacing: -0.04em;
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
