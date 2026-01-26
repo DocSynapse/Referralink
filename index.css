@@ -82,10 +82,43 @@ body {
 
 .font-saans-title {
   font-family: "saans", "saans Fallback", "Geist", sans-serif;
-  font-weight: 652;
-  font-size: 80px;
-  line-height: 80px;
+  font-weight: 700;
+  font-size: 100px;
+  line-height: 100px;
   color: #002147; /* Oxford Blue */
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero-subtitle-label {
+  font-family: "saans", "saans Fallback", "Geist", sans-serif;
+  font-weight: 600;
+  font-size: 55px;
+  line-height: 55px;
+  color: #002147;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero-subtitle-text {
+  font-family: "Geist", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  color: #FF4500;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.splash-title-thin {
+  font-family: "Geist", sans-serif;
+  font-weight: 200;
+  font-size: 72px;
+  line-height: 72px;
+  color: white;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
 .font-clinical-header {
@@ -153,6 +186,63 @@ h2[data-role="triage-title"] {
   font-family: var(--font-body) !important;
   letter-spacing: -0.04em;
 }
+
+/* ============================================
+   SMOOTH PAGE TRANSITION ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInSmooth {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUpSmooth {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes staggerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth fade utilities */
+.animate-fade-smooth {
+  animation: fadeInSmooth 400ms ease-out forwards;
+}
+
+.animate-fade-in-up-smooth {
+  animation: fadeInUpSmooth 500ms ease-out forwards;
+}
+
+/* Staggered animations for lists */
+.animate-stagger-fade {
+  animation: staggerFadeIn 400ms ease-out forwards;
+  opacity: 0;
+}
+
+.animate-stagger-fade:nth-child(1) { animation-delay: 0ms; }
+.animate-stagger-fade:nth-child(2) { animation-delay: 80ms; }
+.animate-stagger-fade:nth-child(3) { animation-delay: 160ms; }
+.animate-stagger-fade:nth-child(4) { animation-delay: 240ms; }
+.animate-stagger-fade:nth-child(5) { animation-delay: 320ms; }
+.animate-stagger-fade:nth-child(n+6) { animation-delay: 400ms; }
 
 /* CUSTOM SCROLLBAR */
 ::-webkit-scrollbar { width: 8px; }
