@@ -18,6 +18,7 @@ interface TextBlockAnimationProps {
     stagger?: number;
     duration?: number;
     className?: string;
+    isEnabled?: boolean;
 }
 
 export default function TextBlockAnimation({
@@ -27,12 +28,13 @@ export default function TextBlockAnimation({
     blockColor = "#000",
     stagger = 0.1,
     duration = 0.6,
-    className
+    className,
+    isEnabled = true
 }: TextBlockAnimationProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        if (!containerRef.current) return;
+        if (!containerRef.current || !isEnabled) return;
 
         // Target the manually created line wrappers
         const lines = gsap.utils.toArray<HTMLElement>(".block-line-text", containerRef.current);
@@ -45,7 +47,7 @@ export default function TextBlockAnimation({
         gsap.set(blocks, { scaleX: 0, transformOrigin: "left center" });
 
         const tl = gsap.timeline({
-            defaults: { ease: "expo.inOut" },
+            defaults: { ease: "power3.inOut" },
             scrollTrigger: animateOnScroll ? {
                 trigger: containerRef.current,
                 start: "top 85%",
@@ -71,9 +73,9 @@ export default function TextBlockAnimation({
             transformOrigin: "right center"
         }, `<${duration * 0.4}`);
 
-    }, { 
-        scope: containerRef, 
-        dependencies: [animateOnScroll, delay, blockColor, stagger, duration] 
+    }, {
+        scope: containerRef,
+        dependencies: [animateOnScroll, delay, blockColor, stagger, duration, isEnabled]
     });
     
     // Helper to wrap content. If it's a string, we treat it as one line or split by <br>.

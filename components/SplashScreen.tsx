@@ -111,25 +111,25 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           {/* Referralink Option */}
           <button
             onClick={() => onPortalSelect?.('referralink')}
-            className="portal-btn opacity-0 flex-1 text-center group"
+            className="portal-btn flex-1 text-center group cursor-pointer"
           >
-            <p className="text-lg font-bold text-white uppercase tracking-widest font-technical group-hover:text-[#FF4500] transition-colors">
+            <p className="text-3xl font-bold text-white uppercase tracking-wider font-technical group-hover:text-[#FF4500] transition-colors">
               Sentra Referralink
             </p>
-            <p className="text-xs text-white/60 mt-2 font-display group-hover:text-white/80 transition-colors">
-              Clinical Diagnosis
+            <p className="text-sm text-white/60 mt-3 font-display group-hover:text-white/80 transition-colors">
+              Smart Referral Intelligence
             </p>
           </button>
 
           {/* Vertical Separator */}
-          <div className="h-12 w-px bg-white/20"></div>
+          <div className="h-16 w-px bg-white/20"></div>
 
           {/* AI Option - Coming Soon */}
-          <div className="flex-1 text-center opacity-40">
-            <p className="text-lg font-bold text-white/40 uppercase tracking-widest font-technical">
+          <div className="flex-1 text-center">
+            <p className="text-3xl font-bold text-white/50 uppercase tracking-wider font-technical">
               Sentra AI
             </p>
-            <p className="text-xs text-white/30 mt-2 font-display">
+            <p className="text-sm text-white/30 mt-3 font-display">
               Coming Soon
             </p>
           </div>

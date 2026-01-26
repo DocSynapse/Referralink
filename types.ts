@@ -51,6 +51,7 @@ export interface ICD10Result {
   proposed_referrals: {
     code: string;
     description: string;
+    kompetensi?: "3B" | "3A" | "2" | "1";
     clinical_reasoning: string;
   }[];
 }

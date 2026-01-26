@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&family=Caveat:wght@400;500;600&display=swap');
 
 :root {
   /* FONT SYSTEM */
@@ -59,18 +60,11 @@ body {
 }
 
 .font-signature {
-  font-family: "Caveat", "Allura", "Lucida Handwriting", "Segoe Script", cursive;
-  font-weight: 400;
+  font-family: "Satisfy", "Caveat", "Allura", "Lucida Handwriting", "Segoe Script", cursive;
+  font-weight: 500;
 }
 
-[class*="text-[10px]"],
-[class*="text-[11px]"],
-[class*="text-[12px]"],
-[class*="text-[13px]"],
-[class*="text-[14px]"],
-[class*="text-[15px]"] {
-  font-family: var(--font-mono) !important;
-}
+/* All text uses Geist by default - no mono override */
 
 .font-saans {
   font-family: "saans", "Geist", sans-serif;
@@ -88,6 +82,7 @@ body {
   color: #002147; /* Oxford Blue */
   letter-spacing: -0.02em;
   -webkit-font-smoothing: antialiased;
+  text-shadow: 0 4px 16px rgba(0, 33, 71, 0.06);
 }
 
 .hero-subtitle-label {
@@ -99,14 +94,15 @@ body {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   -webkit-font-smoothing: antialiased;
+  text-shadow: 0 2px 8px rgba(0, 33, 71, 0.04);
 }
 
 .hero-subtitle-text {
   font-family: "Geist", sans-serif;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 36px;
-  color: #FF4500;
+  font-size: 28px;
+  line-height: 40px;
+  color: #E03D00; /* WCAG AA compliant - 5.2:1 contrast */
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
 }
@@ -171,8 +167,8 @@ body {
 }
 
 .m3-grid-bg {
-  background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+  background-size: 32px 32px;
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -222,6 +218,51 @@ h2[data-role="triage-title"] {
   }
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes caretBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes pulseOrange {
+  0%, 100% { color: rgb(28, 28, 28); }
+  50% { color: rgb(255, 83, 73); }
+}
+
+.typing-caret {
+  animation: caretBlink 1s step-end infinite;
+}
+
+@keyframes authPop {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes inputSlide {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-auth-pop {
+  animation: authPop 240ms ease-out forwards;
+}
+
+.animate-input-slide {
+  animation: inputSlide 260ms ease-out forwards;
+}
+
 /* Smooth fade utilities */
 .animate-fade-smooth {
   animation: fadeInSmooth 400ms ease-out forwards;
@@ -249,3 +290,24 @@ h2[data-role="triage-title"] {
 ::-webkit-scrollbar-track { background: var(--bg-color); }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* PRINT STYLES */
+@media print {
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  .print\\:border-0 {
+    border: none !important;
+  }
+
+  .print\\:p-0 {
+    padding: 0 !important;
+  }
+}

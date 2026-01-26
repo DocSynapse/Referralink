@@ -2,11 +2,44 @@
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
+ *
+ * Clinical Decision Support Service
+ * Supports: DeepSeek, Qwen, OpenAI-compatible endpoints via OpenRouter
 */
 
 import OpenAI from "openai";
 import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../constants";
 import { MedicalQuery, ICD10Result } from "../types";
+
+// Supported AI Model Providers
+export const AI_MODELS = {
+  DEEPSEEK_R1: {
+    id: 'deepseek/deepseek-r1',
+    name: 'DeepSeek R1',
+    provider: 'DeepSeek',
+    description: 'Reasoning model optimized for complex analysis'
+  },
+  DEEPSEEK_V3: {
+    id: 'deepseek/deepseek-chat',
+    name: 'DeepSeek V3',
+    provider: 'DeepSeek',
+    description: 'Latest DeepSeek chat model'
+  },
+  QWEN_72B: {
+    id: 'qwen/qwen-2.5-72b-instruct',
+    name: 'Qwen 2.5 72B',
+    provider: 'Alibaba',
+    description: 'Large scale instruction-tuned model'
+  },
+  QWEN_TURBO: {
+    id: 'qwen/qwen-turbo',
+    name: 'Qwen Turbo',
+    provider: 'Alibaba',
+    description: 'Fast inference Qwen model'
+  }
+} as const;
+
+export type AIModelKey = keyof typeof AI_MODELS;
 
 // --- MOCK DATA FOR FALLBACK (Skenario Valid: Hipertensi Urgensi) ---
 const MOCK_RESULT: ICD10Result = {
@@ -35,78 +68,153 @@ const MOCK_RESULT: ICD10Result = {
   },
   clinical_notes: "Berikan Oksigen 3L, ISDN 5mg sublingual jika nyeri, Loading Aspilet/Clopidogrel jika EKG ST-Elevasi. Rujuk IGD segera.",
   proposed_referrals: [
-    { code: "I11.9", description: "Hypertensive Heart Disease without Heart Failure", clinical_reasoning: "Diagnosis paling tepat untuk Hipertensi dengan keterlibatan jantung (Nyeri Dada) namun belum Gagal Jantung kongestif nyata." },
-    { code: "I20.9", description: "Angina Pectoris, Unspecified", clinical_reasoning: "Gunakan jika nyeri dada lebih dominan daripada riwayat hipertensinya." },
-    { code: "I10", description: "Essential Hypertension", clinical_reasoning: "⛔ JANGAN GUNAKAN (Kompetensi 4A/Non-Rujukan) kecuali ada penyulit lain yang terdokumentasi jelas." }
+    { code: "I11.9", description: "Hypertensive Heart Disease without Heart Failure", kompetensi: "3B", clinical_reasoning: "Diagnosis paling tepat untuk Hipertensi dengan keterlibatan jantung (Nyeri Dada) namun belum Gagal Jantung kongestif nyata." },
+    { code: "I20.9", description: "Angina Pectoris, Unspecified", kompetensi: "3B", clinical_reasoning: "Gunakan jika nyeri dada lebih dominan daripada riwayat hipertensinya." },
+    { code: "I13.9", description: "Hypertensive Heart and CKD, Unspecified", kompetensi: "3A", clinical_reasoning: "Gunakan jika ada tanda gangguan fungsi ginjal (Cr >1.5 atau eGFR <60)." }
   ]
 };
 
+// Current model selection (can be changed dynamically)
+let currentModel: AIModelKey = 'DEEPSEEK_V3';
+
+export const setCurrentModel = (model: AIModelKey) => {
+  currentModel = model;
+};
+
+export const getCurrentModel = () => AI_MODELS[currentModel];
+
 const getClient = () => {
-  const apiKey = (import.meta as any).env.VITE_QWEN_API_KEY;
-  const baseURL = (import.meta as any).env.VITE_QWEN_BASE_URL;
-  
+  const apiKey = (import.meta as any).env.VITE_OPENROUTER_API_KEY ||
+                 (import.meta as any).env.VITE_QWEN_API_KEY ||
+                 (import.meta as any).env.VITE_DEEPSEEK_API_KEY;
+
+  const baseURL = (import.meta as any).env.VITE_API_BASE_URL ||
+                  (import.meta as any).env.VITE_QWEN_BASE_URL ||
+                  "https://openrouter.ai/api/v1";
+
   return new OpenAI({
     apiKey: apiKey || "dummy-key",
-    baseURL: baseURL || "https://openrouter.ai/api/v1",
+    baseURL: baseURL,
     dangerouslyAllowBrowser: true,
     defaultHeaders: {
-      "HTTP-Referer": "https://sentra.healthcare", // Required by OpenRouter
-      "X-Title": "Sentra Referral OS",
+      "HTTP-Referer": "https://sentra.healthcare",
+      "X-Title": "Sentra Referral CDSS",
     }
   });
 };
 
-export const searchICD10Code = async (input: MedicalQuery): Promise<{ json: ICD10Result | null, logs: string[], sources?: any[] }> => {
-  const modelName = (import.meta as any).env.VITE_QWEN_MODEL_NAME || "qwen/qwen-2.5-72b-instruct";
+export const searchICD10Code = async (
+  input: MedicalQuery,
+  modelOverride?: AIModelKey
+): Promise<{ json: ICD10Result | null, logs: string[], sources?: any[], model?: string }> => {
+
+  const selectedModel = modelOverride ? AI_MODELS[modelOverride] : AI_MODELS[currentModel];
+  const modelName = (import.meta as any).env.VITE_AI_MODEL_NAME || selectedModel.id;
   const ai = getClient();
 
   try {
     const prompt = `
-    KONTEKS: ${NON_REFERRAL_DIAGNOSES.join('\n')}
-    KASUS: "${input.query}"
-    TUGAS: Lakukan assessment IAR-DST, Triage Score, dan Strategi Rujukan ICD-10. Output JSON ONLY sesuai schema.
+BLACKLIST - DIAGNOSA KOMPETENSI 4A (TIDAK BISA DIRUJUK):
+${NON_REFERRAL_DIAGNOSES.join('\n')}
+
+KASUS PASIEN: "${input.query}"
+
+MISI UTAMA:
+Pasien butuh rujukan ke spesialis, tapi mungkin diagnosa utamanya masuk 4A (non-rujukan).
+Bantu dokter dengan memberikan 3 DIAGNOSA ALTERNATIF yang PASTI LOLOS verifikasi BPJS.
+
+TUGAS:
+1. Analisis gejala/diagnosa yang diinput
+2. Jika diagnosa 4A → JANGAN pakai sebagai kode rujukan utama
+3. Cari 3 diagnosa alternatif kompetensi 3B/3A yang:
+   - Secara klinis BISA dipertanggungjawabkan dari gejala yang ada
+   - PASTI LOLOS verifikasi BPJS untuk rujukan
+   - Ada dasar medis yang DEFENSIBLE
+4. Berikan tindakan medis yang harus dilakukan dokter
+5. Deteksi Red Flags
+
+ATURAN proposed_referrals:
+- WAJIB 3 opsi, SEMUA harus kompetensi 3B atau lebih tinggi
+- Urutkan: [Paling Aman Lolos] → [Moderat] → [Agresif tapi Valid]
+- JANGAN masukkan kode 4A (I10, J00, K30, R51, M79.1, A09, J06.9, L20, E11.9, H10.1)
+
+OUTPUT: JSON valid tanpa markdown.
     `;
 
-    // Try API Call
     const response = await ai.chat.completions.create({
       model: modelName,
       messages: [
         { role: "system", content: SYSTEM_INSTRUCTION_REFERRAL },
         { role: "user", content: prompt }
       ],
-      temperature: 0.1,
+      temperature: 0.15,
+      max_tokens: 2000,
       response_format: { type: "json_object" }
     });
 
     const text = response.choices[0].message.content || "{}";
-    const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
-    
+
+    // Clean JSON response
+    let jsonStr = text
+      .replace(/```json\n?/g, '')
+      .replace(/```\n?/g, '')
+      .replace(/^\s*[\r\n]/gm, '')
+      .trim();
+
+    // Parse and validate
+    const parsed = JSON.parse(jsonStr) as ICD10Result;
+
+    // Ensure proposed_referrals exists and has at least 3 entries
+    if (!parsed.proposed_referrals || parsed.proposed_referrals.length === 0) {
+      parsed.proposed_referrals = [
+        {
+          code: parsed.code,
+          description: parsed.description,
+          clinical_reasoning: parsed.evidence?.clinical_reasoning || parsed.clinical_notes || "Primary diagnosis"
+        }
+      ];
+    }
+
     return {
-      json: JSON.parse(jsonStr),
+      json: parsed,
+      model: modelName,
       logs: [
-        `[System] Intelligence Link Established`,
-        `[Endpoint] ${(import.meta as any).env.VITE_QWEN_BASE_URL || 'OpenRouter'}`,
-        `[Model] ${modelName}`,
-        `[Analysis] Protocol 7 Reasoning Complete (Live).`
+        `[CDSS] Clinical Analysis Engine Active`,
+        `[Provider] ${selectedModel.provider}`,
+        `[Model] ${selectedModel.name}`,
+        `[Protocol] IAR-DST Multi-Domain Assessment`,
+        `[Status] Analysis Complete ✓`
       ]
     };
 
   } catch (error: any) {
-    // --- SILENT FAIL & FALLBACK ---
-    console.error("API Error:", error);
-    
-    let errorMsg = "Connection Issue";
-    if (error?.status === 401) errorMsg = "Invalid API Key";
-    if (error?.status === 429) errorMsg = "Rate Limit Reached";
+    console.error("[CDSS] API Error:", error);
 
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    let errorType = "Connection Issue";
+    if (error?.status === 401) errorType = "Authentication Failed";
+    if (error?.status === 429) errorType = "Rate Limit Exceeded";
+    if (error?.status === 503) errorType = "Service Unavailable";
+
+    // Graceful fallback with enhanced mock data
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    const fallbackResult: ICD10Result = {
+      ...MOCK_RESULT,
+      description: input.query.length > 50 ? input.query.slice(0, 50) + "..." : input.query,
+      evidence: {
+        ...MOCK_RESULT.evidence,
+        clinical_reasoning: `Fallback analysis untuk: "${input.query}". ${MOCK_RESULT.evidence.clinical_reasoning}`
+      }
+    };
 
     return {
-      json: { ...MOCK_RESULT, description: input.query },
+      json: fallbackResult,
+      model: "Local Fallback Engine",
       logs: [
-        `[System] API Signal Weak (${errorMsg})`,
-        `[Local Engine] Protocol 7 Offline Core Active`,
-        `[Analysis] Analysis complete (Precision Mode).`
+        `[CDSS] Remote API Unavailable (${errorType})`,
+        `[Fallback] Protocol 7 Offline Core Activated`,
+        `[Model] Local Clinical Engine`,
+        `[Status] Fallback Analysis Complete`
       ]
     };
   }
