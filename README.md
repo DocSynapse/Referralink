@@ -22,6 +22,7 @@
 
 - [Introduction](#introduction)
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -73,6 +74,16 @@ At the heart of Referralink, you'll find:
 | ⚙️ **Multi-AI Integration** | Support for Gemini, DeepSeek, and other AI services |
 | 🎨 **Modern UI Components** | Material Design elements and custom components |
 | 🔒 **Type-Safe Development** | Full TypeScript support for reliability |
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+<img src="public/SS1.png" alt="Referralink Dashboard" width="800" />
+<br/>
+<em>The intuitive Referralink dashboard showcasing real-time metrics and AI insights</em>
+</div>
 
 ---
 
