@@ -84,7 +84,8 @@ export const setCurrentModel = (model: AIModelKey) => {
 export const getCurrentModel = () => AI_MODELS[currentModel];
 
 const getClient = () => {
-  const apiKey = (import.meta as any).env.VITE_OPENROUTER_API_KEY ||
+  const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY ||
+                 (import.meta as any).env.VITE_OPENROUTER_API_KEY ||
                  (import.meta as any).env.VITE_QWEN_API_KEY ||
                  (import.meta as any).env.VITE_DEEPSEEK_API_KEY;
 
@@ -141,6 +142,9 @@ ATURAN proposed_referrals:
 OUTPUT: JSON valid tanpa markdown. ALL TEXT OUTPUT MUST BE IN ENGLISH.
     `;
 
+    // Check if using Gemini (doesn't support response_format)
+    const isGemini = modelName.includes('gemini');
+
     const response = await ai.chat.completions.create({
       model: modelName,
       messages: [
@@ -149,7 +153,7 @@ OUTPUT: JSON valid tanpa markdown. ALL TEXT OUTPUT MUST BE IN ENGLISH.
       ],
       temperature: 0.15,
       max_tokens: 2000,
-      response_format: { type: "json_object" }
+      ...(isGemini ? {} : { response_format: { type: "json_object" } })
     });
 
     const text = response.choices[0].message.content || "{}";
