@@ -6,10 +6,11 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network } from 'lucide-react';
 import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
 import { ICD10Result } from '../types';
-import { GeneticGrowthMap } from './GeneticGrowthMap';
+import { GeneticGrowthMapEmbed } from './GeneticGrowthMapEmbed';
 
 // WhatsApp Icon Component
 const WhatsAppIcon = ({ size = 18, className = '' }: { size?: number; className?: string }) => (
@@ -255,7 +256,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   const [referralData, setReferralData] = useState<ReferralRequestData>(defaultReferralRequestData);
 
   // Genetic Growth Map State
-  const [showGeneticMapModal, setShowGeneticMapModal] = useState(false);
+  const [showGeneticMap, setShowGeneticMap] = useState(false);
 
   const now = new Date();
   const formattedDate = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -677,14 +678,52 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
           </div>
 
           {/* Second Row - Genetic Growth Map */}
-          <div className="grid grid-cols-1 gap-5 w-full pt-5">
-            <FeatureCard
-              icon={<Network size={18} />}
-              tag="Smart Automation"
-              title="Genetic Growth Map"
-              subtitle="Visualisasi Jaringan Rujukan"
-              onClick={() => setShowGeneticMapModal(true)}
-            />
+          <div className="w-full pt-5">
+            <div
+              className="relative pt-8 cursor-pointer transition-all"
+              onClick={() => setShowGeneticMap(!showGeneticMap)}
+            >
+              {/* Icon Circle */}
+              <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
+                style={{ backgroundColor: tokens.dark, boxShadow: shadowBtn }}
+              >
+                <span style={{ color: iconOnDark }}>
+                  <Network size={18} />
+                </span>
+              </div>
+              {/* Header Card */}
+              <div
+                className="pt-12 pb-6 px-5 rounded-3xl text-center transition-all"
+                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+              >
+                <h6 className="text-[18px] font-semibold mb-2" style={{ color: tokens.dark, fontFamily: "'Geist', sans-serif" }}>
+                  Smart Automation
+                </h6>
+                <p className="text-[18px]" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
+                  Genetic Growth Map
+                </p>
+                <p className="text-[14px] mt-1 opacity-70" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
+                  Visualisasi Jaringan Rujukan
+                </p>
+                <div className="mt-3 text-xs text-slate-500">
+                  {showGeneticMap ? '▲ Sembunyikan Peta' : '▼ Tampilkan Peta'}
+                </div>
+              </div>
+            </div>
+
+            {/* Embedded Map - Expands when clicked */}
+            {showGeneticMap && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                className="mt-5 overflow-hidden"
+              >
+                <GeneticGrowthMapEmbed />
+              </motion.div>
+            )}
           </div>
         </section>
 
@@ -743,11 +782,6 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
             onClose={() => setShowReferralModal(false)}
             config={institutionConfig}
           />
-        )}
-
-        {/* Genetic Growth Map Modal */}
-        {showGeneticMapModal && (
-          <GeneticGrowthMap onClose={() => setShowGeneticMapModal(false)} />
         )}
 
         {/* Mission Section */}
