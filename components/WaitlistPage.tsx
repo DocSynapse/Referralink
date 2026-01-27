@@ -11,7 +11,7 @@ import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Pri
 import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
 import { ICD10Result } from '../types';
 import { GeneticGrowthMapLeaflet, getNetworkStats } from './GeneticGrowthMapLeaflet';
-// import { Footer } from './ui/footer';
+import { Footer } from './ui/footer';
 
 // WhatsApp Icon Component
 const WhatsAppIcon = ({ size = 18, className = '' }: { size?: number; className?: string }) => (
@@ -973,8 +973,8 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
           </p>
         </section>
 
-        {/* Footer - Temporarily disabled */}
-        {/* <div className="mt-16">
+        {/* Footer */}
+        <div className="mt-16">
           <Footer
             logo={<Hexagon className="h-9 w-9 text-[#002147]" />}
             brandName="Sentra Healthcare Solution"
@@ -998,7 +998,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
               license: "All rights reserved",
             }}
           />
-        </div> */}
+        </div>
 
       </main>
     </div>
