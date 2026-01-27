@@ -13,6 +13,7 @@ import { AdminPanel } from './components/AdminPanel';
 import { SplashScreen } from './components/SplashScreen';
 import { GridDotsBackground } from './components/ui/background-patterns';
 import { WaitlistPage } from './components/WaitlistPage';
+import { TypingHeroSubtitle } from './components/ui/typing-hero-subtitle';
 
 type PageView = 'main' | 'referralink';
 
@@ -43,7 +44,6 @@ const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState(false); // Disabled splash
   const [searchError, setSearchError] = useState<string | null>(null);
   const [heroAnimationReady, setHeroAnimationReady] = useState(true); // Start ready
-  const [typedSubtitle, setTypedSubtitle] = useState("");
   const [showAuthPanel, setShowAuthPanel] = useState(false);
   const [authUsername, setAuthUsername] = useState("doc");
   const [authPassword, setAuthPassword] = useState("");
@@ -177,22 +177,6 @@ const App: React.FC = () => {
     return () => clearTimeout(timer);
   }, [heroAnimationReady, heroSubtitle]);
 
-  // Gentle typing effect for the subtitle
-  useEffect(() => {
-    if (!heroAnimationReady) return;
-
-    setTypedSubtitle("");
-    let index = 0;
-    const interval = setInterval(() => {
-      index += 1;
-      setTypedSubtitle(heroSubtitle.slice(0, index));
-      if (index >= heroSubtitle.length) {
-        clearInterval(interval);
-      }
-    }, 60); // slower cadence for a calm type-on
-
-    return () => clearInterval(interval);
-  }, [heroAnimationReady]);
 
   const handleSearch = async (e?: any, customQuery?: string) => {
     if (e?.preventDefault) e.preventDefault();
@@ -361,10 +345,7 @@ const App: React.FC = () => {
             {/* Subtitle text */}
             <div className="mb-2 max-w-2xl">
                 <TextBlockAnimation blockColor="#002147" animateOnScroll={false} delay={0.5} duration={0.7} isEnabled={heroAnimationReady}>
-                    <p className="hero-subtitle-text">
-                        {typedSubtitle || heroSubtitle}
-                        <span className="typing-caret inline-block w-2 ml-1 align-baseline text-[#002147]">|</span>
-                    </p>
+                    <TypingHeroSubtitle heroSubtitle={heroSubtitle} heroAnimationReady={heroAnimationReady} />
                 </TextBlockAnimation>
             </div>
 
