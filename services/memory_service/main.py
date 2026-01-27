@@ -138,34 +138,6 @@ async def health():
     }
 
 
-# Debug test endpoint - bypass all handlers
-@app.get("/debug/test-add")
-async def debug_test_add():
-    """Debug endpoint to test add memory directly."""
-    import traceback
-    from .database import get_db_context
-    from .services.search import SearchService
-
-    try:
-        async with get_db_context() as session:
-            search_service = SearchService(session)
-            memory = await search_service.add_memory(
-                user_id="chief",
-                content="Debug test memory",
-                memory_type="fact",
-                agent_id="debug",
-                access_mode="private"
-            )
-            return {"success": True, "memory_id": str(memory.id)}
-    except Exception as e:
-        return {
-            "success": False,
-            "error": type(e).__name__,
-            "detail": str(e),
-            "traceback": traceback.format_exc()
-        }
-
-
 # Global exception handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):

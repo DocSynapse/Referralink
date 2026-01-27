@@ -19,7 +19,6 @@ sentence-transformers>=2.3.0
 
 # Utilities
 python-dotenv>=1.0.0
-httpx>=0.26.0
 
 # Development
 pytest>=7.4.0

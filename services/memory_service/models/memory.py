@@ -53,27 +53,3 @@ class Memory(Base):
         """Record that this memory was accessed."""
         self.accessed_at = datetime.now(timezone.utc)
         self.access_count = (self.access_count or 0) + 1
-
-
-class Relationship(Base):
-    """Relationship between memories (graph edges)."""
-
-    __tablename__ = "relationships"
-
-    id = Column(UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()"))
-    source_memory_id = Column(UUID(as_uuid=True), ForeignKey("memories.id", ondelete="CASCADE"))
-    target_memory_id = Column(UUID(as_uuid=True), ForeignKey("memories.id", ondelete="CASCADE"))
-    relation_type = Column(String(100), nullable=False)
-    weight = Column(Float, default=1.0)
-    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        return {
-            "id": str(self.id),
-            "source_memory_id": str(self.source_memory_id),
-            "target_memory_id": str(self.target_memory_id),
-            "relation_type": self.relation_type,
-            "weight": self.weight,
-            "created_at": self.created_at.isoformat() if self.created_at else None
-        }

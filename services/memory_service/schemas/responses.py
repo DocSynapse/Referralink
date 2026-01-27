@@ -7,24 +7,6 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 
 
-# =====================================================
-# Base Responses
-# =====================================================
-
-class HealthResponse(BaseModel):
-    """Health check response."""
-    status: str
-    service: str
-    version: str
-    database: bool
-    timestamp: datetime
-
-
-class ErrorResponse(BaseModel):
-    """Error response."""
-    error: str
-    detail: Optional[str] = None
-    code: Optional[str] = None
 
 
 # =====================================================
@@ -156,9 +138,3 @@ class MemoryAddResponse(BaseModel):
     message: str
 
 
-class MemoryExtractResponse(BaseModel):
-    """Response after extracting memories."""
-    success: bool
-    extracted_count: int
-    memories: List[MemoryResponse]
-    message: str

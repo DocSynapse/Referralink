@@ -69,14 +69,6 @@ class NotamUpdate(BaseModel):
 # Session Requests
 # =====================================================
 
-class SessionUpdate(BaseModel):
-    """Update session activity."""
-    user_id: str
-    agent_type: Optional[str] = None
-    agent_name: Optional[str] = None
-    last_query: Optional[str] = None
-    last_response_summary: Optional[str] = None
-    context: Optional[Dict[str, Any]] = None
 
 
 # =====================================================
@@ -106,20 +98,5 @@ class MemoryAdd(BaseModel):
     source_conversation_id: Optional[str] = None
 
 
-class MemoryExtract(BaseModel):
-    """Extract memories from conversation."""
-    user_id: str
-    conversation: List[Dict[str, str]] = Field(..., description="List of messages [{role, content}]")
-    source_agent: Optional[str] = None
-    source_conversation_id: Optional[str] = None
 
 
-# =====================================================
-# Batch Requests
-# =====================================================
-
-class MemoryBatchAdd(BaseModel):
-    """Add multiple memories at once."""
-    user_id: str
-    memories: List[MemoryAdd]
-    source_agent: Optional[str] = None
