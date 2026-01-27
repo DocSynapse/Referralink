@@ -114,26 +114,6 @@ export const Footer: React.FC<FooterProps> = ({
           )}
         </div>
 
-        {/* Disclaimer Section */}
-        <div className="border-t border-white/10 pt-6 mb-6">
-          <div className="bg-white/5 rounded-xl p-5 border border-white/10">
-            <h4 className="text-xs font-black uppercase tracking-wider text-[#E03D00] mb-3">
-              ⚠️ Disclaimer Medis
-            </h4>
-            <div className="space-y-2 text-xs text-white/70 leading-relaxed">
-              <p>
-                <strong className="text-white/90">Platform ini adalah alat bantu klinis</strong> dan tidak menggantikan penilaian profesional tenaga kesehatan. Semua keputusan medis harus dibuat oleh dokter atau tenaga kesehatan yang berkualifikasi berdasarkan evaluasi klinis menyeluruh terhadap pasien.
-              </p>
-              <p>
-                Rekomendasi rujukan, kode ICD-10, dan informasi medis yang dihasilkan oleh sistem AI harus diverifikasi dan disesuaikan dengan kondisi klinis aktual pasien. Sentra Healthcare Solution tidak bertanggung jawab atas diagnosis, pengobatan, atau keputusan medis yang dibuat berdasarkan informasi dari platform ini.
-              </p>
-              <p>
-                <strong className="text-white/90">Dalam keadaan darurat medis</strong>, segera hubungi layanan gawat darurat (119) atau bawa pasien ke fasilitas kesehatan terdekat. Jangan menunda pencarian bantuan medis profesional.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Bottom Section - Copyright */}
         <div className="border-t border-white/10 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/60">
