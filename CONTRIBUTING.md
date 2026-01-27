@@ -1,6 +1,6 @@
 # Contributing to Referralink
 
-Thank you for your interest in contributing to Referralink! 🎉 We welcome contributions from the community and are excited to help you get involved.
+Thank you for your interest in contributing to Referralink! We welcome contributions from developers, healthcare professionals, and anyone who shares our mission to improve diagnostic referral accuracy in healthcare.
 
 ## Table of Contents
 - [Code of Conduct](#code-of-conduct)
