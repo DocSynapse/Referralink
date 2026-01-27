@@ -671,10 +671,10 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                     <p className="text-[18px]" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
                       Genetic Growth Map
                     </p>
-                    <p className="text-[14px] mt-1 opacity-70" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
+                    <p className="text-[18px] mt-1 opacity-70" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
                       Visualisasi Jaringan Rujukan
                     </p>
-                    <div className="mt-3 text-xs text-slate-500">
+                    <div className="mt-3 text-[18px] text-slate-500">
                       {showGeneticMap ? '▲ Sembunyikan Peta' : '▼ Tampilkan Peta'}
                     </div>
                   </div>
@@ -952,7 +952,7 @@ const FeatureCard = ({ icon, tag, title, subtitle, onClick }: { icon: React.Reac
         {title}
       </p>
       {subtitle && (
-        <p className="text-[14px] mt-1 opacity-70" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
+        <p className="text-[18px] mt-1 opacity-70" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
           {subtitle}
         </p>
       )}
