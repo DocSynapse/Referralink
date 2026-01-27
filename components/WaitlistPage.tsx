@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network } from 'lucide-react';
 import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
 import { ICD10Result } from '../types';
-import { GeneticGrowthMapEmbed } from './GeneticGrowthMapEmbed';
+import { GeneticGrowthMapLeaflet } from './GeneticGrowthMapLeaflet';
 
 // WhatsApp Icon Component
 const WhatsAppIcon = ({ size = 18, className = '' }: { size?: number; className?: string }) => (
@@ -310,12 +310,30 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   };
 
   const faqs = [
-    { q: "Apa saja yang saya dapat di versi uji coba?", a: "Akses penuh ke fitur rujukan otomatis, validasi ICD, dan prioritas dukungan selama fase beta." },
-    { q: "Apakah butuh keahlian teknis?", a: "Tidak. Alur dirancang sederhana untuk tim klinis; cukup masukkan keluhan/diagnosa lalu sistem memberi saran rujukan." },
-    { q: "Kapan rencana peluncuran umum?", a: "Target go-live Q1 2026; pengguna awal akan mendapat notifikasi lebih dulu." },
-    { q: "Apakah saya bisa berhenti kapan saja?", a: "Bisa. Anda dapat keluar dari program beta atau berhenti menerima pembaruan kapan saja." },
-    { q: "Bagaimana keamanan data pasien?", a: "Data terenkripsi, disimpan aman, dan hanya digunakan untuk mendukung keputusan klinis internal." },
-    { q: "Bagaimana jika ada ketidaksesuaian ICD atau rujukan?", a: "Laporkan lewat kanal QA; tim kami melakukan koreksi model dan memperbaiki rekomendasi." },
+    {
+      q: "Apa saja yang saya dapat di versi uji coba?",
+      a: "Akses penuh ke inferensi ICD-10, rekomendasi rujukan berbasis rule set + LLM, audit trail per sesi, dan prioritas dukungan untuk pelaporan temuan klinis."
+    },
+    {
+      q: "Apakah butuh keahlian teknis?",
+      a: "Tidak. Form input berbasis SOAP; cukup isi keluhan dan temuan objektif, sistem memvalidasi kode ICD dan memetakan RS tujuan. Admin dapat menyesuaikan konfigurasi tanpa coding."
+    },
+    {
+      q: "Kapan rencana peluncuran umum?",
+      a: "Target go-live Q1 2026. Stabilitas model dan kepatuhan terminologi klinis divalidasi via uji regresi mingguan sebelum rilis produksi."
+    },
+    {
+      q: "Apakah saya bisa berhenti kapan saja?",
+      a: "Bisa. Opt-out langsung dari portal; seluruh token sesi di-revoke dan cache diagnosa lokal dibersihkan otomatis."
+    },
+    {
+      q: "Bagaimana keamanan data pasien?",
+      a: "Data di-transit TLS 1.2+, data sensitif di memori dibersihkan setelah respons, dan seluruh log inference disimpan tanpa PHI. Tidak ada routing ke pihak ketiga di luar tenant Sentra."
+    },
+    {
+      q: "Bagaimana jika ada ketidaksesuaian ICD atau rujukan?",
+      a: "Gunakan tombol QA untuk kirim konteks kasus; laporan dicatat, divalidasi dokter penanggung jawab, lalu model prompt/guardrail diperbarui melalui pipeline rollback-safe."
+    },
   ];
 
   return (
@@ -721,7 +739,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                 transition={{ duration: 0.4, ease: 'easeInOut' }}
                 className="mt-5 overflow-hidden"
               >
-                <GeneticGrowthMapEmbed />
+                <GeneticGrowthMapLeaflet />
               </motion.div>
             )}
           </div>
