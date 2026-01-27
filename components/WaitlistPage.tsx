@@ -11,7 +11,7 @@ import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Pri
 import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
 import { ICD10Result } from '../types';
 import { GeneticGrowthMapLeaflet, getNetworkStats } from './GeneticGrowthMapLeaflet';
-import { Footer } from './ui/footer';
+// import { Footer } from './ui/footer';
 
 // WhatsApp Icon Component
 const WhatsAppIcon = ({ size = 18, className = '' }: { size?: number; className?: string }) => (
@@ -919,32 +919,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
           </p>
         </section>
 
-        {/* Footer */}
-        <div className="mt-16">
-          <Footer
-            logo={<Hexagon className="h-9 w-9 text-[#002147]" />}
-            brandName="Sentra Healthcare Solution"
-            socialLinks={[
-              { icon: <Twitter className="h-5 w-5" />, href: "https://twitter.com", label: "Twitter" },
-              { icon: <Github className="h-5 w-5" />, href: "https://github.com/sentrasolutions", label: "GitHub" },
-              { icon: <Linkedin className="h-5 w-5" />, href: "https://linkedin.com", label: "LinkedIn" },
-            ]}
-            mainLinks={[
-              { href: "/#features", label: "Fitur" },
-              { href: "/#faq", label: "FAQ" },
-              { href: "/#contacts", label: "Kontak" },
-              { href: "/#rujukan", label: "Rujukan" },
-            ]}
-            legalLinks={[
-              { href: "/privacy", label: "Kebijakan Privasi" },
-              { href: "/terms", label: "Syarat & Ketentuan" },
-            ]}
-            copyright={{
-              text: "© 2026 Sentra Healthcare Solution · Kediri",
-              license: "All rights reserved",
-            }}
-          />
-        </div>
+        {/* Footer - Removed */}
 
       </main>
     </div>
