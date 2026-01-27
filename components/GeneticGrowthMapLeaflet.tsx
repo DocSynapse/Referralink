@@ -308,14 +308,30 @@ export const GeneticGrowthMapLeaflet: React.FC = () => {
                 click: () => setSelectedFacility(facility)
               }}
             >
-              <Popup>
-                <div className="p-2">
-                  <h3 className="font-bold text-lg mb-2">{facility.name}</h3>
-                  <div className="space-y-1 text-sm">
-                    <p><strong>Jenis:</strong> {facility.facility}</p>
-                    <p><strong>Pasien:</strong> {facility.patients.toLocaleString()}</p>
-                    <p><strong>Koneksi:</strong> {facility.connections.length}</p>
-                    {facility.address && <p className="text-slate-600">{facility.address}</p>}
+              <Popup className="sentra-popup">
+                <div className="min-w-[260px] p-1">
+                  <div className="bg-[#002147] p-3 rounded-t-lg mb-3">
+                    <div className="text-xs font-black text-[#E03D00] mb-1">
+                      SENTRA FASKES
+                    </div>
+                    <h3 className="font-black text-lg text-white leading-tight">{facility.name}</h3>
+                    {facility.address && (
+                      <p className="text-xs text-white/80 mt-1 font-bold">{facility.address}</p>
+                    )}
+                  </div>
+                  <div className="space-y-2 px-1">
+                    <div className="bg-white border-2 border-[#002147] px-3 py-2 rounded-lg">
+                      <div className="text-xs font-black text-[#002147]">KATEGORI</div>
+                      <div className="text-sm font-black text-[#E03D00]">{facility.facility}</div>
+                    </div>
+                    <div className="bg-[#E03D00] px-3 py-2 rounded-lg">
+                      <div className="text-xs font-black text-white">PASIEN</div>
+                      <div className="text-2xl font-black text-white tabular-nums">{facility.patients.toLocaleString()}</div>
+                    </div>
+                    <div className="bg-[#002147] px-3 py-2 rounded-lg">
+                      <div className="text-xs font-black text-white">RUJUKAN</div>
+                      <div className="text-2xl font-black text-[#E03D00] tabular-nums">{facility.connections.length}</div>
+                    </div>
                   </div>
                 </div>
               </Popup>
@@ -333,59 +349,72 @@ export const GeneticGrowthMapLeaflet: React.FC = () => {
         </button>
 
         {/* Stats Overlay (Top Left) */}
-        <div className="absolute top-4 left-4 z-[1000] bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-slate-200">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-[#E03D00] rounded-lg flex items-center justify-center">
-              <TrendingUp size={20} className="text-white" />
+        <div className="absolute top-4 left-4 z-[1000] bg-[#002147] rounded-2xl p-5 shadow-2xl border-4 border-[#E03D00]">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-14 h-14 bg-[#E03D00] rounded-xl flex items-center justify-center shadow-lg">
+              <TrendingUp size={28} className="text-white" strokeWidth={3} />
             </div>
             <div>
-              <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Kediri Network</div>
-              <div className="text-lg font-bold text-slate-800">Genetic Map</div>
+              <div className="text-xs text-[#E03D00] font-extrabold">SENTRA NETWORK</div>
+              <div className="text-3xl font-black text-white">KEDIRI</div>
             </div>
           </div>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center justify-between gap-8">
-              <span className="text-slate-600">Faskes:</span>
-              <span className="font-bold text-slate-800">{totalFaskes}</span>
+          <div className="space-y-3">
+            <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+              <div className="text-sm font-extrabold text-white mb-1">FASKES</div>
+              <div className="text-4xl font-black text-[#E03D00]">{totalFaskes}</div>
             </div>
-            <div className="flex items-center justify-between gap-8">
-              <span className="text-slate-600">Pasien:</span>
-              <span className="font-bold text-[#E03D00]">{totalPatients.toLocaleString()}</span>
+            <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+              <div className="text-sm font-extrabold text-white mb-1">PASIEN</div>
+              <div className="text-4xl font-black text-[#E03D00]">{totalPatients.toLocaleString()}</div>
             </div>
-            <div className="flex items-center justify-between gap-8">
-              <span className="text-slate-600">Koneksi:</span>
-              <span className="font-bold text-[#002147]">{totalConnections}</span>
+            <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+              <div className="text-sm font-extrabold text-white mb-1">RUJUKAN</div>
+              <div className="text-4xl font-black text-[#E03D00]">{totalConnections}</div>
             </div>
           </div>
         </div>
 
         {/* Legend (Bottom Left) */}
-        <div className="absolute bottom-4 left-4 z-[1000] bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-slate-200">
-          <div className="text-xs font-semibold text-slate-700 mb-2 uppercase tracking-wider">Legend</div>
-          <div className="space-y-1.5">
+        <div className="absolute bottom-4 left-4 z-[1000] bg-white rounded-2xl p-4 shadow-2xl border-4 border-[#002147]">
+          <div className="text-sm font-black text-[#002147] mb-3">TINGKAT RUJUKAN</div>
+          <div className="space-y-2">
             {[
-              { type: 'origin' as const, label: 'Faskes Asal', color: '#E03D00' },
-              { type: 'primary' as const, label: 'Primer', color: '#002147' },
-              { type: 'secondary' as const, label: 'Sekunder', color: '#4A90E2' },
-              { type: 'tertiary' as const, label: 'Tersier', color: '#7FB3D5' }
+              { type: 'origin' as const, label: 'FASKES ASAL', color: '#E03D00' },
+              { type: 'primary' as const, label: 'TIER 1 - PRIMER', color: '#002147' },
+              { type: 'secondary' as const, label: 'TIER 2 - SEKUNDER', color: '#4A90E2' },
+              { type: 'tertiary' as const, label: 'TIER 3 - TERSIER', color: '#7FB3D5' }
             ].map(({ type, label, color }) => (
-              <div key={type} className="flex items-center gap-2">
+              <div key={type} className="flex items-center gap-3">
                 <div
-                  className="w-3 h-3 rounded-full border-2 border-white shadow"
-                  style={{ backgroundColor: color }}
+                  className="w-5 h-5 rounded-full border-4 border-white shadow-lg flex-shrink-0"
+                  style={{
+                    backgroundColor: color,
+                    boxShadow: `0 3px 10px ${color}80`
+                  }}
                 />
-                <span className="text-xs text-slate-600">{label}</span>
+                <span className="text-xs font-extrabold" style={{ color }}>{label}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Instructions (Bottom Right) */}
-        <div className="absolute bottom-4 right-4 z-[1000] bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg border border-slate-200">
-          <div className="text-xs text-slate-600 space-y-0.5">
-            <div>🖱️ <span className="font-semibold">Drag</span> to pan</div>
-            <div>🔍 <span className="font-semibold">Scroll</span> to zoom</div>
-            <div>📍 <span className="font-semibold">Click pin</span> for info</div>
+        <div className="absolute bottom-4 right-4 z-[1000] bg-[#E03D00] rounded-2xl px-4 py-3 shadow-2xl border-4 border-[#002147]">
+          <div className="text-xs font-black text-white mb-2">CARA PAKAI</div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl">🖱️</span>
+              <span className="text-white font-bold text-sm">DRAG PETA</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl">🔍</span>
+              <span className="text-white font-bold text-sm">SCROLL ZOOM</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl">📍</span>
+              <span className="text-white font-bold text-sm">KLIK DETAIL</span>
+            </div>
           </div>
         </div>
       </div>
@@ -395,27 +424,53 @@ export const GeneticGrowthMapLeaflet: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-white to-slate-50 border-t-2 border-slate-300 p-6 shadow-xl"
+          className="bg-[#002147] border-t-8 border-[#E03D00] p-7 shadow-2xl"
         >
-          <div className="max-w-6xl mx-auto grid grid-cols-4 gap-6">
-            <div>
-              <div className="text-xs text-slate-500 uppercase tracking-wider mb-1 font-semibold">Nama Faskes</div>
-              <div className="text-lg font-bold text-slate-800">{selectedFacility.name}</div>
+          <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="mb-6">
+              <div className="text-sm font-black text-[#E03D00] mb-2">
+                DETAIL FASKES SENTRA
+              </div>
+              <div className="text-3xl font-black text-white">{selectedFacility.name}</div>
               {selectedFacility.address && (
-                <div className="text-xs text-slate-500 mt-1">{selectedFacility.address}</div>
+                <div className="text-sm text-white/80 mt-2 font-bold flex items-center gap-2">
+                  <MapPin size={16} className="text-[#E03D00]" />
+                  {selectedFacility.address}
+                </div>
               )}
             </div>
-            <div>
-              <div className="text-xs text-slate-500 uppercase tracking-wider mb-1 font-semibold">Jenis</div>
-              <div className="text-sm font-semibold text-slate-700">{selectedFacility.facility}</div>
-            </div>
-            <div>
-              <div className="text-xs text-slate-500 uppercase tracking-wider mb-1 font-semibold">Total Pasien</div>
-              <div className="text-2xl font-bold text-[#E03D00]">{selectedFacility.patients.toLocaleString()}</div>
-            </div>
-            <div>
-              <div className="text-xs text-slate-500 uppercase tracking-wider mb-1 font-semibold">Koneksi</div>
-              <div className="text-2xl font-bold text-[#002147]">{selectedFacility.connections.length}</div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-4 gap-5">
+              <div className="bg-white rounded-xl p-5 border-4 border-[#E03D00]/30">
+                <div className="text-xs font-black text-[#002147] mb-2">KATEGORI</div>
+                <div className="text-lg font-black text-[#E03D00]">{selectedFacility.facility}</div>
+              </div>
+
+              <div className="bg-[#E03D00] rounded-xl p-5 border-4 border-white/20">
+                <div className="text-xs font-black text-white mb-2 flex items-center gap-1">
+                  <Users size={14} strokeWidth={3} />
+                  TOTAL PASIEN
+                </div>
+                <div className="text-4xl font-black text-white tabular-nums">{selectedFacility.patients.toLocaleString()}</div>
+              </div>
+
+              <div className="bg-white rounded-xl p-5 border-4 border-[#E03D00]/30">
+                <div className="text-xs font-black text-[#002147] mb-2 flex items-center gap-1">
+                  <Activity size={14} strokeWidth={3} />
+                  RUJUKAN AKTIF
+                </div>
+                <div className="text-4xl font-black text-[#E03D00] tabular-nums">{selectedFacility.connections.length}</div>
+              </div>
+
+              <div className="bg-green-500 rounded-xl p-5 border-4 border-white/20">
+                <div className="text-xs font-black text-white mb-2">STATUS</div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+                  <span className="text-lg font-black text-white">AKTIF</span>
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
