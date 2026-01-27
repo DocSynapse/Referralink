@@ -138,7 +138,7 @@ ATURAN proposed_referrals:
 - Urutkan: [Paling Aman Lolos] → [Moderat] → [Agresif tapi Valid]
 - JANGAN masukkan kode 4A (I10, J00, K30, R51, M79.1, A09, J06.9, L20, E11.9, H10.1)
 
-OUTPUT: JSON valid tanpa markdown.
+OUTPUT: JSON valid tanpa markdown. ALL TEXT OUTPUT MUST BE IN ENGLISH.
     `;
 
     const response = await ai.chat.completions.create({

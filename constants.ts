@@ -106,6 +106,8 @@ OUTPUT JSON FORMAT (STRICT):
     }
   ]
 }
+
+IMPORTANT: ALL OUTPUT TEXT MUST BE IN ENGLISH. Do not use Indonesian language in the response.
 `;
 
 export const EXAMPLE_QUERIES = [
