@@ -1,10 +1,10 @@
 # API Documentation
 
-This document describes the external APIs and integrations used by Referralink.
+This document describes the external APIs and integrations used by Referralink's diagnostic referral analysis algorithm.
 
 ## Overview
 
-Referralink integrates with multiple AI and external APIs to provide intelligent data analysis capabilities. This guide covers how to configure and use these integrations.
+Referralink integrates with advanced AI services to provide intelligent diagnostic analysis and referral recommendations. These APIs power the core algorithm that analyzes patient clinical presentations and generates accurate specialist referral recommendations. This guide covers configuration and usage of these integrations.
 
 ## Table of Contents
 - [Gemini API](#gemini-api)
@@ -19,7 +19,7 @@ Referralink integrates with multiple AI and external APIs to provide intelligent
 ## Gemini API
 
 ### Overview
-Google's Gemini API provides advanced AI capabilities for natural language processing and data analysis.
+Google's Gemini API provides advanced AI capabilities for natural language processing and clinical analysis. Referralink uses Gemini for diagnostic referral analysis and evidence-based recommendations.
 
 ### Authentication
 
@@ -34,7 +34,7 @@ Google's Gemini API provides advanced AI capabilities for natural language proce
 ### Endpoints
 
 #### Generate Content
-**Purpose:** Use Gemini to analyze referral data and generate insights
+**Purpose:** Use Gemini to analyze patient clinical presentations and generate diagnostic referral recommendations
 
 **Request:**
 ```javascript
@@ -51,7 +51,7 @@ const response = await fetch(
         {
           parts: [
             {
-              text: 'Analyze this referral data: ...',
+              text: 'Analyze this patient clinical presentation and provide diagnostic referral recommendations: ...',
             },
           ],
         },
@@ -97,7 +97,7 @@ const response = await fetch(
 ## DeepSeek API
 
 ### Overview
-DeepSeek API provides alternative AI capabilities for data analysis and processing.
+DeepSeek API provides advanced reasoning capabilities for clinical analysis and diagnostic referral processing. Referralink uses DeepSeek for complex diagnostic reasoning and specialist recommendation generation.
 
 ### Authentication
 
@@ -113,7 +113,7 @@ DeepSeek API provides alternative AI capabilities for data analysis and processi
 ### Endpoints
 
 #### Chat Completions
-**Purpose:** Use DeepSeek for referral analysis and insights
+**Purpose:** Use DeepSeek for diagnostic analysis and specialist referral recommendations
 
 **Request:**
 ```javascript
@@ -130,7 +130,7 @@ const response = await fetch(
       messages: [
         {
           role: 'user',
-          content: 'Analyze this referral data...',
+          content: 'Analyze this patient clinical presentation and provide diagnostic classification and specialist referral recommendations...',
         },
       ],
     }),
@@ -326,48 +326,68 @@ class APIRateLimiter {
 
 ## Examples
 
-### Example 1: Analyze Referral Data with Gemini
+### Example 1: Analyze Patient Presentation with Gemini
 
 ```typescript
 import { analyzeWithGemini } from './services/ai-service';
 
-async function analyzeReferrals(data: ReferralData[]) {
+interface PatientPresentation {
+  symptoms: string[];
+  medicalHistory: string[];
+  clinicalFindings: string;
+}
+
+async function analyzeDiagnosticReferral(patient: PatientPresentation) {
   try {
     const prompt = `
-      Analyze the following referral data and provide insights:
-      ${JSON.stringify(data, null, 2)}
+      Analyze the following patient clinical presentation and provide diagnostic referral recommendations:
+
+      Symptoms: ${patient.symptoms.join(', ')}
+      Medical History: ${patient.medicalHistory.join(', ')}
+      Clinical Findings: ${patient.clinicalFindings}
 
       Provide:
-      1. Key performance metrics
-      2. Trends and patterns
-      3. Recommendations for improvement
+      1. ICD-10 diagnostic codes with confidence scores
+      2. Clinical urgency assessment (Emergency/Urgent/Semi-Urgent/Routine)
+      3. Recommended specialist referrals
+      4. Evidence-based clinical reasoning
+      5. Red flag indicators (if any)
     `;
 
     const analysis = await analyzeWithGemini(prompt);
     return analysis;
   } catch (error) {
-    console.error('Analysis failed:', error);
+    console.error('Diagnostic analysis failed:', error);
     throw error;
   }
 }
 ```
 
-### Example 2: Generate Report with DeepSeek
+### Example 2: Generate Referral Report with DeepSeek
 
 ```typescript
 import { generateWithDeepSeek } from './services/ai-service';
 
-async function generateReport(referralData: ReferralData[]) {
+interface DiagnosticAnalysis {
+  icdCodes: string[];
+  urgency: string;
+  recommendedSpecialist: string;
+  reasoning: string;
+}
+
+async function generateReferralReport(analysis: DiagnosticAnalysis) {
   try {
     const prompt = `
-      Generate a professional referral report based on this data:
-      ${JSON.stringify(referralData, null, 2)}
+      Generate a professional diagnostic referral report based on this clinical analysis:
+      ${JSON.stringify(analysis, null, 2)}
 
       Include sections:
-      - Executive Summary
-      - Performance Metrics
-      - Analysis
-      - Recommendations
+      - Patient Presentation Summary
+      - Diagnostic Assessment (ICD-10 codes)
+      - Clinical Urgency
+      - Specialist Recommendation with Competency Requirements
+      - Clinical Reasoning and Evidence
+      - Referral Documentation
     `;
 
     const report = await generateWithDeepSeek(prompt);
@@ -379,21 +399,21 @@ async function generateReport(referralData: ReferralData[]) {
 }
 ```
 
-### Example 3: Fallback Strategy
+### Example 3: Robust Diagnostic Analysis with Fallback
 
 ```typescript
-async function analyzeWithFallback(data: ReferralData[]) {
+async function analyzeWithDiagnosticFallback(patient: PatientPresentation) {
   try {
-    // Try primary provider (Gemini)
-    return await analyzeWithGemini(createPrompt(data));
+    // Try primary provider (Gemini) for initial analysis
+    return await analyzeWithGemini(createDiagnosticPrompt(patient));
   } catch (primaryError) {
-    console.warn('Primary API failed, trying fallback:', primaryError);
+    console.warn('Primary diagnostic API failed, trying fallback:', primaryError);
     try {
-      // Fall back to DeepSeek
-      return await generateWithDeepSeek(createPrompt(data));
+      // Fall back to DeepSeek for diagnostic reasoning
+      return await generateWithDeepSeek(createDiagnosticPrompt(patient));
     } catch (fallbackError) {
-      console.error('All APIs failed:', fallbackError);
-      throw new Error('Unable to complete analysis with any available API');
+      console.error('All diagnostic APIs failed:', fallbackError);
+      throw new Error('Unable to complete diagnostic referral analysis with any available API');
     }
   }
 }
@@ -403,40 +423,50 @@ async function analyzeWithFallback(data: ReferralData[]) {
 
 ## Troubleshooting
 
+### Issue: Diagnostic Analysis Fails to Complete
+**Solution:**
+1. Verify API keys are valid in `.env.local`
+2. Check API service status and quota limits
+3. Ensure patient presentation data is properly formatted
+4. Review API response logs for error details
+
 ### Issue: API Key Not Found
 **Solution:**
-1. Verify `.env.local` exists
-2. Check environment variable names match exactly
-3. Restart development server after changing .env
-4. Try `VITE_GEMINI_API_KEY` instead of `GEMINI_API_KEY`
+1. Verify `.env.local` exists in project root
+2. Check environment variable names match exactly (case-sensitive)
+3. Restart development server after changing `.env.local`
+4. Use `VITE_GEMINI_API_KEY` and `VITE_DEEPSEEK_API_KEY` prefixes
 
 ### Issue: CORS Error
 **Solution:**
-- API calls should be made from backend, not directly from browser
-- Implement proxy or API wrapper in backend service
+- Diagnostic API calls should be made from backend, not directly from browser
+- Implement proxy or API wrapper in backend service for clinical data
 
-### Issue: Timeout Errors
+### Issue: Timeout During Diagnostic Analysis
 **Solution:**
-1. Increase `VITE_API_TIMEOUT` value
-2. Optimize data payload size
-3. Check network connection
-4. Monitor API service status
+1. Increase `VITE_API_TIMEOUT` value (default 30000ms)
+2. Optimize patient presentation payload size
+3. Check network connection stability
+4. Monitor API service status page
+5. Consider using caching for repeated diagnostic patterns
 
 ---
 
 ## Resources
 
-- [Gemini API Documentation](https://ai.google.dev/)
-- [DeepSeek Documentation](https://www.deepseek.com/)
-- [OpenAI API Reference](https://platform.openai.com/docs)
-- [API Best Practices](https://restfulapi.net/)
+- [Gemini API Documentation](https://ai.google.dev/) - For clinical analysis and diagnostic support
+- [DeepSeek Documentation](https://www.deepseek.com/) - For advanced diagnostic reasoning
+- [ICD-10 Code Reference](https://www.cdc.gov/nchs/icd/index.htm) - Medical classification standards
+- [RESTful API Best Practices](https://restfulapi.net/) - API design and implementation patterns
 
 ---
 
 ## Support
 
-For API-related issues:
-1. Check API provider's status page
-2. Review error codes and solutions above
-3. Open an issue with detailed error information
-4. Contact maintainers for debugging help
+For diagnostic API and integration issues:
+1. Check API provider's status page for service availability
+2. Verify API keys and quota limits
+3. Review error codes and troubleshooting solutions above
+4. Ensure patient presentation data is properly formatted
+5. Open an issue with detailed error logs and clinical context
+6. Contact maintainers for diagnostic analysis troubleshooting
