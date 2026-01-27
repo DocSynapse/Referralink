@@ -7,7 +7,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network, Mail, Phone, ShieldCheck } from 'lucide-react';
 import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
 import { ICD10Result } from '../types';
 import { GeneticGrowthMapLeaflet } from './GeneticGrowthMapLeaflet';
@@ -933,16 +933,94 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
         </section>
 
         {/* Footer */}
-        <footer
-          className="py-10 border-t flex flex-col md:flex-row justify-between items-center gap-5"
-          style={{ borderColor: tokens.border }}
-        >
-          <p className="text-[14px]" style={{ color: tokens.gray }}>
-            2026 - Sentra Healthcare Solution
-          </p>
-          <p className="text-[14px] text-center md:text-right" style={{ color: tokens.gray }}>
-            A decision support tool; professional medical judgment is required for all patient care decisions.
-          </p>
+        <footer className="mt-16">
+          <div
+            className="relative overflow-hidden rounded-3xl border"
+            style={{
+              background: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.35), transparent 40%), radial-gradient(circle at 80% 0%, rgba(255,83,73,0.15), transparent 38%), linear-gradient(135deg, #EEF2F6 0%, #E0E5EC 65%)',
+              borderColor: tokens.border
+            }}
+          >
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'repeating-linear-gradient(90deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02) 1px, transparent 1px, transparent 14px)' }} />
+            <div className="relative z-10 px-8 py-10 md:px-12 md:py-12 flex flex-col gap-10">
+              {/* Top CTA */}
+              <div className="flex flex-col lg:flex-row lg:items-center gap-6 justify-between">
+                <div className="space-y-2 max-w-xl">
+                  <p className="uppercase text-[12px] font-semibold tracking-[0.2em]" style={{ color: tokens.gray }}>
+                    Governance-first Clinical AI
+                  </p>
+                  <h3 className="text-[30px] md:text-[34px] font-semibold leading-[1.15]" style={{ color: tokens.dark }}>
+                    Siap percepat keputusan rujukan? Mulai dengan protokol Sentra.
+                  </h3>
+                  <p className="text-[15px]" style={{ color: tokens.gray }}>
+                    Pipeline sudah disiapkan untuk audit trail, rollback aman, dan override manual di setiap rekomendasi.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    className="px-5 py-3 rounded-full text-[14px] font-semibold flex items-center gap-2"
+                    style={{ backgroundColor: tokens.dark, color: iconOnDark, boxShadow: shadowBtn }}
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  >
+                    <Zap size={16} /> Mulai Analisis
+                  </button>
+                  <button
+                    className="px-5 py-3 rounded-full text-[14px] font-semibold border flex items-center gap-2"
+                    style={{ borderColor: tokens.border, color: tokens.dark, backgroundColor: 'rgba(255,255,255,0.7)' }}
+                    onClick={() => window.open('mailto:drferdiiskandar@sentraai.id', '_blank')}
+                  >
+                    <Mail size={16} /> Hubungi Klinik Lead
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="space-y-3">
+                  <h4 className="text-[16px] font-semibold" style={{ color: tokens.dark }}>Kontak Klinis</h4>
+                  <div className="flex items-start gap-3 text-[14px]" style={{ color: tokens.gray }}>
+                    <Mail size={16} style={{ color: tokens.coral }} />
+                    <div>
+                      <p>drferdiiskandar@sentraai.id</p>
+                      <p className="text-[12px] opacity-80">Prioritas respon {'<'} 6 jam kerja</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-[14px]" style={{ color: tokens.gray }}>
+                    <Phone size={16} style={{ color: tokens.coral }} />
+                    <span>+62 811-3771-008 (IGD RSUD Gambiran)</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-[14px]" style={{ color: tokens.gray }}>
+                    <ShieldCheck size={16} style={{ color: tokens.coral }} />
+                    <span>Audit & rollback aman setiap sesi</span>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-[16px] font-semibold" style={{ color: tokens.dark }}>Platform</h4>
+                  <ul className="space-y-2 text-[14px]" style={{ color: tokens.gray }}>
+                    <li>ICD-10 validator & rekomendasi RS rujukan</li>
+                    <li>Surat Keterangan Sakit & Sehat otomatis</li>
+                    <li>Pemetaan jaringan rujukan (Growth Map)</li>
+                    <li>QA channel untuk mismatch klinis</li>
+                  </ul>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-[16px] font-semibold" style={{ color: tokens.dark }}>Kepatuhan</h4>
+                  <ul className="space-y-2 text-[14px]" style={{ color: tokens.gray }}>
+                    <li>Data in-transit TLS 1.2+, tanpa PHI dalam log</li>
+                    <li>Cache diagnosa dapat dibersihkan on-demand</li>
+                    <li>Override manual oleh dokter penanggung jawab</li>
+                    <li>Jejak audit untuk setiap rekomendasi rujukan</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="border-t pt-4 flex flex-col md:flex-row gap-3 justify-between text-[13px]" style={{ borderColor: tokens.border, color: tokens.gray }}>
+                <span>© 2026 Sentra Healthcare Solution · Kediri</span>
+                <span>A decision support tool — keputusan klinis tetap di tangan dokter.</span>
+              </div>
+            </div>
+          </div>
         </footer>
 
       </main>
