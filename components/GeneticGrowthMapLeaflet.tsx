@@ -271,6 +271,11 @@ export const GeneticGrowthMapLeaflet: React.FC = () => {
     <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50' : 'w-full'} bg-slate-100 rounded-2xl overflow-hidden`}>
       {/* Map Container */}
       <div className="relative w-full h-[600px]">
+        <style>{`
+          .leaflet-tile-pane {
+            filter: grayscale(100%) brightness(0.95);
+          }
+        `}</style>
         <MapContainer
           center={KEDIRI_CENTER}
           zoom={13}
@@ -278,10 +283,11 @@ export const GeneticGrowthMapLeaflet: React.FC = () => {
           className="w-full h-full"
           zoomControl={false}
         >
-          {/* OpenStreetMap Tiles */}
+          {/* Grayscale Map Tiles */}
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            className="map-grayscale"
           />
 
           {/* Connection Lines */}
