@@ -33,7 +33,7 @@ interface HealthFacility {
   address?: string;
 }
 
-const healthFacilities: HealthFacility[] = [
+export const healthFacilities: HealthFacility[] = [
   {
     id: 'origin',
     name: 'RSIA Melinda Kediri',
@@ -243,6 +243,13 @@ const getConnectionStyle = (fromType: HealthFacility['type']) => {
       return { color: '#7FB3D5', weight: 1.5, opacity: 0.4 };
   }
 };
+
+// Helper function to get network statistics
+export const getNetworkStats = () => ({
+  totalFaskes: healthFacilities.length,
+  totalPatients: healthFacilities.reduce((sum, f) => sum + f.patients, 0),
+  totalConnections: healthFacilities.reduce((sum, f) => sum + f.connections.length, 0)
+});
 
 export const GeneticGrowthMapLeaflet: React.FC = () => {
   const [selectedFacility, setSelectedFacility] = useState<HealthFacility | null>(null);
