@@ -233,7 +233,6 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   const [result, setResult] = useState<ICD10Result | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [showRoadmap, setShowRoadmap] = useState(false);
-  const [alphaCollapsed, setAlphaCollapsed] = useState(false);
 
   // Streaming State
   const [streamingText, setStreamingText] = useState<string>('');
@@ -291,16 +290,6 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
     }
   };
 
-  // Auto-collapse Alpha Tester card after 30s or on first scroll
-  useEffect(() => {
-    const timer = setTimeout(() => setAlphaCollapsed(true), 30000);
-    const onScroll = () => setAlphaCollapsed(true);
-    window.addEventListener('scroll', onScroll, { once: true });
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
 
   // Clear cache for current query
   const handleClearCache = async () => {
@@ -455,49 +444,6 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
           Back
         </button>
       )}
-
-      {/* Alpha Tester Widget (top-left, unobtrusive) */}
-      <div
-        className="fixed top-56 left-6 z-30 w-[300px] max-w-[80vw] rounded-2xl border transition-transform duration-300 ease-out"
-        style={{
-          backgroundColor: tokens.cardBg,
-          borderColor: tokens.border,
-          boxShadow: '0 10px 24px rgba(0,0,0,0.12)',
-          padding: 14,
-          transform: alphaCollapsed ? 'translateX(-75%)' : 'translateX(0)'
-        }}
-      >
-        <div className="flex items-center gap-2 mb-2">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: tokens.dark }}>
-            Alpha Tester
-          </p>
-          <span className="ml-auto text-[11px] font-semibold px-2 py-1 rounded-full" style={{ backgroundColor: tokens.badgeBg, color: tokens.coral }}>
-            NEW
-          </span>
-        </div>
-        <div className="border-t" style={{ borderColor: tokens.border }} />
-        <div className="space-y-2 mt-3 text-[13px]" style={{ color: tokens.gray }}>
-          <p className="text-[12px]" style={{ color: tokens.dark, fontWeight: 600 }}>
-            Welcome Alpha Tester 🎉
-          </p>
-          <p>
-            Akses awal untuk tim klinis terpilih. Uji alur rujukan otomatis, validasi ICD, dan kirim temuan lewat kanal QA.
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li>Fokus: turnaround &lt; 60 detik</li>
-            <li>Laporkan mismatch ICD via form QA</li>
-            <li>Handover WA dipantau 24/7</li>
-          </ul>
-        </div>
-        <button
-          className="absolute top-1/2 -right-5 -translate-y-1/2 bg-[var(--bg-color)] border rounded-full w-8 h-8 flex items-center justify-center text-[11px] shadow-sm hover:shadow-md transition"
-          style={{ borderColor: tokens.border, color: tokens.dark }}
-          onClick={() => setAlphaCollapsed((v) => !v)}
-          aria-label="Toggle Alpha Tester"
-        >
-          {alphaCollapsed ? '>' : '<'}
-        </button>
-      </div>
 
       {/* Main Content */}
       <main className="relative z-10 max-w-[900px] mx-auto px-8">
