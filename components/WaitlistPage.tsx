@@ -6,9 +6,10 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network } from 'lucide-react';
 import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
 import { ICD10Result } from '../types';
+import { GeneticGrowthMap } from './GeneticGrowthMap';
 
 // WhatsApp Icon Component
 const WhatsAppIcon = ({ size = 18, className = '' }: { size?: number; className?: string }) => (
@@ -252,6 +253,10 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   // Smart Hospital / Referral Request State
   const [showReferralModal, setShowReferralModal] = useState(false);
   const [referralData, setReferralData] = useState<ReferralRequestData>(defaultReferralRequestData);
+
+  // Genetic Growth Map State
+  const [showGeneticMapModal, setShowGeneticMapModal] = useState(false);
+
   const now = new Date();
   const formattedDate = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -304,20 +309,24 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   };
 
   const faqs = [
-    { q: "What's included in the beta?", a: "You'll get access to the full platform, upcoming features, and priority support during the beta phase." },
-    { q: "Do I need tech skills to use it?", a: "No. EarlyBird is designed for SaaS and AI teams of all sizes — simple, intuitive, and ready to go." },
-    { q: "When is the official launch?", a: "We're aiming to launch in November 2025. Early access users will be the first to know." },
-    { q: "Can I cancel anytime?", a: "Yes, you can leave the beta program or unsubscribe from updates at any time." },
-    { q: "How much does it cost?", a: "The beta is free. Paid plans will be announced when we officially launch." },
-    { q: "How secure is my data?", a: "We take security seriously. All data is encrypted, stored safely, and never shared with third parties. Your privacy and trust are our top priority." },
+    { q: "Apa saja yang saya dapat di versi uji coba?", a: "Akses penuh ke fitur rujukan otomatis, validasi ICD, dan prioritas dukungan selama fase beta." },
+    { q: "Apakah butuh keahlian teknis?", a: "Tidak. Alur dirancang sederhana untuk tim klinis; cukup masukkan keluhan/diagnosa lalu sistem memberi saran rujukan." },
+    { q: "Kapan rencana peluncuran umum?", a: "Target go-live Q1 2026; pengguna awal akan mendapat notifikasi lebih dulu." },
+    { q: "Apakah saya bisa berhenti kapan saja?", a: "Bisa. Anda dapat keluar dari program beta atau berhenti menerima pembaruan kapan saja." },
+    { q: "Bagaimana keamanan data pasien?", a: "Data terenkripsi, disimpan aman, dan hanya digunakan untuk mendukung keputusan klinis internal." },
+    { q: "Bagaimana jika ada ketidaksesuaian ICD atau rujukan?", a: "Laporkan lewat kanal QA; tim kami melakukan koreksi model dan memperbaiki rekomendasi." },
   ];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: tokens.bgLight, fontFamily: "'Geist', sans-serif" }}>
+    <div className="min-h-screen relative overflow-hidden z-0" style={{ backgroundColor: tokens.bgLight, fontFamily: "'Geist', sans-serif" }}>
+      <div
+        className="absolute inset-0 z-0 h-full w-full bg-[#E0E5EC] bg-[radial-gradient(rgba(200,205,215,0.7)_1px,transparent_1px)] [background-size:14px_14px]"
+      />
+      <div className="relative z-10">
 
       {/* Weather Widget */}
       <div
-        className="fixed top-14 left-6 z-40 w-[240px] max-w-[80vw] rounded-2xl border"
+        className="fixed top-24 left-20 z-40 w-[240px] max-w-[80vw] rounded-2xl border"
         style={{
           backgroundColor: tokens.bgLight,
           borderColor: 'rgba(255,255,255,0.6)',
@@ -352,7 +361,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
           className="fixed top-6 right-6 z-40 px-4 py-2 rounded-full border text-[12px] font-semibold uppercase tracking-[0.14em] shadow-sm hover:shadow-md transition"
           style={{ backgroundColor: tokens.cardBg, borderColor: tokens.border, color: tokens.dark }}
         >
-          Roadmap 2026
+          From CEO
         </button>
       )}
       {showRoadmap && (
@@ -361,13 +370,13 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
           style={{
             backgroundColor: tokens.cardBg,
             borderColor: tokens.border,
-            boxShadow: '0 12px 30px rgba(0,0,0,0.16)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             padding: 14
           }}
         >
           <div className="flex items-center gap-2 mb-2">
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: tokens.dark }}>
-              NEXT_PHASE // ROADMAP 2026 // dr Ferdi Iskandar // Lead Architect
+              From CEO
             </p>
             <span className="ml-auto text-[11px] font-semibold px-2 py-1 rounded-full" style={{ backgroundColor: tokens.badgeBg, color: tokens.coral }}>
               IN_PROGRESS
@@ -387,13 +396,13 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
               style={{ backgroundColor: tokens.badgeBg, border: cardBorder, boxShadow: '0 6px 14px rgba(0,0,0,0.12)' }}
             >
               <img
-                src="/dr-ferdi.png"
+                src="/chief.svg"
                 alt="Principal Architect"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex-1 space-y-2 text-[13px]" style={{ color: tokens.dark }}>
-              <p className="font-semibold">dr Ferdi Iskandar // Principal Architect</p>
+              <p className="font-semibold">drferdiskandar // Lead Architect</p>
               <div className="space-y-2 leading-relaxed text-[13px]" style={{ color: tokens.gray }}>
                 <p className="font-semibold">Upcoming Strategic Updates:</p>
                 <ol className="list-decimal list-inside space-y-1">
@@ -407,26 +416,13 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                     <strong>Enhanced Asset Security</strong>: Enkripsi tambahan untuk setiap data diagnosa lintas jaringan Sentra.
                   </li>
                 </ol>
+              </div>
               <p className="font-semibold">Next Milestone:</p>
               <p>Deploy <em>Smart Automation</em> untuk rujukan otomatis ke fasilitas tingkat lanjut.</p>
-              <div className="border-t pt-2 mt-3" style={{ borderColor: tokens.border }} />
-              <p className="font-semibold">News:</p>
-              <div
-                className="rounded-xl p-3"
-                style={{ backgroundColor: tokens.badgeBg, border: cardBorder }}
-              >
-                <p className="text-[12px] font-semibold" style={{ color: tokens.dark }}>
-                  Welcome Alpha Tester 🎉
-                </p>
-                <p className="text-[12px]" style={{ color: tokens.gray }}>
-                  Akses awal dibuka untuk tim klinis terpilih. Coba alur rujukan otomatis, laporkan temuan via kanal QA, dan bantu kalibrasi skor kepercayaan.
-                </p>
-              </div>
             </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
 
       {/* Back Button */}
       {onBack && (
@@ -442,7 +438,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
 
       {/* Alpha Tester Widget (top-left, unobtrusive) */}
       <div
-        className="fixed top-52 left-6 z-30 w-[300px] max-w-[80vw] rounded-2xl border transition-transform duration-300 ease-out"
+        className="fixed top-56 left-6 z-30 w-[300px] max-w-[80vw] rounded-2xl border transition-transform duration-300 ease-out"
         style={{
           backgroundColor: tokens.cardBg,
           borderColor: tokens.border,
@@ -520,17 +516,22 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
 
                 {/* Title */}
                 <h1
-                  className="text-[56px] font-semibold text-center leading-[1.2]"
-                  style={{ color: tokens.dark, letterSpacing: '-0.06em', maxWidth: 550, fontFamily: "'Geist', sans-serif" }}
+                  className="text-center leading-[1.1] space-y-1"
+                  style={{ color: tokens.dark, letterSpacing: '-0.06em', maxWidth: 560, fontFamily: "'Geist', sans-serif" }}
                 >
-                  Sentra Solutions Referra
-                  <span
-                    className="italic font-light"
-                    style={{
-                      color: tokens.coral
-                    }}
-                  >
-                    Link
+                  <span className="block text-[32px] font-medium tracking-[0.01em]" style={{ color: tokens.gray }}>
+                    Sentra Solutions
+                  </span>
+                  <span className="block text-[64px] font-semibold">
+                    Referra
+                    <span
+                      className="italic font-light"
+                      style={{
+                        color: tokens.coral
+                      }}
+                    >
+                      Link
+                    </span>
                   </span>
                 </h1>
 
@@ -674,6 +675,17 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
               }}
             />
           </div>
+
+          {/* Second Row - Genetic Growth Map */}
+          <div className="grid grid-cols-1 gap-5 w-full pt-5">
+            <FeatureCard
+              icon={<Network size={18} />}
+              tag="Smart Automation"
+              title="Genetic Growth Map"
+              subtitle="Visualisasi Jaringan Rujukan"
+              onClick={() => setShowGeneticMapModal(true)}
+            />
+          </div>
         </section>
 
         {/* Sick Leave Modal */}
@@ -731,6 +743,11 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
             onClose={() => setShowReferralModal(false)}
             config={institutionConfig}
           />
+        )}
+
+        {/* Genetic Growth Map Modal */}
+        {showGeneticMapModal && (
+          <GeneticGrowthMap onClose={() => setShowGeneticMapModal(false)} />
         )}
 
         {/* Mission Section */}
@@ -878,11 +895,12 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
 
       </main>
     </div>
+    </div>
   );
 };
 
 // Sub-components
-const FeatureCard = ({ icon, tag, title, onClick }: { icon: React.ReactNode; tag: string; title: string; onClick?: () => void }) => (
+const FeatureCard = ({ icon, tag, title, subtitle, onClick }: { icon: React.ReactNode; tag: string; title: string; subtitle?: string; onClick?: () => void }) => (
   <div
     className="relative pt-8 cursor-pointer transition-transform hover:scale-[1.02] active:scale-[0.98]"
     onClick={onClick}
@@ -905,6 +923,11 @@ const FeatureCard = ({ icon, tag, title, onClick }: { icon: React.ReactNode; tag
       <p className="text-[18px]" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
         {title}
       </p>
+      {subtitle && (
+        <p className="text-[14px] mt-1 opacity-70" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
+          {subtitle}
+        </p>
+      )}
     </div>
   </div>
 );
