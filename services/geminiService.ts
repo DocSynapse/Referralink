@@ -9,33 +9,28 @@
 
 import OpenAI from "openai";
 import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../constants";
-import { MedicalQuery, ICD10Result } from "../types";
+import { MedicalQuery, ICD10Result, StreamCallbacks } from "../types";
+import { diagnosisCache } from "./cacheService";
 
 // Supported AI Model Providers
 export const AI_MODELS = {
-  DEEPSEEK_R1: {
-    id: 'deepseek/deepseek-r1',
-    name: 'DeepSeek R1',
-    provider: 'DeepSeek',
-    description: 'Reasoning model optimized for complex analysis'
-  },
   DEEPSEEK_V3: {
     id: 'deepseek/deepseek-chat',
     name: 'DeepSeek V3',
     provider: 'DeepSeek',
-    description: 'Latest DeepSeek chat model'
+    description: 'Latest DeepSeek chat model - fast & accurate'
   },
-  QWEN_72B: {
-    id: 'qwen/qwen-2.5-72b-instruct',
-    name: 'Qwen 2.5 72B',
-    provider: 'Alibaba',
-    description: 'Large scale instruction-tuned model'
+  DEEPSEEK_R1: {
+    id: 'deepseek/deepseek-r1',
+    name: 'DeepSeek R1',
+    provider: 'DeepSeek',
+    description: 'Reasoning model for complex analysis'
   },
-  QWEN_TURBO: {
-    id: 'qwen/qwen-turbo',
-    name: 'Qwen Turbo',
-    provider: 'Alibaba',
-    description: 'Fast inference Qwen model'
+  GLM_CODING: {
+    id: 'thudm/glm-4-plus',
+    name: 'GLM-4 Plus',
+    provider: 'Zhipu AI',
+    description: 'GLM Coding Pro - fast inference'
   }
 } as const;
 
@@ -77,8 +72,17 @@ const MOCK_RESULT: ICD10Result = {
 // Current model selection (can be changed dynamically)
 let currentModel: AIModelKey = 'DEEPSEEK_V3';
 
+// Race mode: run multiple models in parallel, use fastest response
+const RACE_MODELS: AIModelKey[] = ['DEEPSEEK_V3', 'GLM_CODING'];
+
 export const setCurrentModel = (model: AIModelKey) => {
+  const previousModel = currentModel;
   currentModel = model;
+
+  // Invalidate cache when model changes (different models may produce different results)
+  if (previousModel !== model) {
+    diagnosisCache.invalidate().catch(console.error);
+  }
 };
 
 export const getCurrentModel = () => AI_MODELS[currentModel];
@@ -104,43 +108,55 @@ const getClient = () => {
   });
 };
 
+export interface SearchOptions {
+  skipCache?: boolean;
+}
+
 export const searchICD10Code = async (
   input: MedicalQuery,
-  modelOverride?: AIModelKey
-): Promise<{ json: ICD10Result | null, logs: string[], sources?: any[], model?: string }> => {
+  modelOverride?: AIModelKey,
+  options: SearchOptions = {}
+): Promise<{ json: ICD10Result | null, logs: string[], sources?: any[], model?: string, fromCache?: boolean }> => {
 
   const selectedModel = modelOverride ? AI_MODELS[modelOverride] : AI_MODELS[currentModel];
   const modelName = (import.meta as any).env.VITE_AI_MODEL_NAME || selectedModel.id;
   const ai = getClient();
 
+  // Check cache first (unless skipCache is true)
+  if (!options.skipCache) {
+    try {
+      const cached = await diagnosisCache.get(input.query);
+      if (cached) {
+        return {
+          json: cached.result,
+          model: cached.model,
+          fromCache: true,
+          logs: [
+            `[CDSS] Cache HIT`,
+            `[Provider] ${selectedModel.provider}`,
+            `[Model] ${cached.model}`,
+            `[Cached] ${new Date(cached.timestamp).toLocaleString('id-ID')}`,
+            `[Status] Instant Response ✓`
+          ]
+        };
+      }
+    } catch (cacheError) {
+      console.warn('[Cache] Read error:', cacheError);
+    }
+  }
+
   try {
-    const prompt = `
-BLACKLIST - DIAGNOSA KOMPETENSI 4A (TIDAK BISA DIRUJUK):
-${NON_REFERRAL_DIAGNOSES.join('\n')}
+    // Compact prompt for faster response
+    const prompt = `KASUS: "${input.query}"
 
-KASUS PASIEN: "${input.query}"
+BLACKLIST 4A: ${NON_REFERRAL_DIAGNOSES.slice(0, 10).join(', ')}
 
-MISI UTAMA:
-Pasien butuh rujukan ke spesialis, tapi mungkin diagnosa utamanya masuk 4A (non-rujukan).
-Bantu dokter dengan memberikan 3 DIAGNOSA ALTERNATIF yang PASTI LOLOS verifikasi BPJS.
+TUGAS: Berikan 3 diagnosa alternatif kompetensi 3B/3A yang LOLOS BPJS.
+- JANGAN pakai kode 4A
+- Urutan: [Paling Aman] → [Moderat] → [Agresif Valid]
+- Sertakan tindakan medis & red flags
 
-TUGAS:
-1. Analisis gejala/diagnosa yang diinput
-2. Jika diagnosa 4A → JANGAN pakai sebagai kode rujukan utama
-3. Cari 3 diagnosa alternatif kompetensi 3B/3A yang:
-   - Secara klinis BISA dipertanggungjawabkan dari gejala yang ada
-   - PASTI LOLOS verifikasi BPJS untuk rujukan
-   - Ada dasar medis yang DEFENSIBLE
-4. Berikan tindakan medis yang harus dilakukan dokter
-5. Deteksi Red Flags
-
-ATURAN proposed_referrals:
-- WAJIB 3 opsi, SEMUA harus kompetensi 3B atau lebih tinggi
-- Urutkan: [Paling Aman Lolos] → [Moderat] → [Agresif tapi Valid]
-- JANGAN masukkan kode 4A (I10, J00, K30, R51, M79.1, A09, J06.9, L20, E11.9, H10.1)
-
-OUTPUT: JSON valid tanpa markdown. ALL TEXT OUTPUT MUST BE IN ENGLISH.
-    `;
+OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
 
     // Check if using Gemini (doesn't support response_format)
     const isGemini = modelName.includes('gemini');
@@ -151,8 +167,8 @@ OUTPUT: JSON valid tanpa markdown. ALL TEXT OUTPUT MUST BE IN ENGLISH.
         { role: "system", content: SYSTEM_INSTRUCTION_REFERRAL },
         { role: "user", content: prompt }
       ],
-      temperature: 0.15,
-      max_tokens: 2000,
+      temperature: 0.05,
+      max_tokens: 800,
       ...(isGemini ? {} : { response_format: { type: "json_object" } })
     });
 
@@ -179,9 +195,17 @@ OUTPUT: JSON valid tanpa markdown. ALL TEXT OUTPUT MUST BE IN ENGLISH.
       ];
     }
 
+    // Store in cache
+    try {
+      await diagnosisCache.set(input.query, parsed, modelName);
+    } catch (cacheError) {
+      console.warn('[Cache] Write error:', cacheError);
+    }
+
     return {
       json: parsed,
       model: modelName,
+      fromCache: false,
       logs: [
         `[CDSS] Clinical Analysis Engine Active`,
         `[Provider] ${selectedModel.provider}`,
@@ -199,27 +223,250 @@ OUTPUT: JSON valid tanpa markdown. ALL TEXT OUTPUT MUST BE IN ENGLISH.
     if (error?.status === 429) errorType = "Rate Limit Exceeded";
     if (error?.status === 503) errorType = "Service Unavailable";
 
-    // Graceful fallback with enhanced mock data
-    await new Promise(resolve => setTimeout(resolve, 800));
-
-    const fallbackResult: ICD10Result = {
-      ...MOCK_RESULT,
-      description: input.query.length > 50 ? input.query.slice(0, 50) + "..." : input.query,
-      evidence: {
-        ...MOCK_RESULT.evidence,
-        clinical_reasoning: `Fallback analysis untuk: "${input.query}". ${MOCK_RESULT.evidence.clinical_reasoning}`
-      }
-    };
-
+    // Return null with error logs - no mock data
     return {
-      json: fallbackResult,
-      model: "Local Fallback Engine",
+      json: null,
+      model: "Error",
+      fromCache: false,
       logs: [
-        `[CDSS] Remote API Unavailable (${errorType})`,
-        `[Fallback] Protocol 7 Offline Core Activated`,
-        `[Model] Local Clinical Engine`,
-        `[Status] Fallback Analysis Complete`
+        `[CDSS] API Error: ${errorType}`,
+        `[Detail] ${error?.message || 'Unknown error'}`,
+        `[Action] Please check API key and try again`
       ]
     };
   }
+};
+
+/**
+ * Race mode: Run multiple models in parallel, return first successful response
+ * Significantly faster for production use
+ */
+export const searchICD10CodeRace = async (
+  input: MedicalQuery,
+  options: SearchOptions = {}
+): Promise<{ json: ICD10Result | null, logs: string[], model?: string, fromCache?: boolean }> => {
+
+  // Check cache first
+  if (!options.skipCache) {
+    try {
+      const cached = await diagnosisCache.get(input.query);
+      if (cached) {
+        return {
+          json: cached.result,
+          model: cached.model,
+          fromCache: true,
+          logs: [`[RACE] Cache HIT - Instant Response ✓`]
+        };
+      }
+    } catch (e) {
+      console.warn('[Cache] Read error:', e);
+    }
+  }
+
+  // Race multiple models
+  const racePromises = RACE_MODELS.map(modelKey =>
+    searchICD10Code(input, modelKey, { skipCache: true })
+      .then(result => {
+        if (result.json) {
+          return { ...result, winner: modelKey };
+        }
+        throw new Error('No valid response');
+      })
+  );
+
+  try {
+    const winner = await Promise.any(racePromises);
+    return {
+      json: winner.json,
+      model: winner.model,
+      fromCache: false,
+      logs: [
+        `[RACE] Winner: ${AI_MODELS[winner.winner as AIModelKey].name}`,
+        `[Speed] First response used`,
+        ...winner.logs
+      ]
+    };
+  } catch (error) {
+    // All models failed
+    return {
+      json: null,
+      model: 'Error',
+      fromCache: false,
+      logs: [`[RACE] All models failed`]
+    };
+  }
+};
+
+/**
+ * Streaming version of searchICD10Code
+ * Streams reasoning text progressively, then returns final JSON result
+ */
+export const searchICD10CodeStreaming = async (
+  input: MedicalQuery,
+  callbacks: StreamCallbacks,
+  modelOverride?: AIModelKey,
+  options: SearchOptions = {}
+): Promise<void> => {
+  const selectedModel = modelOverride ? AI_MODELS[modelOverride] : AI_MODELS[currentModel];
+  const modelName = (import.meta as any).env.VITE_AI_MODEL_NAME || selectedModel.id;
+  const ai = getClient();
+
+  // Check cache first
+  if (!options.skipCache) {
+    try {
+      const cached = await diagnosisCache.get(input.query);
+      if (cached) {
+        callbacks.onThinkingChunk('[Cache HIT] Returning cached result...');
+        callbacks.onComplete(cached.result);
+        return;
+      }
+    } catch (cacheError) {
+      console.warn('[Cache] Read error:', cacheError);
+    }
+  }
+
+  // Compact streaming prompt
+  const prompt = `KASUS: "${input.query}"
+BLACKLIST 4A: ${NON_REFERRAL_DIAGNOSES.slice(0, 10).join(', ')}
+
+TUGAS: Berikan 3 diagnosa 3B/3A yang LOLOS BPJS + tindakan medis + red flags.
+FORMAT: <THINKING>reasoning singkat</THINKING> lalu JSON valid.
+OUTPUT: BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
+
+  let retryCount = 0;
+  const maxRetries = 2;
+
+  const attemptStreaming = async (): Promise<void> => {
+    try {
+      const stream = await ai.chat.completions.create({
+        model: modelName,
+        messages: [
+          { role: "system", content: SYSTEM_INSTRUCTION_REFERRAL },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.05,
+        max_tokens: 800,
+        stream: true
+      });
+
+      let fullResponse = '';
+      let thinkingBuffer = '';
+      let inThinking = false;
+      let thinkingComplete = false;
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || '';
+        fullResponse += content;
+
+        // Process thinking section
+        if (!thinkingComplete) {
+          thinkingBuffer += content;
+
+          // Check for thinking start
+          if (!inThinking && thinkingBuffer.includes('<THINKING>')) {
+            inThinking = true;
+            const afterTag = thinkingBuffer.split('<THINKING>')[1] || '';
+            if (afterTag && !afterTag.includes('</THINKING>')) {
+              callbacks.onThinkingChunk(afterTag);
+            }
+          } else if (inThinking) {
+            // Check for thinking end
+            if (content.includes('</THINKING>')) {
+              thinkingComplete = true;
+              const beforeEnd = content.split('</THINKING>')[0];
+              if (beforeEnd) {
+                callbacks.onThinkingChunk(beforeEnd);
+              }
+            } else {
+              callbacks.onThinkingChunk(content);
+            }
+          }
+        }
+      }
+
+      // Extract JSON from response
+      let jsonStr = fullResponse;
+
+      // Remove thinking section if present
+      if (jsonStr.includes('</THINKING>')) {
+        jsonStr = jsonStr.split('</THINKING>')[1] || jsonStr;
+      }
+
+      // Clean JSON response
+      jsonStr = jsonStr
+        .replace(/```json\n?/g, '')
+        .replace(/```\n?/g, '')
+        .replace(/^\s*[\r\n]/gm, '')
+        .trim();
+
+      // Find JSON object
+      const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('No valid JSON found in response');
+      }
+
+      const parsed = JSON.parse(jsonMatch[0]) as ICD10Result;
+
+      // Ensure proposed_referrals exists
+      if (!parsed.proposed_referrals || parsed.proposed_referrals.length === 0) {
+        parsed.proposed_referrals = [
+          {
+            code: parsed.code,
+            description: parsed.description,
+            clinical_reasoning: parsed.evidence?.clinical_reasoning || parsed.clinical_notes || "Primary diagnosis"
+          }
+        ];
+      }
+
+      // Store in cache
+      try {
+        await diagnosisCache.set(input.query, parsed, modelName);
+      } catch (cacheError) {
+        console.warn('[Cache] Write error:', cacheError);
+      }
+
+      callbacks.onComplete(parsed);
+
+    } catch (error: any) {
+      console.error('[Streaming] Error:', error);
+
+      if (retryCount < maxRetries) {
+        retryCount++;
+        console.log(`[Streaming] Retry ${retryCount}/${maxRetries}`);
+        await new Promise(r => setTimeout(r, 1000 * retryCount)); // Exponential backoff
+        return attemptStreaming();
+      }
+
+      // Fallback to non-streaming
+      console.log('[Streaming] Falling back to non-streaming call');
+      callbacks.onThinkingChunk('[Switching to standard mode...]');
+
+      try {
+        const fallbackResult = await searchICD10Code(input, modelOverride, options);
+        if (fallbackResult.json) {
+          callbacks.onComplete(fallbackResult.json);
+        } else {
+          callbacks.onError(new Error('Fallback also failed'));
+        }
+      } catch (fallbackError: any) {
+        callbacks.onError(fallbackError);
+      }
+    }
+  };
+
+  await attemptStreaming();
+};
+
+/**
+ * Get cache statistics for debugging/display
+ */
+export const getCacheStats = async () => {
+  return diagnosisCache.getStats();
+};
+
+/**
+ * Clear diagnosis cache
+ */
+export const clearDiagnosisCache = async (query?: string) => {
+  return diagnosisCache.invalidate(query);
 };

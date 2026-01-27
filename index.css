@@ -285,6 +285,162 @@ h2[data-role="triage-title"] {
 .animate-stagger-fade:nth-child(5) { animation-delay: 320ms; }
 .animate-stagger-fade:nth-child(n+6) { animation-delay: 400ms; }
 
+/* ============================================
+   SPRING ANIMATIONS FOR GENERATE → RESULT FLOW
+   ============================================ */
+
+/* Spring bounce effect - for result cards */
+@keyframes springIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.02);
+  }
+  75% {
+    transform: translateY(4px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Spring for skeleton loading */
+@keyframes skeletonSpringIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Smooth fade out for transition */
+@keyframes smoothFadeOut {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.95); }
+}
+
+/* Button press effect */
+@keyframes buttonPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* Pulse glow for loading button */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 4px 12px rgba(0, 33, 71, 0.15); }
+  50% { box-shadow: 0 4px 20px rgba(0, 33, 71, 0.25); }
+}
+
+/* Shimmer effect for skeleton loading */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Rainbow gradient flow for code text */
+@keyframes gradientFlow {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Flow line animations - AI processing */
+@keyframes drawLineRight {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Flowing dashes animation - continuous movement */
+@keyframes flowingDash {
+  0% {
+    stroke-dashoffset: 16;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes flowingDashReverse {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 16;
+  }
+}
+
+@keyframes flowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(0, 33, 71, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(0, 33, 71, 0.6));
+  }
+}
+
+@keyframes iconPop {
+  0% {
+    transform: scale(0) rotate(-10deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes centerLogoPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 33, 71, 0.4);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 0 0 15px rgba(0, 33, 71, 0);
+  }
+}
+
+@keyframes dataFlowDot {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
 /* CUSTOM SCROLLBAR */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-color); }
