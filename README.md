@@ -1,8 +1,7 @@
 # Referralink
 
 ## Diagnostic Referral Accuracy Algorithm
-
-<img src="images/public/ref1.png" width="300" height="200" alt="Alt text">
+<img src="images/public/ref1.png" width="50%" height="auto" alt="Alt text">
 
 Referralink is a specialized algorithm designed to help doctors and healthcare professionals achieve accurate diagnostic referrals. By leveraging AI-powered analysis and clinical expertise, Referralink helps optimize the referral process, improving diagnostic accuracy while reducing patient service times.
 
