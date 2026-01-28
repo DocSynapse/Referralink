@@ -544,13 +544,21 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
         return;
       }
 
-      const statusParam = userFilter !== 'all' ? `?status=${userFilter}` : '';
-      const response = await fetch(`/api/admin/users${statusParam}`, {
+      // TEMPORARY: Use simplified endpoint for debugging
+      const endpoint = '/api/admin/users-simple';
+      console.log('Fetching from:', endpoint);
+      console.log('Session token:', sessionToken);
+
+      const response = await fetch(endpoint, {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${sessionToken}`,
           'Content-Type': 'application/json'
         }
       });
+
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         console.error('API error:', response.status, response.statusText);
