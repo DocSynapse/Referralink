@@ -1154,8 +1154,56 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
             </div>
           </div>
 
+          {/* Admin Panel - Only visible to admins */}
+          {userIsAdmin && (
+            <div className="w-full pt-10">
+              <div className="grid grid-cols-4 gap-5 w-full">
+                <FeatureCard
+                  icon={<Users size={18} />}
+                  tag="Admin Panel"
+                  title="All Users"
+                  subtitle={`${stats.totalUsers} Total`}
+                  onClick={() => {
+                    setUserFilter('all');
+                    setShowAdminModal(true);
+                  }}
+                />
+                <FeatureCard
+                  icon={<UserPlus size={18} />}
+                  tag="Admin Panel"
+                  title="Pending"
+                  subtitle={`${stats.pendingVerification} Waiting`}
+                  onClick={() => {
+                    setUserFilter('pending');
+                    setShowAdminModal(true);
+                  }}
+                />
+                <FeatureCard
+                  icon={<UserCheck size={18} />}
+                  tag="Admin Panel"
+                  title="Verified"
+                  subtitle="Email & License ✓"
+                  onClick={() => {
+                    setUserFilter('verified');
+                    setShowAdminModal(true);
+                  }}
+                />
+                <FeatureCard
+                  icon={<CheckCircle size={18} />}
+                  tag="Admin Panel"
+                  title="Active"
+                  subtitle={`${stats.activeThisMonth} This Month`}
+                  onClick={() => {
+                    setUserFilter('active');
+                    setShowAdminModal(true);
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
           {/* Feature Cards */}
-          <div className={`grid ${userIsAdmin ? 'grid-cols-4' : 'grid-cols-3'} gap-5 w-full pt-10`}>
+          <div className="grid grid-cols-3 gap-5 w-full pt-10">
             <FeatureCard
               icon={<FileText size={18} />}
               tag="Smart Automation"
@@ -1193,15 +1241,6 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                 setShowReferralModal(true);
               }}
             />
-            {userIsAdmin && (
-              <FeatureCard
-                icon={<Shield size={18} />}
-                tag="Admin Panel"
-                title="User Management"
-                subtitle={`${stats.totalUsers} Users`}
-                onClick={() => setShowAdminModal(true)}
-              />
-            )}
           </div>
 
           {/* New Graph Row (1.5 : 1.5 Split) */}
@@ -3715,6 +3754,20 @@ const AdminPanelModal = ({
   onFilterChange: (filter: 'all' | 'pending' | 'verified' | 'active') => void;
   onClose: () => void;
 }) => {
+  const filterTitles = {
+    all: 'All Users',
+    pending: 'Pending Verification',
+    verified: 'Verified Users',
+    active: 'Active Users'
+  };
+
+  const filterDescriptions = {
+    all: 'All registered medical professionals',
+    pending: 'Users waiting for email or license verification',
+    verified: 'Users with email and license verified',
+    active: 'Users who completed onboarding this month'
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
       <div
@@ -3728,10 +3781,10 @@ const AdminPanelModal = ({
         >
           <div>
             <h2 className="text-2xl font-semibold" style={{ color: tokens.dark }}>
-              User Management
+              {filterTitles[userFilter]}
             </h2>
             <p className="text-sm mt-1" style={{ color: tokens.gray }}>
-              Manage medical professionals and their verification status
+              {filterDescriptions[userFilter]}
             </p>
           </div>
           <button
@@ -3744,137 +3797,6 @@ const AdminPanelModal = ({
 
         {/* Content */}
         <div className="p-6">
-          {/* Filter Cards - Same as FeatureCard design */}
-          <div className="grid grid-cols-4 gap-5 mb-8">
-            <div
-              className="relative pt-8 cursor-pointer"
-              onClick={() => onFilterChange('all')}
-            >
-              <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
-                style={{
-                  backgroundColor: userFilter === 'all' ? tokens.coral : tokens.dark,
-                  boxShadow: shadowBtn
-                }}
-              >
-                <Users size={18} style={{ color: iconOnDark }} />
-              </div>
-              <div
-                className="rounded-3xl pt-10 pb-6 px-5 transition-all duration-300 hover:scale-[1.02]"
-                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
-              >
-                <div
-                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold mb-3"
-                  style={{ backgroundColor: tokens.badgeBg, color: tokens.dark }}
-                >
-                  Admin Panel
-                </div>
-                <h5 className="text-[18px] font-semibold mb-1" style={{ color: tokens.dark }}>
-                  All Users
-                </h5>
-                <p className="text-[13px]" style={{ color: tokens.gray }}>
-                  {stats.totalUsers} Total
-                </p>
-              </div>
-            </div>
-
-            <div
-              className="relative pt-8 cursor-pointer"
-              onClick={() => onFilterChange('pending')}
-            >
-              <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
-                style={{
-                  backgroundColor: userFilter === 'pending' ? tokens.coral : tokens.dark,
-                  boxShadow: shadowBtn
-                }}
-              >
-                <UserPlus size={18} style={{ color: iconOnDark }} />
-              </div>
-              <div
-                className="rounded-3xl pt-10 pb-6 px-5 transition-all duration-300 hover:scale-[1.02]"
-                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
-              >
-                <div
-                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold mb-3"
-                  style={{ backgroundColor: tokens.badgeBg, color: tokens.dark }}
-                >
-                  Admin Panel
-                </div>
-                <h5 className="text-[18px] font-semibold mb-1" style={{ color: tokens.dark }}>
-                  Pending
-                </h5>
-                <p className="text-[13px]" style={{ color: tokens.gray }}>
-                  {stats.pendingVerification} Waiting
-                </p>
-              </div>
-            </div>
-
-            <div
-              className="relative pt-8 cursor-pointer"
-              onClick={() => onFilterChange('verified')}
-            >
-              <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
-                style={{
-                  backgroundColor: userFilter === 'verified' ? tokens.coral : tokens.dark,
-                  boxShadow: shadowBtn
-                }}
-              >
-                <UserCheck size={18} style={{ color: iconOnDark }} />
-              </div>
-              <div
-                className="rounded-3xl pt-10 pb-6 px-5 transition-all duration-300 hover:scale-[1.02]"
-                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
-              >
-                <div
-                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold mb-3"
-                  style={{ backgroundColor: tokens.badgeBg, color: tokens.dark }}
-                >
-                  Admin Panel
-                </div>
-                <h5 className="text-[18px] font-semibold mb-1" style={{ color: tokens.dark }}>
-                  Verified
-                </h5>
-                <p className="text-[13px]" style={{ color: tokens.gray }}>
-                  Email & License ✓
-                </p>
-              </div>
-            </div>
-
-            <div
-              className="relative pt-8 cursor-pointer"
-              onClick={() => onFilterChange('active')}
-            >
-              <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
-                style={{
-                  backgroundColor: userFilter === 'active' ? tokens.coral : tokens.dark,
-                  boxShadow: shadowBtn
-                }}
-              >
-                <CheckCircle size={18} style={{ color: iconOnDark }} />
-              </div>
-              <div
-                className="rounded-3xl pt-10 pb-6 px-5 transition-all duration-300 hover:scale-[1.02]"
-                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
-              >
-                <div
-                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold mb-3"
-                  style={{ backgroundColor: tokens.badgeBg, color: tokens.dark }}
-                >
-                  Admin Panel
-                </div>
-                <h5 className="text-[18px] font-semibold mb-1" style={{ color: tokens.dark }}>
-                  Active
-                </h5>
-                <p className="text-[13px]" style={{ color: tokens.gray }}>
-                  {stats.activeThisMonth} This Month
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* User List */}
           {isLoading ? (
             <div className="flex justify-center py-12">
