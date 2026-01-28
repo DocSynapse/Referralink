@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Test</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #0f0; }
+    button { padding: 10px 20px; margin: 5px; background: #0f0; color: #000; border: none; cursor: pointer; }
+    button:hover { background: #0d0; }
+    pre { background: #000; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    .success { color: #0f0; }
+    .error { color: #f00; }
+    h2 { color: #0ff; }
+  </style>
+</head>
+<body>
+  <h1>🔬 ReferraLink API Test Suite</h1>
+
+  <h2>1. Health Check (No Auth)</h2>
+  <button onclick="testHealth()">Test /api/health</button>
+  <pre id="health-result">Click button to test...</pre>
+
+  <h2>2. Test Endpoint (No Auth, No DB)</h2>
+  <button onclick="testSimple()">Test /api/admin/test</button>
+  <pre id="test-result">Click button to test...</pre>
+
+  <h2>3. Simplified Users (With Auth)</h2>
+  <button onclick="testUsers()">Test /api/admin/users-simple</button>
+  <pre id="users-result">Click button to test...</pre>
+
+  <h2>4. Full Users Endpoint (Complex)</h2>
+  <button onclick="testFullUsers()">Test /api/admin/users</button>
+  <pre id="full-result">Click button to test...</pre>
+
+  <script>
+    async function testHealth() {
+      const result = document.getElementById('health-result');
+      result.textContent = 'Testing...';
+
+      try {
+        const response = await fetch('/api/health');
+        const contentType = response.headers.get('content-type');
+
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          result.innerHTML = `<span class="success">✅ SUCCESS</span>\n${JSON.stringify(data, null, 2)}`;
+        } else {
+          const text = await response.text();
+          result.innerHTML = `<span class="error">❌ NOT JSON</span>\nContent-Type: ${contentType}\n${text}`;
+        }
+      } catch (error) {
+        result.innerHTML = `<span class="error">❌ ERROR</span>\n${error.message}`;
+      }
+    }
+
+    async function testSimple() {
+      const result = document.getElementById('test-result');
+      result.textContent = 'Testing...';
+
+      try {
+        const response = await fetch('/api/admin/test');
+        const contentType = response.headers.get('content-type');
+
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          result.innerHTML = `<span class="success">✅ SUCCESS</span>\n${JSON.stringify(data, null, 2)}`;
+        } else {
+          const text = await response.text();
+          result.innerHTML = `<span class="error">❌ NOT JSON</span>\nContent-Type: ${contentType}\n${text}`;
+        }
+      } catch (error) {
+        result.innerHTML = `<span class="error">❌ ERROR</span>\n${error.message}`;
+      }
+    }
+
+    async function testUsers() {
+      const result = document.getElementById('users-result');
+      result.textContent = 'Testing...';
+
+      try {
+        const response = await fetch('/api/admin/users-simple', {
+          headers: {
+            'Authorization': 'Bearer simple-admin-session',
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const contentType = response.headers.get('content-type');
+
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          result.innerHTML = `<span class="success">✅ SUCCESS (${data.data?.users?.length || 0} users)</span>\n${JSON.stringify(data, null, 2)}`;
+        } else {
+          const text = await response.text();
+          result.innerHTML = `<span class="error">❌ NOT JSON</span>\nContent-Type: ${contentType}\n${text.substring(0, 500)}`;
+        }
+      } catch (error) {
+        result.innerHTML = `<span class="error">❌ ERROR</span>\n${error.message}`;
+      }
+    }
+
+    async function testFullUsers() {
+      const result = document.getElementById('full-result');
+      result.textContent = 'Testing...';
+
+      try {
+        const response = await fetch('/api/admin/users', {
+          headers: {
+            'Authorization': 'Bearer simple-admin-session',
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const contentType = response.headers.get('content-type');
+
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          result.innerHTML = `<span class="success">✅ SUCCESS (${data.data?.users?.length || 0} users)</span>\n${JSON.stringify(data, null, 2)}`;
+        } else {
+          const text = await response.text();
+          result.innerHTML = `<span class="error">❌ NOT JSON</span>\nContent-Type: ${contentType}\n\nStatus: ${response.status}\n\n${text.substring(0, 500)}`;
+        }
+      } catch (error) {
+        result.innerHTML = `<span class="error">❌ ERROR</span>\n${error.message}\n${error.stack}`;
+      }
+    }
+
+    // Auto-test on load
+    window.addEventListener('load', () => {
+      console.log('🔬 API Test Page Loaded');
+      console.log('Click buttons to test each endpoint');
+    });
+  </script>
+</body>
+</html>
