@@ -15,20 +15,21 @@ import { LogTerminal } from './components/LogTerminal';
 import { ReferralDeck } from './components/ReferralDeck';
 import { AdminPanelExtended } from './components/AdminPanelExtended';
 import { AuthPanel } from './components/AuthPanel';
+import { UnifiedDashboard } from './components/UnifiedDashboard';
 import { SplashScreen } from './components/SplashScreen';
 import { GridDotsBackground } from './components/ui/background-patterns';
 import { WaitlistPage } from './components/WaitlistPage';
 import { TypingHeroSubtitle } from './components/ui/typing-hero-subtitle';
 import FloatingCallButton from './components/FloatingCallButton';
 
-type PageView = 'main' | 'referralink' | 'augmented' | 'admin';
+type PageView = 'main' | 'referralink' | 'augmented' | 'dashboard';
 
 // Hash-based routing utilities
 const getRouteFromHash = (): PageView => {
   const hash = window.location.hash.replace('#/', '').replace('#', '');
   if (hash === 'augmented') return 'augmented';
   if (hash === 'referralink') return 'referralink';
-  if (hash === 'admin') return 'admin';
+  if (hash === 'dashboard') return 'dashboard';
   return 'main';
 };
 
@@ -125,7 +126,7 @@ const App: React.FC = () => {
         return;
       }
       setShowAuthPanel(false);
-      navigateTo('admin');
+      navigateTo('dashboard');
     }, 450); // brief delay for animation continuity
   };
   useEffect(() => {
@@ -367,8 +368,8 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
     );
   }
 
-  // Render Admin page
-  if (currentPage === 'admin') {
+  // Render Unified Dashboard (for all logged-in users)
+  if (currentPage === 'dashboard') {
     return (
       <>
         {telemetry}
@@ -376,28 +377,7 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
           className={`transition-opacity ease-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
           style={{ transitionDuration: '400ms' }}
         >
-          <section className="min-h-screen bg-[#E0E5EC] px-6 py-8">
-            <div className="max-w-6xl mx-auto">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h1 className="font-saans-title text-[32px] text-[#002147]">Admin Dashboard</h1>
-                  <p className="text-[13px] text-slate-600 mt-1">Medical Professional Management & Statistics</p>
-                </div>
-                <button
-                  onClick={() => navigateTo('main')}
-                  className="px-4 py-2 rounded-xl text-[12px] font-semibold text-slate-700 bg-white/70 hover:bg-white transition-colors border border-slate-200"
-                >
-                  ← Back to Home
-                </button>
-              </div>
-
-              {/* Admin Panel */}
-              <div className="h-[calc(100vh-180px)]">
-                <AdminPanelExtended />
-              </div>
-            </div>
-          </section>
+          <UnifiedDashboard onLogout={() => navigateTo('main')} />
         </div>
       </>
     );
@@ -473,7 +453,7 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
                       onClose={() => setShowAuthPanel(false)}
                       onSuccess={() => {
                         setShowAuthPanel(false);
-                        navigateTo('admin');
+                        navigateTo('dashboard');
                       }}
                     />
                   )}
