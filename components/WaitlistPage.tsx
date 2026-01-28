@@ -546,11 +546,35 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
 
       const statusParam = userFilter !== 'all' ? `?status=${userFilter}` : '';
       const response = await fetch(`/api/admin/users${statusParam}`, {
-        headers: { 'Authorization': `Bearer ${sessionToken}` }
+        headers: {
+          'Authorization': `Bearer ${sessionToken}`,
+          'Content-Type': 'application/json'
+        }
       });
 
       if (!response.ok) {
         console.error('API error:', response.status, response.statusText);
+        // Try to get error message
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          console.error('Error details:', errorData);
+        } else {
+          const errorText = await response.text();
+          console.error('Error text:', errorText);
+        }
+        setUsers([]);
+        calculateStats([]);
+        setIsLoadingUsers(false);
+        return;
+      }
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Response is not JSON. Content-Type:', contentType);
+        const textResponse = await response.text();
+        console.error('Response text:', textResponse);
         setUsers([]);
         calculateStats([]);
         setIsLoadingUsers(false);
