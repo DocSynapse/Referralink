@@ -3,9 +3,20 @@
 
 import { neon } from '@neondatabase/serverless';
 import type { MedicalProfessional } from '../types/registration';
+import type { NeonQueryFunction } from '@neondatabase/serverless';
 
-// Initialize Neon client with connection string from environment
-const sql = neon(process.env.POSTGRES_URL!);
+// Lazy initialization of Neon client to prevent import-time crashes
+let _sql: NeonQueryFunction<false, false> | null = null;
+
+function getSQL(): NeonQueryFunction<false, false> {
+  if (!_sql) {
+    if (!process.env.POSTGRES_URL) {
+      throw new Error('POSTGRES_URL environment variable is not set');
+    }
+    _sql = neon(process.env.POSTGRES_URL);
+  }
+  return _sql;
+}
 
 /**
  * Create new medical professional in database
@@ -22,7 +33,7 @@ export async function createMedicalProfessional(data: {
   emailVerificationToken: string;
   createdByIp: string;
 }): Promise<string> {
-  const rows = await sql`
+  const rows = await getSQL()`
     INSERT INTO medical_professionals (
       email,
       full_name,
@@ -56,7 +67,7 @@ export async function createMedicalProfessional(data: {
  * Find user by email
  */
 export async function findUserByEmail(email: string): Promise<MedicalProfessional | null> {
-  const rows = await sql`
+  const rows = await getSQL()`
     SELECT * FROM medical_professionals
     WHERE email = ${email}
   `;
@@ -70,7 +81,7 @@ export async function findUserByEmail(email: string): Promise<MedicalProfessiona
  * Find user by email with password hash (for authentication only)
  */
 export async function findUserByEmailWithPassword(email: string): Promise<(MedicalProfessional & { passwordHash: string }) | null> {
-  const rows = await sql`
+  const rows = await getSQL()`
     SELECT * FROM medical_professionals
     WHERE email = ${email}
   `;
@@ -88,7 +99,7 @@ export async function findUserByEmailWithPassword(email: string): Promise<(Medic
  * Find user by ID
  */
 export async function findUserById(userId: string): Promise<MedicalProfessional | null> {
-  const rows = await sql`
+  const rows = await getSQL()`
     SELECT * FROM medical_professionals
     WHERE id = ${userId}
   `;
@@ -102,7 +113,7 @@ export async function findUserById(userId: string): Promise<MedicalProfessional 
  * Find user by license number
  */
 export async function findUserByLicenseNumber(licenseNumber: string): Promise<MedicalProfessional | null> {
-  const rows = await sql`
+  const rows = await getSQL()`
     SELECT * FROM medical_professionals
     WHERE license_number = ${licenseNumber}
   `;
@@ -116,7 +127,7 @@ export async function findUserByLicenseNumber(licenseNumber: string): Promise<Me
  * Verify email with token
  */
 export async function verifyEmailWithToken(token: string): Promise<boolean> {
-  const rows = await sql`
+  const rows = await getSQL()`
     UPDATE medical_professionals
     SET
       email_verified = TRUE,
@@ -141,7 +152,7 @@ export async function updateLicenseVerification(
   source: string,
   verificationData?: any
 ): Promise<void> {
-  await sql`
+  await getSQL()`
     UPDATE medical_professionals
     SET
       license_verified = ${verified},
@@ -151,7 +162,7 @@ export async function updateLicenseVerification(
   `;
 
   // Log verification
-  await sql`
+  await getSQL()`
     INSERT INTO verification_logs (
       user_id,
       verification_type,
@@ -176,7 +187,7 @@ export async function completeOnboarding(
   apiKey: string,
   mcpToken?: string
 ): Promise<void> {
-  await sql`
+  await getSQL()`
     UPDATE medical_professionals
     SET
       terms_accepted = TRUE,
@@ -203,7 +214,7 @@ export async function createSession(
   ipAddress: string,
   userAgent: string
 ): Promise<void> {
-  await sql`
+  await getSQL()`
     INSERT INTO user_sessions (
       user_id,
       session_token,
@@ -224,7 +235,7 @@ export async function createSession(
  * Validate session token
  */
 export async function validateSession(sessionToken: string): Promise<string | null> {
-  const rows = await sql`
+  const rows = await getSQL()`
     SELECT user_id FROM user_sessions
     WHERE
       session_token = ${sessionToken}
@@ -240,7 +251,7 @@ export async function validateSession(sessionToken: string): Promise<string | nu
  * Update last login timestamp
  */
 export async function updateLastLogin(userId: string): Promise<void> {
-  await sql`
+  await getSQL()`
     UPDATE medical_professionals
     SET last_login = NOW()
     WHERE id = ${userId}
@@ -259,7 +270,7 @@ export async function logAuditEvent(
   ipAddress?: string,
   userAgent?: string
 ): Promise<void> {
-  await sql`
+  await getSQL()`
     INSERT INTO audit_logs (
       user_id,
       action,
@@ -284,7 +295,7 @@ export async function logAuditEvent(
  * Get role permissions
  */
 export async function getRolePermissions(role: string): Promise<any> {
-  const rows = await sql`
+  const rows = await getSQL()`
     SELECT permissions FROM role_permissions
     WHERE role = ${role}
   `;
