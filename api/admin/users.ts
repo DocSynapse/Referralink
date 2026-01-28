@@ -13,19 +13,34 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  // Set JSON response header
+  res.setHeader('Content-Type', 'application/json');
 
-  // Verify admin authentication
-  const authHeader = req.headers.authorization;
+  try {
+    // Check database connection
+    if (!process.env.POSTGRES_URL) {
+      console.error('POSTGRES_URL environment variable not set');
+      return res.status(500).json({
+        success: false,
+        error: {
+          code: 'DATABASE_CONFIG_ERROR',
+          message: 'Database connection not configured'
+        }
+      });
+    }
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({
-      success: false,
-      error: {
-        code: 'UNAUTHORIZED',
-        message: 'Authentication required'
-      }
-    });
-  }
+    // Verify admin authentication
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        success: false,
+        error: {
+          code: 'UNAUTHORIZED',
+          message: 'Authentication required'
+        }
+      });
+    }
 
   const sessionToken = authHeader.substring(7);
 
@@ -33,28 +48,39 @@ export default async function handler(
   const isSimpleAdmin = sessionToken === 'simple-admin-session';
 
   if (!isSimpleAdmin) {
-    // Validate session token
-    const userId = await validateSession(sessionToken);
+    try {
+      // Validate session token
+      const userId = await validateSession(sessionToken);
 
-    if (!userId) {
-      return res.status(401).json({
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: {
+            code: 'INVALID_SESSION',
+            message: 'Invalid or expired session'
+          }
+        });
+      }
+
+      // Verify user is admin
+      const user = await findUserById(userId);
+
+      if (!user || user.role !== 'admin_user') {
+        return res.status(403).json({
+          success: false,
+          error: {
+            code: 'FORBIDDEN',
+            message: 'Admin access required'
+          }
+        });
+      }
+    } catch (dbError: any) {
+      console.error('Database authentication error:', dbError);
+      return res.status(500).json({
         success: false,
         error: {
-          code: 'INVALID_SESSION',
-          message: 'Invalid or expired session'
-        }
-      });
-    }
-
-    // Verify user is admin
-    const user = await findUserById(userId);
-
-    if (!user || user.role !== 'admin_user') {
-      return res.status(403).json({
-        success: false,
-        error: {
-          code: 'FORBIDDEN',
-          message: 'Admin access required'
+          code: 'DATABASE_ERROR',
+          message: 'Authentication database error: ' + dbError.message
         }
       });
     }
@@ -115,10 +141,10 @@ export default async function handler(
         `;
       }
 
-      const result = await query;
+      const rows = await query;
 
       // Map to MedicalProfessional type
-      const users = result.rows.map(row => ({
+      const users = rows.map(row => ({
         id: row.id,
         email: row.email,
         fullName: row.full_name,
@@ -249,4 +275,15 @@ export default async function handler(
       message: 'Only GET and POST methods are allowed'
     }
   });
+
+  } catch (error: any) {
+    console.error('Admin API handler error:', error);
+    return res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: error.message || 'Internal server error'
+      }
+    });
+  }
 }

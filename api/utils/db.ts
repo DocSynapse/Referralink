@@ -22,7 +22,7 @@ export async function createMedicalProfessional(data: {
   emailVerificationToken: string;
   createdByIp: string;
 }): Promise<string> {
-  const result = await sql`
+  const rows = await sql`
     INSERT INTO medical_professionals (
       email,
       full_name,
@@ -49,38 +49,38 @@ export async function createMedicalProfessional(data: {
     RETURNING id
   `;
 
-  return result.rows[0].id;
+  return rows[0].id;
 }
 
 /**
  * Find user by email
  */
 export async function findUserByEmail(email: string): Promise<MedicalProfessional | null> {
-  const result = await sql`
+  const rows = await sql`
     SELECT * FROM medical_professionals
     WHERE email = ${email}
   `;
 
-  if (result.rows.length === 0) return null;
+  if (rows.length === 0) return null;
 
-  return mapDbRowToUser(result.rows[0]);
+  return mapDbRowToUser(rows[0]);
 }
 
 /**
  * Find user by email with password hash (for authentication only)
  */
 export async function findUserByEmailWithPassword(email: string): Promise<(MedicalProfessional & { passwordHash: string }) | null> {
-  const result = await sql`
+  const rows = await sql`
     SELECT * FROM medical_professionals
     WHERE email = ${email}
   `;
 
-  if (result.rows.length === 0) return null;
+  if (rows.length === 0) return null;
 
-  const user = mapDbRowToUser(result.rows[0]);
+  const user = mapDbRowToUser(rows[0]);
   return {
     ...user,
-    passwordHash: result.rows[0].password_hash
+    passwordHash: rows[0].password_hash
   };
 }
 
@@ -88,35 +88,35 @@ export async function findUserByEmailWithPassword(email: string): Promise<(Medic
  * Find user by ID
  */
 export async function findUserById(userId: string): Promise<MedicalProfessional | null> {
-  const result = await sql`
+  const rows = await sql`
     SELECT * FROM medical_professionals
     WHERE id = ${userId}
   `;
 
-  if (result.rows.length === 0) return null;
+  if (rows.length === 0) return null;
 
-  return mapDbRowToUser(result.rows[0]);
+  return mapDbRowToUser(rows[0]);
 }
 
 /**
  * Find user by license number
  */
 export async function findUserByLicenseNumber(licenseNumber: string): Promise<MedicalProfessional | null> {
-  const result = await sql`
+  const rows = await sql`
     SELECT * FROM medical_professionals
     WHERE license_number = ${licenseNumber}
   `;
 
-  if (result.rows.length === 0) return null;
+  if (rows.length === 0) return null;
 
-  return mapDbRowToUser(result.rows[0]);
+  return mapDbRowToUser(rows[0]);
 }
 
 /**
  * Verify email with token
  */
 export async function verifyEmailWithToken(token: string): Promise<boolean> {
-  const result = await sql`
+  const rows = await sql`
     UPDATE medical_professionals
     SET
       email_verified = TRUE,
@@ -129,7 +129,7 @@ export async function verifyEmailWithToken(token: string): Promise<boolean> {
     RETURNING id
   `;
 
-  return result.rows.length > 0;
+  return rows.length > 0;
 }
 
 /**
@@ -224,16 +224,16 @@ export async function createSession(
  * Validate session token
  */
 export async function validateSession(sessionToken: string): Promise<string | null> {
-  const result = await sql`
+  const rows = await sql`
     SELECT user_id FROM user_sessions
     WHERE
       session_token = ${sessionToken}
       AND expires_at > NOW()
   `;
 
-  if (result.rows.length === 0) return null;
+  if (rows.length === 0) return null;
 
-  return result.rows[0].user_id;
+  return rows[0].user_id;
 }
 
 /**
@@ -284,14 +284,14 @@ export async function logAuditEvent(
  * Get role permissions
  */
 export async function getRolePermissions(role: string): Promise<any> {
-  const result = await sql`
+  const rows = await sql`
     SELECT permissions FROM role_permissions
     WHERE role = ${role}
   `;
 
-  if (result.rows.length === 0) return null;
+  if (rows.length === 0) return null;
 
-  return result.rows[0].permissions;
+  return rows[0].permissions;
 }
 
 /**
