@@ -461,6 +461,9 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   const handleGenerate = async () => {
     if (!diagnosis.trim() || isLoading) return;
 
+    const startTime = Date.now();
+    const MIN_LOADING_DISPLAY = 1200; // Ensure diagram is visible for at least 1.2s
+
     setIsLoading(true);
     setShowResult(false);
     setResult(null);
@@ -478,11 +481,19 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
       if (response.json) {
         setResult(response.json);
         setFromCache(response.fromCache || false);
-        setTimeout(() => setShowResult(true), 100);
+
+        // Calculate time elapsed and ensure minimum display duration
+        const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(0, MIN_LOADING_DISPLAY - elapsed);
+
+        // Delay hiding loading and showing result
+        setTimeout(() => {
+          setIsLoading(false);
+          setTimeout(() => setShowResult(true), 100);
+        }, remainingTime);
       }
     } catch (error) {
       console.error('Generate error:', error);
-    } finally {
       setIsLoading(false);
     }
   };
