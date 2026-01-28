@@ -26,6 +26,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^0.555.0",
     "openai": "^6.16.0",
+    "pg": "^8.17.2",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-leaflet": "^5.0.0",

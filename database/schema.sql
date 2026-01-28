@@ -87,9 +87,7 @@ CREATE TABLE verification_logs (
   verification_status VARCHAR(50) NOT NULL,
   verification_source VARCHAR(100),
   verification_data JSONB,
-  verified_at TIMESTAMPTZ DEFAULT NOW(),
-
-  INDEX idx_user_verification (user_id, verification_type)
+  verified_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Session management
@@ -100,10 +98,7 @@ CREATE TABLE user_sessions (
   expires_at TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   ip_address VARCHAR(50),
-  user_agent TEXT,
-
-  INDEX idx_session_token (session_token),
-  INDEX idx_user_sessions (user_id, expires_at)
+  user_agent TEXT
 );
 
 -- Audit log for compliance
@@ -116,10 +111,7 @@ CREATE TABLE audit_logs (
   changes JSONB,
   ip_address VARCHAR(50),
   user_agent TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-
-  INDEX idx_audit_user (user_id, created_at),
-  INDEX idx_audit_action (action, created_at)
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Function to auto-update updated_at timestamp
@@ -157,3 +149,10 @@ $$ language 'plpgsql';
 CREATE TRIGGER auto_assign_role BEFORE UPDATE
   ON medical_professionals FOR EACH ROW
   EXECUTE PROCEDURE assign_role_on_license_verification();
+
+-- Create indexes for performance
+CREATE INDEX idx_user_verification ON verification_logs(user_id, verification_type);
+CREATE INDEX idx_session_token ON user_sessions(session_token);
+CREATE INDEX idx_user_sessions ON user_sessions(user_id, expires_at);
+CREATE INDEX idx_audit_user ON audit_logs(user_id, created_at);
+CREATE INDEX idx_audit_action ON audit_logs(action, created_at);
