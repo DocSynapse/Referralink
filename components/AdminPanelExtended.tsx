@@ -6,10 +6,10 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Printer, Calendar, User, Clock, AlertCircle, Users, CheckCircle, XCircle, Shield, Mail, Phone, Building2 } from 'lucide-react';
+import { Printer, Calendar, User, Clock, AlertCircle, Users, CheckCircle, XCircle, Shield, Mail, Phone, Building2, TrendingUp, UserCheck, UserPlus, Activity } from 'lucide-react';
 import jsPDF from 'jspdf';
 
-type AdminTab = 'sakit' | 'sehat' | 'users';
+type AdminTab = 'sakit' | 'sehat' | 'users' | 'stats';
 
 interface MedicalProfessional {
   id: string;
@@ -25,6 +25,21 @@ interface MedicalProfessional {
   onboardingCompleted: boolean;
   registrationStatus: string;
   createdAt: string;
+}
+
+interface DashboardStats {
+  totalUsers: number;
+  activeThisMonth: number;
+  pendingVerification: number;
+  registrationTrend: number; // percentage change
+  newUsersToday: number;
+  byRole: {
+    clinical_user: number;
+    specialist_user: number;
+    nurse_user: number;
+    maternal_care_user: number;
+    admin_user: number;
+  };
 }
 
 export const AdminPanelExtended: React.FC = () => {
@@ -43,9 +58,25 @@ export const AdminPanelExtended: React.FC = () => {
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [userFilter, setUserFilter] = useState<'all' | 'pending' | 'verified' | 'active'>('all');
 
-  // Load users when switching to users tab or changing filter
+  // Statistics state
+  const [stats, setStats] = useState<DashboardStats>({
+    totalUsers: 0,
+    activeThisMonth: 0,
+    pendingVerification: 0,
+    registrationTrend: 0,
+    newUsersToday: 0,
+    byRole: {
+      clinical_user: 0,
+      specialist_user: 0,
+      nurse_user: 0,
+      maternal_care_user: 0,
+      admin_user: 0
+    }
+  });
+
+  // Load users when switching to users or stats tab or changing filter
   useEffect(() => {
-    if (activeTab === 'users') {
+    if (activeTab === 'users' || activeTab === 'stats') {
       loadUsers();
     }
   }, [activeTab, userFilter]);
@@ -73,6 +104,7 @@ export const AdminPanelExtended: React.FC = () => {
 
       if (data.success && data.data?.users) {
         setUsers(data.data.users);
+        calculateStats(data.data.users);
       } else {
         console.error('Invalid API response:', data);
       }
@@ -80,9 +112,56 @@ export const AdminPanelExtended: React.FC = () => {
       console.error('Failed to load users:', error);
       // Fallback to empty array on error
       setUsers([]);
+      calculateStats([]);
     } finally {
       setIsLoadingUsers(false);
     }
+  };
+
+  const calculateStats = (userList: MedicalProfessional[]) => {
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const totalUsers = userList.length;
+    const activeThisMonth = userList.filter(u =>
+      u.onboardingCompleted && new Date(u.createdAt) >= startOfMonth
+    ).length;
+    const pendingVerification = userList.filter(u =>
+      !u.emailVerified || !u.licenseVerified
+    ).length;
+    const newUsersToday = userList.filter(u =>
+      new Date(u.createdAt) >= startOfToday
+    ).length;
+
+    // Calculate role distribution
+    const byRole = {
+      clinical_user: userList.filter(u => u.role === 'clinical_user').length,
+      specialist_user: userList.filter(u => u.role === 'specialist_user').length,
+      nurse_user: userList.filter(u => u.role === 'nurse_user').length,
+      maternal_care_user: userList.filter(u => u.role === 'maternal_care_user').length,
+      admin_user: userList.filter(u => u.role === 'admin_user').length
+    };
+
+    // Calculate trend (comparing this month vs last month)
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastMonthUsers = userList.filter(u => {
+      const created = new Date(u.createdAt);
+      return created >= lastMonth && created < startOfMonth;
+    }).length;
+
+    const registrationTrend = lastMonthUsers > 0
+      ? Math.round(((activeThisMonth - lastMonthUsers) / lastMonthUsers) * 100)
+      : 0;
+
+    setStats({
+      totalUsers,
+      activeThisMonth,
+      pendingVerification,
+      registrationTrend,
+      newUsersToday,
+      byRole
+    });
   };
 
   const validateForm = () => {
@@ -192,7 +271,7 @@ export const AdminPanelExtended: React.FC = () => {
 
   return (
     <div className="neu-flat p-6 overflow-hidden flex flex-col h-full bg-[#E0E5EC]">
-       {/* Neumorphic Toggle - 3 tabs */}
+       {/* Neumorphic Toggle - 4 tabs */}
        <div className="flex p-1.5 gap-2 bg-[#D1D9E6] rounded-2xl mb-6 shadow-inner">
           <button
             onClick={() => setActiveTab('sakit')}
@@ -223,6 +302,22 @@ export const AdminPanelExtended: React.FC = () => {
             `}
           >
              Sehat
+          </button>
+          <button
+            onClick={() => setActiveTab('stats')}
+            className={`
+              flex-1 py-3 rounded-xl
+              text-[11px] font-black uppercase tracking-[0.2em]
+              font-display cursor-pointer
+              transition-all duration-200 ease-in-out
+              ${activeTab === 'stats'
+                ? 'bg-[#E0E5EC] text-purple-600 shadow-md scale-[1.02]'
+                : 'text-slate-400 hover:text-slate-600 hover:bg-white/30 active:scale-[0.98]'
+              }
+            `}
+          >
+             <TrendingUp size={14} className="inline mr-1" />
+             Stats
           </button>
           <button
             onClick={() => setActiveTab('users')}
@@ -342,6 +437,168 @@ export const AdminPanelExtended: React.FC = () => {
               </button>
            </div>
          </>
+       )}
+
+       {/* Statistics Dashboard Tab */}
+       {activeTab === 'stats' && (
+         <div className="flex-1 overflow-y-auto space-y-6 pr-2">
+           {/* Overview Cards */}
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+             <div className="neu-flat p-4 rounded-xl">
+               <div className="flex items-center gap-2 mb-2">
+                 <Users size={20} className="text-oxford" />
+                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Users</p>
+               </div>
+               <p className="text-[32px] font-black text-oxford">{stats.totalUsers}</p>
+               <p className="text-[10px] text-slate-500 mt-1">All registered</p>
+             </div>
+
+             <div className="neu-flat p-4 rounded-xl">
+               <div className="flex items-center gap-2 mb-2">
+                 <UserCheck size={20} className="text-green-600" />
+                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Month</p>
+               </div>
+               <p className="text-[32px] font-black text-green-600">{stats.activeThisMonth}</p>
+               <p className="text-[10px] text-slate-500 mt-1">This month</p>
+             </div>
+
+             <div className="neu-flat p-4 rounded-xl">
+               <div className="flex items-center gap-2 mb-2">
+                 <AlertCircle size={20} className="text-yellow-600" />
+                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Pending</p>
+               </div>
+               <p className="text-[32px] font-black text-yellow-600">{stats.pendingVerification}</p>
+               <p className="text-[10px] text-slate-500 mt-1">Need verification</p>
+             </div>
+
+             <div className="neu-flat p-4 rounded-xl">
+               <div className="flex items-center gap-2 mb-2">
+                 <UserPlus size={20} className="text-blue-600" />
+                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">New Today</p>
+               </div>
+               <p className="text-[32px] font-black text-blue-600">{stats.newUsersToday}</p>
+               <p className="text-[10px] text-slate-500 mt-1">Today's sign-ups</p>
+             </div>
+           </div>
+
+           {/* Trend Card */}
+           <div className="neu-flat p-5 rounded-xl">
+             <div className="flex items-center justify-between mb-4">
+               <h3 className="text-[12px] font-black text-oxford uppercase tracking-wider">Registration Trend</h3>
+               <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold ${
+                 stats.registrationTrend > 0 ? 'bg-green-100 text-green-700' : stats.registrationTrend < 0 ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-700'
+               }`}>
+                 <TrendingUp size={12} />
+                 {stats.registrationTrend > 0 ? '+' : ''}{stats.registrationTrend}%
+               </div>
+             </div>
+             <p className="text-[13px] text-slate-600">
+               {stats.registrationTrend > 0
+                 ? `Registration increased by ${stats.registrationTrend}% compared to last month`
+                 : stats.registrationTrend < 0
+                 ? `Registration decreased by ${Math.abs(stats.registrationTrend)}% compared to last month`
+                 : 'No change compared to last month'}
+             </p>
+           </div>
+
+           {/* Role Distribution */}
+           <div className="neu-flat p-5 rounded-xl">
+             <h3 className="text-[12px] font-black text-oxford uppercase tracking-wider mb-4">Users by Role</h3>
+             <div className="space-y-3">
+               <div>
+                 <div className="flex items-center justify-between mb-1">
+                   <span className="text-[11px] font-bold text-slate-600">Clinical User (Doctor)</span>
+                   <span className="text-[13px] font-black text-oxford">{stats.byRole.clinical_user}</span>
+                 </div>
+                 <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                   <div
+                     className="h-full bg-blue-500 rounded-full transition-all"
+                     style={{ width: `${stats.totalUsers > 0 ? (stats.byRole.clinical_user / stats.totalUsers) * 100 : 0}%` }}
+                   />
+                 </div>
+               </div>
+
+               <div>
+                 <div className="flex items-center justify-between mb-1">
+                   <span className="text-[11px] font-bold text-slate-600">Specialist User</span>
+                   <span className="text-[13px] font-black text-oxford">{stats.byRole.specialist_user}</span>
+                 </div>
+                 <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                   <div
+                     className="h-full bg-green-500 rounded-full transition-all"
+                     style={{ width: `${stats.totalUsers > 0 ? (stats.byRole.specialist_user / stats.totalUsers) * 100 : 0}%` }}
+                   />
+                 </div>
+               </div>
+
+               <div>
+                 <div className="flex items-center justify-between mb-1">
+                   <span className="text-[11px] font-bold text-slate-600">Nurse User</span>
+                   <span className="text-[13px] font-black text-oxford">{stats.byRole.nurse_user}</span>
+                 </div>
+                 <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                   <div
+                     className="h-full bg-pink-500 rounded-full transition-all"
+                     style={{ width: `${stats.totalUsers > 0 ? (stats.byRole.nurse_user / stats.totalUsers) * 100 : 0}%` }}
+                   />
+                 </div>
+               </div>
+
+               <div>
+                 <div className="flex items-center justify-between mb-1">
+                   <span className="text-[11px] font-bold text-slate-600">Maternal Care (Midwife)</span>
+                   <span className="text-[13px] font-black text-oxford">{stats.byRole.maternal_care_user}</span>
+                 </div>
+                 <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                   <div
+                     className="h-full bg-orange-500 rounded-full transition-all"
+                     style={{ width: `${stats.totalUsers > 0 ? (stats.byRole.maternal_care_user / stats.totalUsers) * 100 : 0}%` }}
+                   />
+                 </div>
+               </div>
+
+               <div>
+                 <div className="flex items-center justify-between mb-1">
+                   <span className="text-[11px] font-bold text-slate-600">Administrator</span>
+                   <span className="text-[13px] font-black text-oxford">{stats.byRole.admin_user}</span>
+                 </div>
+                 <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                   <div
+                     className="h-full bg-purple-500 rounded-full transition-all"
+                     style={{ width: `${stats.totalUsers > 0 ? (stats.byRole.admin_user / stats.totalUsers) * 100 : 0}%` }}
+                   />
+                 </div>
+               </div>
+             </div>
+           </div>
+
+           {/* Quick Actions */}
+           <div className="neu-flat p-5 rounded-xl">
+             <h3 className="text-[12px] font-black text-oxford uppercase tracking-wider mb-4">Quick Actions</h3>
+             <div className="grid grid-cols-2 gap-3">
+               <button
+                 onClick={() => setActiveTab('users')}
+                 className="neu-flat p-4 rounded-xl text-left hover:shadow-inner transition-all group"
+               >
+                 <Users size={20} className="text-blue-600 mb-2" />
+                 <p className="text-[11px] font-bold text-oxford">View All Users</p>
+                 <p className="text-[10px] text-slate-500 mt-1">Manage registrations</p>
+               </button>
+
+               <button
+                 onClick={() => {
+                   setUserFilter('pending');
+                   setActiveTab('users');
+                 }}
+                 className="neu-flat p-4 rounded-xl text-left hover:shadow-inner transition-all group"
+               >
+                 <AlertCircle size={20} className="text-yellow-600 mb-2" />
+                 <p className="text-[11px] font-bold text-oxford">Pending Reviews</p>
+                 <p className="text-[10px] text-slate-500 mt-1">{stats.pendingVerification} need attention</p>
+               </button>
+             </div>
+           </div>
+         </div>
        )}
 
        {/* User Management Tab */}

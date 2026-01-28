@@ -13,7 +13,8 @@ import { searchICD10Code, chatFriendly, setCurrentModel } from './services/gemin
 import { DataCard } from './components/DataCard';
 import { LogTerminal } from './components/LogTerminal';
 import { ReferralDeck } from './components/ReferralDeck';
-import { AdminPanel } from './components/AdminPanel';
+import { AdminPanelExtended } from './components/AdminPanelExtended';
+import { AuthPanel } from './components/AuthPanel';
 import { SplashScreen } from './components/SplashScreen';
 import { GridDotsBackground } from './components/ui/background-patterns';
 import { WaitlistPage } from './components/WaitlistPage';
@@ -431,61 +432,13 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
                 </TextScramble>
 
                   {showAuthPanel && (
-                    <div
-                      ref={authPanelRef}
-                    className="auth-pop absolute right-0 top-12 w-[320px] bg-white/50 shadow-lg rounded-2xl border border-slate-200/40 p-4 backdrop-blur-md animate-auth-pop z-30"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                      <div className="flex items-start justify-between mb-2">
-                        <p className="text-[11px] font-technical uppercase tracking-[0.3em] text-slate-500">Access Gate</p>
-                        <span className="text-[10px] font-technical uppercase tracking-[0.2em] text-slate-400">Encryption-First</span>
-                      </div>
-                      <form className="space-y-3" onSubmit={handleAuthSubmit}>
-                        <div className="space-y-2">
-                          <label className="text-[12px] font-mono text-slate-600 block">Username</label>
-                          <input
-                            type="text"
-                            value={authUsername}
-                            onChange={(e) => setAuthUsername(e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#E03D00]/50 focus:border-transparent transition-all animate-input-slide"
-                            style={{ boxShadow: '3px 3px 8px rgba(0,0,0,0.08), -3px -3px 8px rgba(255,255,255,0.8)' }}
-                            placeholder="your name"
-                            autoFocus
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-[12px] font-mono text-slate-600 block">Password</label>
-                          <input
-                            type="password"
-                            value={authPassword}
-                            onChange={(e) => setAuthPassword(e.target.value)}
-                            className="w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#E03D00]/50 focus:border-transparent transition-all animate-input-slide"
-                            style={{ boxShadow: '3px 3px 8px rgba(0,0,0,0.08), -3px -3px 8px rgba(255,255,255,0.8)' }}
-                            placeholder="your password"
-                            autoComplete="current-password"
-                          />
-                        </div>
-                        {authError && (
-                          <p className="text-[12px] text-[#E03D00] font-mono">{authError}</p>
-                        )}
-                        <div className="flex items-center justify-between pt-1">
-                          <button
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); setShowAuthPanel(false); }}
-                            className="text-[11px] font-technical uppercase tracking-[0.15em] text-slate-500 hover:text-slate-700 transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            type="submit"
-                            disabled={isAuthSubmitting}
-                            className="px-3 py-2 text-[12px] font-bold uppercase tracking-[0.2em] text-white bg-[#E03D00] hover:bg-[#c73600] rounded-md transition-colors disabled:opacity-60"
-                          >
-                            {isAuthSubmitting ? "Checking..." : "Enter"}
-                          </button>
-                        </div>
-                      </form>
-                    </div>
+                    <AuthPanel
+                      onClose={() => setShowAuthPanel(false)}
+                      onSuccess={() => {
+                        setShowAuthPanel(false);
+                        navigateTo('referralink');
+                      }}
+                    />
                   )}
               </div>
             </div>
