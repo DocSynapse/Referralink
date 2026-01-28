@@ -1,9 +1,8 @@
 // Neon Postgres database utilities
 // Connection pooling and query helpers
 
-import { neon } from '@neondatabase/serverless';
+import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import type { MedicalProfessional } from '../types/registration';
-import type { NeonQueryFunction } from '@neondatabase/serverless';
 
 // Lazy initialization of Neon client to prevent import-time crashes
 let _sql: NeonQueryFunction<false, false> | null = null;
