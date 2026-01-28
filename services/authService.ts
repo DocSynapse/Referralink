@@ -21,7 +21,33 @@ export async function registerUser(data: RegistrationInput): Promise<ApiResponse
       body: JSON.stringify(data)
     });
 
-    return await response.json();
+    // Get raw response text first
+    const rawBody = await response.text();
+
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      try {
+        return JSON.parse(rawBody);
+      } catch (parseError) {
+        return {
+          success: false,
+          error: {
+            code: 'INVALID_RESPONSE',
+            message: 'Server returned invalid JSON'
+          }
+        };
+      }
+    } else {
+      // Non-JSON response (likely HTML error page)
+      return {
+        success: false,
+        error: {
+          code: 'SERVER_ERROR',
+          message: `Server error (${response.status}): ${rawBody.substring(0, 100)}`
+        }
+      };
+    }
   } catch (error: any) {
     return {
       success: false,
@@ -47,15 +73,41 @@ export async function loginUser(
       body: JSON.stringify({ email, password })
     });
 
-    const result = await response.json();
+    // Get raw response text first
+    const rawBody = await response.text();
 
-    // Store session token if successful
-    if (result.success && result.data?.sessionToken) {
-      localStorage.setItem('sessionToken', result.data.sessionToken);
-      localStorage.setItem('userRole', result.data.user.role);
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      try {
+        const result = JSON.parse(rawBody);
+
+        // Store session token if successful
+        if (result.success && result.data?.sessionToken) {
+          localStorage.setItem('sessionToken', result.data.sessionToken);
+          localStorage.setItem('userRole', result.data.user.role);
+        }
+
+        return result;
+      } catch (parseError) {
+        return {
+          success: false,
+          error: {
+            code: 'INVALID_RESPONSE',
+            message: 'Server returned invalid JSON'
+          }
+        };
+      }
+    } else {
+      // Non-JSON response (likely HTML error page)
+      return {
+        success: false,
+        error: {
+          code: 'SERVER_ERROR',
+          message: `Server error (${response.status}): ${rawBody.substring(0, 100)}`
+        }
+      };
     }
-
-    return result;
   } catch (error: any) {
     return {
       success: false,
@@ -78,7 +130,24 @@ export async function verifyEmail(token: string): Promise<ApiResponse> {
       body: JSON.stringify({ token })
     });
 
-    return await response.json();
+    const rawBody = await response.text();
+    const contentType = response.headers.get('content-type');
+
+    if (contentType && contentType.includes('application/json')) {
+      try {
+        return JSON.parse(rawBody);
+      } catch {
+        return {
+          success: false,
+          error: { code: 'INVALID_RESPONSE', message: 'Invalid JSON response' }
+        };
+      }
+    }
+
+    return {
+      success: false,
+      error: { code: 'SERVER_ERROR', message: `Error (${response.status})` }
+    };
   } catch (error: any) {
     return {
       success: false,
@@ -113,7 +182,24 @@ export async function completeOnboarding(): Promise<ApiResponse> {
       })
     });
 
-    return await response.json();
+    const rawBody = await response.text();
+    const contentType = response.headers.get('content-type');
+
+    if (contentType && contentType.includes('application/json')) {
+      try {
+        return JSON.parse(rawBody);
+      } catch {
+        return {
+          success: false,
+          error: { code: 'INVALID_RESPONSE', message: 'Invalid JSON response' }
+        };
+      }
+    }
+
+    return {
+      success: false,
+      error: { code: 'SERVER_ERROR', message: `Error (${response.status})` }
+    };
   } catch (error: any) {
     return {
       success: false,
