@@ -2,7 +2,7 @@
 // Connection pooling and query helpers
 
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
-import type { MedicalProfessional } from '../_types/registration';
+import type { MedicalProfessional } from '../_types/registration.js';
 
 // Lazy initialization of Neon client to prevent import-time crashes
 let _sql: NeonQueryFunction<false, false> | null = null;

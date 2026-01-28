@@ -2,7 +2,7 @@
 // Step 1: Medical Professional Registration (Gate 3: Access Control)
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import type { ApiResponse, RegistrationInput, RegistrationResponse } from '../_types/registration';
+import type { ApiResponse, RegistrationInput, RegistrationResponse } from '../_types/registration.js';
 
 import {
   hashPassword,
@@ -13,16 +13,16 @@ import {
   sanitizeInput,
   generateVerificationToken,
   checkRateLimit
-} from '../_utils/auth';
+} from '../_utils/auth.js';
 
 import {
   createMedicalProfessional,
   findUserByEmail,
   findUserByLicenseNumber,
   logAuditEvent
-} from '../_utils/db';
+} from '../_utils/db.js';
 
-import { sendVerificationEmail } from '../_services/email';
+import { sendVerificationEmail } from '../_services/email.js';
 
 export default async function handler(
   req: VercelRequest,
