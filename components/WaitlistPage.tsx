@@ -562,34 +562,56 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
 
       if (!response.ok) {
         console.error('API error:', response.status, response.statusText);
-        // Try to get error message
+
+        // Get raw response body FIRST
+        const rawBody = await response.text();
+        console.error('RAW RESPONSE BODY (first 500 chars):', rawBody.substring(0, 500));
+
+        // Try to parse as JSON
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          console.error('Error details:', errorData);
-        } else {
-          const errorText = await response.text();
-          console.error('Error text:', errorText);
+          try {
+            const errorData = JSON.parse(rawBody);
+            console.error('Parsed error details:', errorData);
+          } catch (e) {
+            console.error('Failed to parse as JSON:', e);
+          }
         }
+
         setUsers([]);
         calculateStats([]);
         setIsLoadingUsers(false);
         return;
       }
+
+      // Get raw response body
+      const rawBody = await response.text();
+      console.log('SUCCESS - RAW RESPONSE (first 500 chars):', rawBody.substring(0, 500));
 
       // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         console.error('Response is not JSON. Content-Type:', contentType);
-        const textResponse = await response.text();
-        console.error('Response text:', textResponse);
+        console.error('Full response:', rawBody);
         setUsers([]);
         calculateStats([]);
         setIsLoadingUsers(false);
         return;
       }
 
-      const data = await response.json();
+      // Parse JSON
+      let data;
+      try {
+        data = JSON.parse(rawBody);
+        console.log('Parsed JSON successfully:', data);
+      } catch (e) {
+        console.error('JSON PARSE ERROR:', e);
+        console.error('Attempted to parse:', rawBody);
+        setUsers([]);
+        calculateStats([]);
+        setIsLoadingUsers(false);
+        return;
+      }
       if (data.success && data.data?.users) {
         setUsers(data.data.users);
         calculateStats(data.data.users);
