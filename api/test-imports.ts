@@ -10,22 +10,22 @@ export default async function handler(
   try {
     // Test 1: Import types
     results.step1 = 'Importing types...';
-    const { type } = await import('./_types/registration');
+    const { type } = await import('./_types/registration.js');
     results.types = 'OK';
 
     // Test 2: Import auth utils
     results.step2 = 'Importing auth utils...';
-    const authUtils = await import('./_utils/auth');
+    const authUtils = await import('./_utils/auth.js');
     results.auth = `OK - ${Object.keys(authUtils).length} exports`;
 
     // Test 3: Import db utils
     results.step3 = 'Importing db utils...';
-    const dbUtils = await import('./_utils/db');
+    const dbUtils = await import('./_utils/db.js');
     results.db = `OK - ${Object.keys(dbUtils).length} exports`;
 
     // Test 4: Import email service
     results.step4 = 'Importing email service...';
-    const emailService = await import('./_services/email');
+    const emailService = await import('./_services/email.js');
     results.email = `OK - ${Object.keys(emailService).length} exports`;
 
     // Test 5: Call a simple auth function
