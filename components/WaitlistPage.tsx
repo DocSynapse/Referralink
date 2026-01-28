@@ -287,6 +287,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   const [scrambleTrigger, setScrambleTrigger] = useState(false);
 
   // Admin Panel State
+  const [showAdminModal, setShowAdminModal] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [userFilter, setUserFilter] = useState<'all' | 'pending' | 'verified' | 'active'>('all');
@@ -715,12 +716,12 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
     });
   };
 
-  // Admin: Load users when component mounts or filter changes
+  // Admin: Load users when admin modal opens or filter changes
   useEffect(() => {
-    if (userIsAdmin) {
+    if (userIsAdmin && showAdminModal) {
       loadUsers();
     }
-  }, [userFilter]);
+  }, [showAdminModal, userFilter]);
 
   const faqs = [
     {
@@ -1153,135 +1154,8 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
             </div>
           </div>
 
-          {/* Admin Panel - Only visible to admins */}
-          {userIsAdmin && (
-            <div className="w-full pt-10">
-              {/* Admin Filter Cards - Same design as Feature Cards */}
-              <div className="grid grid-cols-4 gap-5 w-full">
-                <FeatureCard
-                  icon={<Users size={18} />}
-                  tag="Admin Panel"
-                  title="All Users"
-                  subtitle={`${stats.totalUsers} Total`}
-                  onClick={() => setUserFilter('all')}
-                />
-                <FeatureCard
-                  icon={<UserPlus size={18} />}
-                  tag="Admin Panel"
-                  title="Pending"
-                  subtitle={`${stats.pendingVerification} Waiting`}
-                  onClick={() => setUserFilter('pending')}
-                />
-                <FeatureCard
-                  icon={<UserCheck size={18} />}
-                  tag="Admin Panel"
-                  title="Verified"
-                  subtitle="Email & License ✓"
-                  onClick={() => setUserFilter('verified')}
-                />
-                <FeatureCard
-                  icon={<CheckCircle size={18} />}
-                  tag="Admin Panel"
-                  title="Active"
-                  subtitle={`${stats.activeThisMonth} This Month`}
-                  onClick={() => setUserFilter('active')}
-                />
-              </div>
-
-              {/* User List Display */}
-              {isLoadingUsers ? (
-                <div className="flex justify-center py-12 mt-10">
-                  <Loader2 size={32} className="animate-spin" style={{ color: tokens.gray }} />
-                </div>
-              ) : users.length > 0 && (
-                <div className="mt-10 space-y-4">
-                  {users.map((user) => (
-                    <div
-                      key={user.id}
-                      className="p-6 rounded-3xl"
-                      style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-3">
-                            <h4 className="text-lg font-semibold" style={{ color: tokens.dark }}>
-                              {user.fullName}
-                            </h4>
-                            <span
-                              className="px-3 py-1 rounded-full text-xs font-bold uppercase"
-                              style={{
-                                backgroundColor: tokens.badgeBg,
-                                color: tokens.dark
-                              }}
-                            >
-                              {user.role.replace('_', ' ')}
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-2 gap-3 text-sm" style={{ color: tokens.gray }}>
-                            <div className="flex items-center gap-2">
-                              <Mail size={14} />
-                              <span>{user.email}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Shield size={14} />
-                              <span>{user.licenseType}: {user.licenseNumber}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Building2 size={14} />
-                              <span>{user.institutionName}</span>
-                            </div>
-                            {user.phoneNumber && (
-                              <div className="flex items-center gap-2">
-                                <Phone size={14} />
-                                <span>{user.phoneNumber}</span>
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-6 mt-4">
-                            <div className="flex items-center gap-2">
-                              {user.emailVerified ? (
-                                <CheckCircle size={16} style={{ color: '#10b981' }} />
-                              ) : (
-                                <XCircle size={16} style={{ color: '#ef4444' }} />
-                              )}
-                              <span className="text-sm font-medium" style={{ color: tokens.gray }}>Email</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {user.licenseVerified ? (
-                                <CheckCircle size={16} style={{ color: '#10b981' }} />
-                              ) : (
-                                <XCircle size={16} style={{ color: '#ef4444' }} />
-                              )}
-                              <span className="text-sm font-medium" style={{ color: tokens.gray }}>License</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {user.onboardingCompleted ? (
-                                <CheckCircle size={16} style={{ color: '#10b981' }} />
-                              ) : (
-                                <XCircle size={16} style={{ color: '#ef4444' }} />
-                              )}
-                              <span className="text-sm font-medium" style={{ color: tokens.gray }}>Onboarded</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-xs font-medium mb-1" style={{ color: tokens.gray }}>
-                            Registered
-                          </div>
-                          <div className="text-sm font-semibold" style={{ color: tokens.dark }}>
-                            {new Date(user.createdAt).toLocaleDateString('id-ID')}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Feature Cards */}
-          <div className="grid grid-cols-3 gap-5 w-full pt-10">
+          <div className={`grid ${userIsAdmin ? 'grid-cols-4' : 'grid-cols-3'} gap-5 w-full pt-10`}>
             <FeatureCard
               icon={<FileText size={18} />}
               tag="Smart Automation"
@@ -1319,6 +1193,15 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                 setShowReferralModal(true);
               }}
             />
+            {userIsAdmin && (
+              <FeatureCard
+                icon={<Shield size={18} />}
+                tag="Admin Panel"
+                title="User Management"
+                subtitle={`${stats.totalUsers} Users`}
+                onClick={() => setShowAdminModal(true)}
+              />
+            )}
           </div>
 
           {/* New Graph Row (1.5 : 1.5 Split) */}
@@ -1495,6 +1378,18 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
             onChange={setReferralData}
             onClose={() => setShowReferralModal(false)}
             config={institutionConfig}
+          />
+        )}
+
+        {/* Admin Panel Modal */}
+        {showAdminModal && userIsAdmin && (
+          <AdminPanelModal
+            users={users}
+            isLoading={isLoadingUsers}
+            userFilter={userFilter}
+            stats={stats}
+            onFilterChange={setUserFilter}
+            onClose={() => setShowAdminModal(false)}
           />
         )}
 
@@ -3798,6 +3693,289 @@ Abd: Nyeri tekan -, dbn`,
               </div>
             )}
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Admin Panel Modal - Full Screen
+const AdminPanelModal = ({
+  users,
+  isLoading,
+  userFilter,
+  stats,
+  onFilterChange,
+  onClose
+}: {
+  users: any[];
+  isLoading: boolean;
+  userFilter: 'all' | 'pending' | 'verified' | 'active';
+  stats: any;
+  onFilterChange: (filter: 'all' | 'pending' | 'verified' | 'active') => void;
+  onClose: () => void;
+}) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div
+        className="w-full max-w-[1200px] max-h-[90vh] overflow-y-auto rounded-3xl"
+        style={{ backgroundColor: tokens.bgLight }}
+      >
+        {/* Header */}
+        <div
+          className="sticky top-0 z-10 p-6 border-b flex items-center justify-between"
+          style={{ backgroundColor: tokens.cardBg, borderColor: tokens.border }}
+        >
+          <div>
+            <h2 className="text-2xl font-semibold" style={{ color: tokens.dark }}>
+              User Management
+            </h2>
+            <p className="text-sm mt-1" style={{ color: tokens.gray }}>
+              Manage medical professionals and their verification status
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-black/5 transition-colors"
+          >
+            <X size={24} style={{ color: tokens.dark }} />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          {/* Filter Cards - Same as FeatureCard design */}
+          <div className="grid grid-cols-4 gap-5 mb-8">
+            <div
+              className="relative pt-8 cursor-pointer"
+              onClick={() => onFilterChange('all')}
+            >
+              <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
+                style={{
+                  backgroundColor: userFilter === 'all' ? tokens.coral : tokens.dark,
+                  boxShadow: shadowBtn
+                }}
+              >
+                <Users size={18} style={{ color: iconOnDark }} />
+              </div>
+              <div
+                className="rounded-3xl pt-10 pb-6 px-5 transition-all duration-300 hover:scale-[1.02]"
+                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+              >
+                <div
+                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold mb-3"
+                  style={{ backgroundColor: tokens.badgeBg, color: tokens.dark }}
+                >
+                  Admin Panel
+                </div>
+                <h5 className="text-[18px] font-semibold mb-1" style={{ color: tokens.dark }}>
+                  All Users
+                </h5>
+                <p className="text-[13px]" style={{ color: tokens.gray }}>
+                  {stats.totalUsers} Total
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="relative pt-8 cursor-pointer"
+              onClick={() => onFilterChange('pending')}
+            >
+              <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
+                style={{
+                  backgroundColor: userFilter === 'pending' ? tokens.coral : tokens.dark,
+                  boxShadow: shadowBtn
+                }}
+              >
+                <UserPlus size={18} style={{ color: iconOnDark }} />
+              </div>
+              <div
+                className="rounded-3xl pt-10 pb-6 px-5 transition-all duration-300 hover:scale-[1.02]"
+                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+              >
+                <div
+                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold mb-3"
+                  style={{ backgroundColor: tokens.badgeBg, color: tokens.dark }}
+                >
+                  Admin Panel
+                </div>
+                <h5 className="text-[18px] font-semibold mb-1" style={{ color: tokens.dark }}>
+                  Pending
+                </h5>
+                <p className="text-[13px]" style={{ color: tokens.gray }}>
+                  {stats.pendingVerification} Waiting
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="relative pt-8 cursor-pointer"
+              onClick={() => onFilterChange('verified')}
+            >
+              <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
+                style={{
+                  backgroundColor: userFilter === 'verified' ? tokens.coral : tokens.dark,
+                  boxShadow: shadowBtn
+                }}
+              >
+                <UserCheck size={18} style={{ color: iconOnDark }} />
+              </div>
+              <div
+                className="rounded-3xl pt-10 pb-6 px-5 transition-all duration-300 hover:scale-[1.02]"
+                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+              >
+                <div
+                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold mb-3"
+                  style={{ backgroundColor: tokens.badgeBg, color: tokens.dark }}
+                >
+                  Admin Panel
+                </div>
+                <h5 className="text-[18px] font-semibold mb-1" style={{ color: tokens.dark }}>
+                  Verified
+                </h5>
+                <p className="text-[13px]" style={{ color: tokens.gray }}>
+                  Email & License ✓
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="relative pt-8 cursor-pointer"
+              onClick={() => onFilterChange('active')}
+            >
+              <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
+                style={{
+                  backgroundColor: userFilter === 'active' ? tokens.coral : tokens.dark,
+                  boxShadow: shadowBtn
+                }}
+              >
+                <CheckCircle size={18} style={{ color: iconOnDark }} />
+              </div>
+              <div
+                className="rounded-3xl pt-10 pb-6 px-5 transition-all duration-300 hover:scale-[1.02]"
+                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+              >
+                <div
+                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold mb-3"
+                  style={{ backgroundColor: tokens.badgeBg, color: tokens.dark }}
+                >
+                  Admin Panel
+                </div>
+                <h5 className="text-[18px] font-semibold mb-1" style={{ color: tokens.dark }}>
+                  Active
+                </h5>
+                <p className="text-[13px]" style={{ color: tokens.gray }}>
+                  {stats.activeThisMonth} This Month
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* User List */}
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 size={32} className="animate-spin" style={{ color: tokens.gray }} />
+            </div>
+          ) : users.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg" style={{ color: tokens.gray }}>
+                No users found for "{userFilter}" filter
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {users.map((user) => (
+                <div
+                  key={user.id}
+                  className="p-6 rounded-3xl"
+                  style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-3">
+                        <h4 className="text-lg font-semibold" style={{ color: tokens.dark }}>
+                          {user.fullName}
+                        </h4>
+                        <span
+                          className="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                          style={{
+                            backgroundColor: tokens.badgeBg,
+                            color: tokens.dark
+                          }}
+                        >
+                          {user.role.replace('_', ' ')}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 text-sm mb-4" style={{ color: tokens.gray }}>
+                        <div className="flex items-center gap-2">
+                          <Mail size={14} />
+                          <span>{user.email}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Shield size={14} />
+                          <span>{user.licenseType}: {user.licenseNumber}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Building2 size={14} />
+                          <span>{user.institutionName}</span>
+                        </div>
+                        {user.phoneNumber && (
+                          <div className="flex items-center gap-2">
+                            <Phone size={14} />
+                            <span>{user.phoneNumber}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-2">
+                          {user.emailVerified ? (
+                            <CheckCircle size={16} style={{ color: '#10b981' }} />
+                          ) : (
+                            <XCircle size={16} style={{ color: '#ef4444' }} />
+                          )}
+                          <span className="text-sm font-medium" style={{ color: tokens.gray }}>
+                            Email {user.emailVerified ? 'Verified' : 'Pending'}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {user.licenseVerified ? (
+                            <CheckCircle size={16} style={{ color: '#10b981' }} />
+                          ) : (
+                            <XCircle size={16} style={{ color: '#ef4444' }} />
+                          )}
+                          <span className="text-sm font-medium" style={{ color: tokens.gray }}>
+                            License {user.licenseVerified ? 'Verified' : 'Pending'}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {user.onboardingCompleted ? (
+                            <CheckCircle size={16} style={{ color: '#10b981' }} />
+                          ) : (
+                            <XCircle size={16} style={{ color: '#ef4444' }} />
+                          )}
+                          <span className="text-sm font-medium" style={{ color: tokens.gray }}>
+                            {user.onboardingCompleted ? 'Active' : 'Onboarding'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs font-medium mb-1" style={{ color: tokens.gray }}>
+                        Registered
+                      </div>
+                      <div className="text-sm font-semibold" style={{ color: tokens.dark }}>
+                        {new Date(user.createdAt).toLocaleDateString('id-ID')}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
