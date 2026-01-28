@@ -15,21 +15,19 @@ import { LogTerminal } from './components/LogTerminal';
 import { ReferralDeck } from './components/ReferralDeck';
 import { AdminPanelExtended } from './components/AdminPanelExtended';
 import { AuthPanel } from './components/AuthPanel';
-import { UnifiedDashboard } from './components/UnifiedDashboard';
 import { SplashScreen } from './components/SplashScreen';
 import { GridDotsBackground } from './components/ui/background-patterns';
 import { WaitlistPage } from './components/WaitlistPage';
 import { TypingHeroSubtitle } from './components/ui/typing-hero-subtitle';
 import FloatingCallButton from './components/FloatingCallButton';
 
-type PageView = 'main' | 'referralink' | 'augmented' | 'dashboard';
+type PageView = 'main' | 'referralink' | 'augmented';
 
 // Hash-based routing utilities
 const getRouteFromHash = (): PageView => {
   const hash = window.location.hash.replace('#/', '').replace('#', '');
   if (hash === 'augmented') return 'augmented';
   if (hash === 'referralink') return 'referralink';
-  if (hash === 'dashboard') return 'dashboard';
   return 'main';
 };
 
@@ -126,7 +124,7 @@ const App: React.FC = () => {
         return;
       }
       setShowAuthPanel(false);
-      navigateTo('dashboard');
+      navigateTo('referralink');
     }, 450); // brief delay for animation continuity
   };
   useEffect(() => {
@@ -368,21 +366,6 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
     );
   }
 
-  // Render Unified Dashboard (for all logged-in users)
-  if (currentPage === 'dashboard') {
-    return (
-      <>
-        {telemetry}
-        <div
-          className={`transition-opacity ease-out ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
-          style={{ transitionDuration: '400ms' }}
-        >
-          <UnifiedDashboard onLogout={() => navigateTo('main')} />
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       {telemetry}
@@ -453,7 +436,7 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
                       onClose={() => setShowAuthPanel(false)}
                       onSuccess={() => {
                         setShowAuthPanel(false);
-                        navigateTo('dashboard');
+                        navigateTo('referralink');
                       }}
                     />
                   )}

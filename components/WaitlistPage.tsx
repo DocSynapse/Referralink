@@ -21,6 +21,8 @@ import { CEO_BROADCASTS } from '../constants/ceo-broadcast';
 import { TextScramble } from './ui/text-scramble';
 import { DockDemo } from './ui/demo';
 // import { Footer } from './ui/footer';
+import { isAdmin, getUserRole } from '../services/authService';
+import { Users, CheckCircle, XCircle, Shield, Mail, Phone, UserCheck, UserPlus } from 'lucide-react';
 
 // --- WEATHER ENGINE COMPONENTS ---
 // Removed WeatherWidget
@@ -284,6 +286,28 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   const [isNewsOpen, setIsNewsOpen] = useState(true);
   const [scrambleTrigger, setScrambleTrigger] = useState(false);
 
+  // Admin Panel State
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [adminTab, setAdminTab] = useState<'users' | 'stats'>('users');
+  const [users, setUsers] = useState<any[]>([]);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [userFilter, setUserFilter] = useState<'all' | 'pending' | 'verified' | 'active'>('all');
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    activeThisMonth: 0,
+    pendingVerification: 0,
+    registrationTrend: 0,
+    newUsersToday: 0,
+    byRole: {
+      clinical_user: 0,
+      specialist_user: 0,
+      nurse_user: 0,
+      maternal_care_user: 0,
+      admin_user: 0
+    }
+  });
+  const userIsAdmin = isAdmin();
+
   // Periodic Scramble Trigger
   useEffect(() => {
     const id = setInterval(() => {
@@ -506,6 +530,93 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
       setFromCache(false);
     }
   };
+
+  // Admin: Load users from API
+  const loadUsers = async () => {
+    setIsLoadingUsers(true);
+    try {
+      const sessionToken = localStorage.getItem('sessionToken');
+      if (!sessionToken) {
+        console.warn('No session token found');
+        return;
+      }
+
+      const statusParam = userFilter !== 'all' ? `?status=${userFilter}` : '';
+      const response = await fetch(`/api/admin/users${statusParam}`, {
+        headers: { 'Authorization': `Bearer ${sessionToken}` }
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.success && data.data?.users) {
+        setUsers(data.data.users);
+        calculateStats(data.data.users);
+      } else {
+        console.error('Invalid API response:', data);
+      }
+    } catch (error) {
+      console.error('Failed to load users:', error);
+      setUsers([]);
+      calculateStats([]);
+    } finally {
+      setIsLoadingUsers(false);
+    }
+  };
+
+  // Admin: Calculate dashboard statistics
+  const calculateStats = (userList: any[]) => {
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const totalUsers = userList.length;
+    const activeThisMonth = userList.filter(u =>
+      u.onboardingCompleted && new Date(u.createdAt) >= startOfMonth
+    ).length;
+    const pendingVerification = userList.filter(u =>
+      !u.emailVerified || !u.licenseVerified
+    ).length;
+    const newUsersToday = userList.filter(u =>
+      new Date(u.createdAt) >= startOfToday
+    ).length;
+
+    const byRole = {
+      clinical_user: userList.filter(u => u.role === 'clinical_user').length,
+      specialist_user: userList.filter(u => u.role === 'specialist_user').length,
+      nurse_user: userList.filter(u => u.role === 'nurse_user').length,
+      maternal_care_user: userList.filter(u => u.role === 'maternal_care_user').length,
+      admin_user: userList.filter(u => u.role === 'admin_user').length
+    };
+
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastMonthUsers = userList.filter(u => {
+      const created = new Date(u.createdAt);
+      return created >= lastMonth && created < startOfMonth;
+    }).length;
+
+    const registrationTrend = lastMonthUsers > 0
+      ? ((activeThisMonth - lastMonthUsers) / lastMonthUsers) * 100
+      : activeThisMonth > 0 ? 100 : 0;
+
+    setStats({
+      totalUsers,
+      activeThisMonth,
+      pendingVerification,
+      registrationTrend,
+      newUsersToday,
+      byRole
+    });
+  };
+
+  // Admin: Load users when admin panel is shown or filter changes
+  useEffect(() => {
+    if (userIsAdmin && showAdminPanel) {
+      loadUsers();
+    }
+  }, [showAdminPanel, userFilter]);
 
   const faqs = [
     {
@@ -884,6 +995,305 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                   </div>
                 </div>
             </div>
+
+              {/* Admin Panel Section - Only visible to admins */}
+              {userIsAdmin && (
+                <div className="w-full max-w-[900px] mb-10">
+                  {/* Admin Toggle Button */}
+                  <div className="flex justify-center mb-6">
+                    <button
+                      onClick={() => setShowAdminPanel(!showAdminPanel)}
+                      className="px-6 py-3 rounded-full font-medium flex items-center gap-2 transition-all"
+                      style={{
+                        backgroundColor: showAdminPanel ? tokens.dark : tokens.cardBg,
+                        color: showAdminPanel ? iconOnDark : tokens.dark,
+                        border: cardBorder,
+                        boxShadow: showAdminPanel ? shadowBtn : 'none'
+                      }}
+                    >
+                      <Shield size={18} />
+                      <span>{showAdminPanel ? 'Hide Admin Panel' : 'Show Admin Panel'}</span>
+                    </button>
+                  </div>
+
+                  {/* Admin Panel Content */}
+                  {showAdminPanel && (
+                    <div
+                      className="rounded-3xl p-6"
+                      style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+                    >
+                      {/* Tab Navigation */}
+                      <div className="flex gap-3 mb-6">
+                        <button
+                          onClick={() => setAdminTab('users')}
+                          className="flex-1 px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 transition-all"
+                          style={{
+                            backgroundColor: adminTab === 'users' ? tokens.dark : 'transparent',
+                            color: adminTab === 'users' ? iconOnDark : tokens.dark,
+                            border: '1px solid rgba(0,0,0,0.06)'
+                          }}
+                        >
+                          <Users size={18} />
+                          <span>User Management</span>
+                        </button>
+                        <button
+                          onClick={() => setAdminTab('stats')}
+                          className="flex-1 px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 transition-all"
+                          style={{
+                            backgroundColor: adminTab === 'stats' ? tokens.dark : 'transparent',
+                            color: adminTab === 'stats' ? iconOnDark : tokens.dark,
+                            border: '1px solid rgba(0,0,0,0.06)'
+                          }}
+                        >
+                          <Activity size={18} />
+                          <span>Statistics</span>
+                        </button>
+                      </div>
+
+                      {/* Tab Content */}
+                      {adminTab === 'users' && (
+                        <div className="space-y-6">
+                          {/* Filters */}
+                          <div className="flex gap-3">
+                            {(['all', 'pending', 'verified', 'active'] as const).map((filter) => (
+                              <button
+                                key={filter}
+                                onClick={() => setUserFilter(filter)}
+                                className="px-4 py-2 rounded-full text-sm font-medium transition-all"
+                                style={{
+                                  backgroundColor: userFilter === filter ? 'rgba(0,33,71,0.1)' : 'transparent',
+                                  color: userFilter === filter ? tokens.dark : tokens.gray,
+                                  border: '1px solid rgba(0,0,0,0.06)'
+                                }}
+                              >
+                                {filter.toUpperCase()}
+                              </button>
+                            ))}
+                          </div>
+
+                          {/* Users List */}
+                          {isLoadingUsers ? (
+                            <div className="flex justify-center py-12">
+                              <Loader2 size={32} className="animate-spin" style={{ color: tokens.gray }} />
+                            </div>
+                          ) : users.length === 0 ? (
+                            <div className="text-center py-12" style={{ color: tokens.gray }}>
+                              <p>No users found for this filter.</p>
+                            </div>
+                          ) : (
+                            <div className="space-y-4">
+                              {users.map((user) => (
+                                <div
+                                  key={user.id}
+                                  className="p-5 rounded-2xl"
+                                  style={{
+                                    boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.05), inset -2px -2px 6px rgba(255,255,255,0.8)',
+                                    backgroundColor: 'rgba(0,0,0,0.01)'
+                                  }}
+                                >
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-3 mb-2">
+                                        <h4 className="text-lg font-semibold" style={{ color: tokens.dark }}>
+                                          {user.fullName}
+                                        </h4>
+                                        <span
+                                          className="px-2 py-1 rounded-full text-xs font-bold uppercase"
+                                          style={{
+                                            backgroundColor: 'rgba(0,33,71,0.08)',
+                                            color: tokens.dark
+                                          }}
+                                        >
+                                          {user.role.replace('_', ' ')}
+                                        </span>
+                                      </div>
+                                      <div className="space-y-1 text-sm" style={{ color: tokens.gray }}>
+                                        <div className="flex items-center gap-2">
+                                          <Mail size={14} />
+                                          <span>{user.email}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                          <Shield size={14} />
+                                          <span>{user.licenseType}: {user.licenseNumber}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                          <Building2 size={14} />
+                                          <span>{user.institutionName}</span>
+                                        </div>
+                                        {user.phoneNumber && (
+                                          <div className="flex items-center gap-2">
+                                            <Phone size={14} />
+                                            <span>{user.phoneNumber}</span>
+                                          </div>
+                                        )}
+                                      </div>
+                                      <div className="flex items-center gap-4 mt-3">
+                                        <div className="flex items-center gap-1.5">
+                                          {user.emailVerified ? (
+                                            <CheckCircle size={14} style={{ color: '#10b981' }} />
+                                          ) : (
+                                            <XCircle size={14} style={{ color: '#ef4444' }} />
+                                          )}
+                                          <span className="text-xs" style={{ color: tokens.gray }}>Email</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                          {user.licenseVerified ? (
+                                            <CheckCircle size={14} style={{ color: '#10b981' }} />
+                                          ) : (
+                                            <XCircle size={14} style={{ color: '#ef4444' }} />
+                                          )}
+                                          <span className="text-xs" style={{ color: tokens.gray }}>License</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                          {user.onboardingCompleted ? (
+                                            <CheckCircle size={14} style={{ color: '#10b981' }} />
+                                          ) : (
+                                            <XCircle size={14} style={{ color: '#ef4444' }} />
+                                          )}
+                                          <span className="text-xs" style={{ color: tokens.gray }}>Onboarded</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="text-right">
+                                      <div className="text-xs" style={{ color: tokens.gray }}>
+                                        Registered
+                                      </div>
+                                      <div className="text-sm font-medium" style={{ color: tokens.dark }}>
+                                        {new Date(user.createdAt).toLocaleDateString('id-ID')}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {adminTab === 'stats' && (
+                        <div className="space-y-6">
+                          {/* Key Metrics */}
+                          <div className="grid grid-cols-4 gap-4">
+                            <div
+                              className="p-4 rounded-2xl"
+                              style={{
+                                boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.05), inset -2px -2px 6px rgba(255,255,255,0.8)',
+                                backgroundColor: 'rgba(0,0,0,0.01)'
+                              }}
+                            >
+                              <div className="text-2xl font-bold mb-1" style={{ color: tokens.dark }}>
+                                {stats.totalUsers}
+                              </div>
+                              <div className="text-xs" style={{ color: tokens.gray }}>
+                                Total Users
+                              </div>
+                            </div>
+                            <div
+                              className="p-4 rounded-2xl"
+                              style={{
+                                boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.05), inset -2px -2px 6px rgba(255,255,255,0.8)',
+                                backgroundColor: 'rgba(0,0,0,0.01)'
+                              }}
+                            >
+                              <div className="text-2xl font-bold mb-1" style={{ color: tokens.dark }}>
+                                {stats.activeThisMonth}
+                              </div>
+                              <div className="text-xs" style={{ color: tokens.gray }}>
+                                Active This Month
+                              </div>
+                            </div>
+                            <div
+                              className="p-4 rounded-2xl"
+                              style={{
+                                boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.05), inset -2px -2px 6px rgba(255,255,255,0.8)',
+                                backgroundColor: 'rgba(0,0,0,0.01)'
+                              }}
+                            >
+                              <div className="text-2xl font-bold mb-1" style={{ color: tokens.dark }}>
+                                {stats.pendingVerification}
+                              </div>
+                              <div className="text-xs" style={{ color: tokens.gray }}>
+                                Pending Verification
+                              </div>
+                            </div>
+                            <div
+                              className="p-4 rounded-2xl"
+                              style={{
+                                boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.05), inset -2px -2px 6px rgba(255,255,255,0.8)',
+                                backgroundColor: 'rgba(0,0,0,0.01)'
+                              }}
+                            >
+                              <div className="flex items-center gap-2 text-2xl font-bold mb-1" style={{ color: tokens.dark }}>
+                                {stats.newUsersToday}
+                                <TrendingUp size={20} style={{ color: '#10b981' }} />
+                              </div>
+                              <div className="text-xs" style={{ color: tokens.gray }}>
+                                New Today
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Registration Trend */}
+                          <div
+                            className="p-6 rounded-2xl"
+                            style={{
+                              boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.05), inset -2px -2px 6px rgba(255,255,255,0.8)',
+                              backgroundColor: 'rgba(0,0,0,0.01)'
+                            }}
+                          >
+                            <h4 className="text-sm font-bold mb-4 uppercase tracking-wider" style={{ color: tokens.gray }}>
+                              Month-over-Month Growth
+                            </h4>
+                            <div className="flex items-baseline gap-3">
+                              <div className="text-4xl font-bold" style={{ color: tokens.dark }}>
+                                {stats.registrationTrend > 0 ? '+' : ''}{stats.registrationTrend.toFixed(1)}%
+                              </div>
+                              <div className="text-sm" style={{ color: tokens.gray }}>
+                                vs last month
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Role Distribution */}
+                          <div
+                            className="p-6 rounded-2xl"
+                            style={{
+                              boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.05), inset -2px -2px 6px rgba(255,255,255,0.8)',
+                              backgroundColor: 'rgba(0,0,0,0.01)'
+                            }}
+                          >
+                            <h4 className="text-sm font-bold mb-4 uppercase tracking-wider" style={{ color: tokens.gray }}>
+                              User Distribution by Role
+                            </h4>
+                            <div className="space-y-3">
+                              {Object.entries(stats.byRole).map(([role, count]) => {
+                                const percentage = stats.totalUsers > 0 ? (count / stats.totalUsers) * 100 : 0;
+                                return (
+                                  <div key={role}>
+                                    <div className="flex justify-between mb-1.5 text-sm">
+                                      <span style={{ color: tokens.dark }}>{role.replace('_', ' ').toUpperCase()}</span>
+                                      <span className="font-bold" style={{ color: tokens.dark }}>{count}</span>
+                                    </div>
+                                    <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
+                                      <div
+                                        className="h-full transition-all duration-500 rounded-full"
+                                        style={{
+                                          width: `${percentage}%`,
+                                          backgroundColor: tokens.dark
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Input Form */}
               <div className="w-full max-w-[520px]">
