@@ -10,7 +10,7 @@ import { updateLicenseVerification } from '../utils/db';
 
 export default async function handler(
   req: VercelRequest,
-  res: VercelResponse<ApiResponse>
+  res: VercelResponse
 ) {
 
   if (req.method !== 'POST' && req.method !== 'GET') {
@@ -53,10 +53,10 @@ export default async function handler(
 
     // Log audit event
     await logAuditEvent(
-      null,
+      undefined,
       'EMAIL_VERIFIED',
       'email_verification',
-      null,
+      undefined,
       { token: token.substring(0, 8) + '...' },
       clientIp,
       req.headers['user-agent']

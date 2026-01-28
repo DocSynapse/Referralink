@@ -15,7 +15,7 @@ import { sendWelcomeEmail } from '../services/email';
 
 export default async function handler(
   req: VercelRequest,
-  res: VercelResponse<ApiResponse<OnboardingData>>
+  res: VercelResponse
 ) {
 
   if (req.method !== 'POST') {

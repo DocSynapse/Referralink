@@ -26,7 +26,7 @@ import { sendVerificationEmail } from '../services/email';
 
 export default async function handler(
   req: VercelRequest,
-  res: VercelResponse<ApiResponse<RegistrationResponse>>
+  res: VercelResponse
 ) {
 
   // Only allow POST

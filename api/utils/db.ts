@@ -64,6 +64,24 @@ export async function findUserByEmail(email: string): Promise<MedicalProfessiona
 }
 
 /**
+ * Find user by email with password hash (for authentication only)
+ */
+export async function findUserByEmailWithPassword(email: string): Promise<(MedicalProfessional & { passwordHash: string }) | null> {
+  const result = await sql`
+    SELECT * FROM medical_professionals
+    WHERE email = ${email}
+  `;
+
+  if (result.rows.length === 0) return null;
+
+  const user = mapDbRowToUser(result.rows[0]);
+  return {
+    ...user,
+    passwordHash: result.rows[0].password_hash
+  };
+}
+
+/**
  * Find user by ID
  */
 export async function findUserById(userId: string): Promise<MedicalProfessional | null> {

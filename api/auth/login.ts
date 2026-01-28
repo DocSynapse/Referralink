@@ -11,7 +11,7 @@ import {
 } from '../utils/auth';
 
 import {
-  findUserByEmail,
+  findUserByEmailWithPassword,
   createSession,
   updateLastLogin,
   logAuditEvent
@@ -19,7 +19,7 @@ import {
 
 export default async function handler(
   req: VercelRequest,
-  res: VercelResponse<ApiResponse<LoginResponse>>
+  res: VercelResponse
 ) {
 
   if (req.method !== 'POST') {
@@ -58,8 +58,8 @@ export default async function handler(
       });
     }
 
-    // Find user by email
-    const user = await findUserByEmail(email.toLowerCase().trim());
+    // Find user by email (with password hash for verification)
+    const user = await findUserByEmailWithPassword(email.toLowerCase().trim());
 
     if (!user) {
       return res.status(401).json({
@@ -72,7 +72,7 @@ export default async function handler(
     }
 
     // Verify password
-    const isValidPassword = verifyPassword(password, user.passwordHash as any);
+    const isValidPassword = verifyPassword(password, user.passwordHash);
 
     if (!isValidPassword) {
       await logAuditEvent(

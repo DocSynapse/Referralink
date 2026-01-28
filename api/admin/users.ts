@@ -8,7 +8,7 @@ import { validateSession, findUserById } from '../utils/db';
 
 export default async function handler(
   req: VercelRequest,
-  res: VercelResponse<ApiResponse<{ users: MedicalProfessional[] }>>
+  res: VercelResponse
 ) {
 
   // Verify admin authentication
@@ -46,7 +46,7 @@ export default async function handler(
     // Verify user is admin
     const user = await findUserById(userId);
 
-    if (!user || (user.role !== 'admin_user' && user.role !== 'admin')) {
+    if (!user || user.role !== 'admin_user') {
       return res.status(403).json({
         success: false,
         error: {
