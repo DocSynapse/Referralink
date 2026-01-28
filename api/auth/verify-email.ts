@@ -53,13 +53,13 @@ export default async function handler(
 
     // Log audit event
     await logAuditEvent(
-      undefined,
+      null,
       'EMAIL_VERIFIED',
       'email_verification',
       undefined,
       { token: token.substring(0, 8) + '...' },
       clientIp,
-      req.headers['user-agent']
+      req.headers['user-agent'] as string | undefined
     );
 
     return res.status(200).json({
