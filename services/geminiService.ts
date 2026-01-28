@@ -189,8 +189,21 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
       .replace(/^\s*[\r\n]/gm, '')
       .trim();
 
-    // Parse and validate
-    const parsed = JSON.parse(jsonStr) as ICD10Result;
+    // Extract JSON object if there's extra text
+    const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      jsonStr = jsonMatch[0];
+    }
+
+    // Parse and validate with error handling
+    let parsed: ICD10Result;
+    try {
+      parsed = JSON.parse(jsonStr) as ICD10Result;
+    } catch (parseError) {
+      console.error('[CDSS] JSON Parse Error:', parseError);
+      console.error('[CDSS] Raw response:', text.substring(0, 500));
+      throw new Error('Invalid JSON response from AI model. Please try again.');
+    }
 
     // Ensure proposed_referrals exists and has at least 3 entries
     if (!parsed.proposed_referrals || parsed.proposed_referrals.length === 0) {

@@ -7,7 +7,12 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network, Hexagon, Twitter, Github, Linkedin, TrendingUp, Activity, Upload, ArrowRight, ChevronLeft, ChevronRight, MessageSquare, ChevronDown, Sun, Cloud, CloudRain, CloudLightning, CloudFog, Thermometer, Wind, Droplets, Eye } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network, Hexagon, Twitter, Github, Linkedin, TrendingUp, Activity, Upload, ArrowRight, ChevronLeft, ChevronRight, MessageSquare, ChevronDown, Sun, Cloud, CloudRain, CloudLightning, CloudFog, Thermometer, Wind, Droplets, Eye, MessageCircle } from 'lucide-react';
+
+// WhatsApp Icon Component
+const WhatsAppIcon = ({ size = 16, style }: { size?: number; style?: React.CSSProperties }) => (
+  <MessageCircle size={size} style={style} />
+);
 import * as XLSX from 'xlsx';
 import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
 import { ICD10Result } from '../types';
