@@ -13,6 +13,14 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  // Log request details
+  console.log('Admin API called:', {
+    method: req.method,
+    query: req.query,
+    hasAuth: !!req.headers.authorization,
+    url: req.url
+  });
+
   // Set JSON response header
   res.setHeader('Content-Type', 'application/json');
 
@@ -29,10 +37,13 @@ export default async function handler(
       });
     }
 
+    console.log('POSTGRES_URL exists:', process.env.POSTGRES_URL.substring(0, 30) + '...');
+
     // Verify admin authentication
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('No auth header or invalid format');
       return res.status(401).json({
         success: false,
         error: {
@@ -43,9 +54,11 @@ export default async function handler(
     }
 
   const sessionToken = authHeader.substring(7);
+  console.log('Session token received:', sessionToken.substring(0, 20) + '...');
 
   // Check for legacy simple admin token
   const isSimpleAdmin = sessionToken === 'simple-admin-session';
+  console.log('Is simple admin:', isSimpleAdmin);
 
   if (!isSimpleAdmin) {
     try {
@@ -90,6 +103,7 @@ export default async function handler(
   if (req.method === 'GET') {
     try {
       const { status } = req.query;
+      console.log('GET request - status filter:', status);
 
       let query;
 
@@ -141,7 +155,9 @@ export default async function handler(
         `;
       }
 
+      console.log('Executing database query...');
       const rows = await query;
+      console.log('Query returned rows:', rows.length);
 
       // Map to MedicalProfessional type
       const users = rows.map(row => ({
@@ -163,6 +179,9 @@ export default async function handler(
         createdAt: row.created_at,
         lastLogin: row.last_login
       }));
+
+      console.log('Mapped users count:', users.length);
+      console.log('Sending success response');
 
       return res.status(200).json({
         success: true,
