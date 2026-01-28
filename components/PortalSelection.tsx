@@ -35,7 +35,7 @@ export const PortalSelection: React.FC<PortalSelectionProps> = ({ onSelect }) =>
 
     // Options fade in with stagger
     tl.fromTo(
-      optionsRef.current?.querySelectorAll('.portal-option'),
+      optionsRef.current?.querySelectorAll('.portal-option') as any,
       { opacity: 0, y: 15 },
       {
         opacity: 1,

@@ -21,7 +21,10 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --prefer-online --ignore-scripts
+
+    - name: Ensure framer-motion present
+      run: npm install framer-motion@12.29.2 --no-save
 
     - name: Type check
       run: npx tsc --noEmit
@@ -42,7 +45,10 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --prefer-online --ignore-scripts
+
+    - name: Ensure framer-motion present
+      run: npm install framer-motion@12.29.2 --no-save
 
     - name: Build application
       run: npm run build

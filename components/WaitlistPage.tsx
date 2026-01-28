@@ -7,24 +7,18 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network, Hexagon, Twitter, Github, Linkedin } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, Zap, Building2, FileText, User, Loader2, X, Printer, CloudSun, Network, Hexagon, Twitter, Github, Linkedin, TrendingUp, Activity, Upload, ArrowRight, ChevronLeft, ChevronRight, MessageSquare, ChevronDown, Sun, Cloud, CloudRain, CloudLightning, CloudFog, Thermometer, Wind, Droplets, Eye } from 'lucide-react';
+import * as XLSX from 'xlsx';
 import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
 import { ICD10Result } from '../types';
 import { GeneticGrowthMapLeaflet, getNetworkStats } from './GeneticGrowthMapLeaflet';
+import { CEO_BROADCASTS } from '../constants/ceo-broadcast';
+import { TextScramble } from './ui/text-scramble';
+import { DockDemo } from './ui/demo';
 // import { Footer } from './ui/footer';
 
-// WhatsApp Icon Component
-const WhatsAppIcon = ({ size = 18, className = '' }: { size?: number; className?: string }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={className}
-  >
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </svg>
-);
+// --- WEATHER ENGINE COMPONENTS ---
+// Removed WeatherWidget
 
 // Sick Leave Letter Data Interface
 interface SickLeaveData {
@@ -221,6 +215,32 @@ const tokens = {
   coral: 'rgb(255, 83, 73)',
 };
 
+// Typewriter Effect Component for the word "Link"
+const TypewriterLink: React.FC = () => {
+  const [text, setText] = useState('');
+  const fullText = 'Link';
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index <= fullText.length) {
+        setText(fullText.slice(0, index));
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className="font-signature ml-2" style={{ color: tokens.coral }}>
+      {text}
+      {text !== fullText && <span className="animate-pulse">|</span>}
+    </span>
+  );
+};
+
 const iconOnDark = '#F4F6FA';
 const cardBorder = '1px solid rgba(0, 0, 0, 0.06)';
 
@@ -255,8 +275,180 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   const [showReferralModal, setShowReferralModal] = useState(false);
   const [referralData, setReferralData] = useState<ReferralRequestData>(defaultReferralRequestData);
 
-  // Genetic Growth Map State
   const [showGeneticMap, setShowGeneticMap] = useState(false);
+  const [isNewsOpen, setIsNewsOpen] = useState(true);
+  const [scrambleTrigger, setScrambleTrigger] = useState(false);
+
+  // Periodic Scramble Trigger
+  useEffect(() => {
+    const id = setInterval(() => {
+      setScrambleTrigger(prev => !prev);
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Refs for click outside handling
+  const newsPanelRef = useRef<HTMLDivElement>(null);
+  const ceoPanelRef = useRef<HTMLDivElement>(null);
+
+  // Handle click outside and scroll to close panels
+  useEffect(() => {
+    const handleInteraction = (e: MouseEvent | Event) => {
+      // Close News Panel if clicked outside
+      if (isNewsOpen && newsPanelRef.current && !newsPanelRef.current.contains(e.target as Node)) {
+        // Check if the click was on the toggle button (which is outside the ref) - simplified logic: just close
+        // But we need to be careful not to close immediately if clicking the toggle button itself
+        // Actually, let's just close it. The toggle button has its own handler.
+        // Wait, the toggle button is *outside* the main panel div.
+        // Let's refine: if click is NOT on panel AND NOT on toggle button. 
+        // For simplicity first: close if click is outside panel.
+        
+        // Actually, user requested "klik area lain".
+        setIsNewsOpen(false);
+      }
+
+      // Close CEO Roadmap if clicked outside
+      if (showRoadmap && ceoPanelRef.current && !ceoPanelRef.current.contains(e.target as Node)) {
+         setShowRoadmap(false);
+      }
+    };
+
+    const handleScroll = () => {
+      if (isNewsOpen) setIsNewsOpen(false);
+      if (showRoadmap) setShowRoadmap(false);
+    };
+
+    // Add listeners
+    document.addEventListener('mousedown', handleInteraction);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      document.removeEventListener('mousedown', handleInteraction);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isNewsOpen, showRoadmap]);
+
+  // Chart Data State
+  const [chartData, setChartData] = useState<{ label: string; value: number }[]>([
+    { label: 'ISPA', value: 35 },
+    { label: 'Hipertensi', value: 55 },
+    { label: 'Diabetes', value: 45 },
+    { label: 'Dispepsia', value: 80 },
+    { label: 'Dermatitis', value: 60 },
+    { label: 'Cephalgia', value: 90 },
+    { label: 'Myalgia', value: 75 },
+  ]);
+
+  const [referralChartData, setReferralChartData] = useState<{ label: string; value: number }[]>([
+    { label: 'RSUD Gambiran', value: 120 },
+    { label: 'RS Bhayangkara', value: 95 },
+    { label: 'RS Baptis', value: 80 },
+    { label: 'RSIA Melinda', value: 65 },
+    { label: 'RS DKT', value: 40 },
+  ]);
+
+  // Health Intel State
+  const [lastUpdated, setLastUpdated] = useState<string>('JUST NOW');
+  
+  // CEO Broadcast Logic
+  const [activeMsgId, setActiveMsgId] = useState<string | null>(CEO_BROADCASTS[0].id);
+  const [hasUnreadMessage, setHasUnreadMessage] = useState(false);
+
+  useEffect(() => {
+    const lastReadId = localStorage.getItem('sentra_ceo_read_id');
+    // If any message in the array is newer than lastReadId, show red dot
+    if (lastReadId !== CEO_BROADCASTS[0].id) {
+      setHasUnreadMessage(true);
+    }
+  }, []);
+
+  const handleOpenRoadmap = () => {
+    setShowRoadmap(true);
+    setHasUnreadMessage(false);
+    localStorage.setItem('sentra_ceo_read_id', CEO_BROADCASTS[0].id);
+  };
+
+  const [healthIntel, setHealthIntel] = useState<any[]>([
+    {
+      time: '10:42 AM',
+      type: 'ALERT',
+      color: 'red',
+      content: 'Lonjakan signifikan kasus ISPA (1.802 penderita) di Kota Kediri, didominasi anak-anak (60%) akibat cuaca ekstrem.'
+    },
+    {
+      time: '09:15 AM',
+      type: 'INFO',
+      color: 'emerald',
+      content: 'Kediri sukses melampaui target Sub PIN Polio dengan capaian 104.2% dan laporan nol kasus polio.'
+    },
+    {
+      time: 'YESTERDAY',
+      type: 'DATA',
+      color: 'blue',
+      content: 'Tren DBD menurun di awal 2025 (150 kasus) dibanding 2024, kewaspadaan di Mojoroto tetap tinggi.'
+    }
+  ]);
+
+  // Hybrid Intel Engine: Fetch Global Health News while keeping Kediri pinned
+  useEffect(() => {
+    const fetchNationalNews = async () => {
+      try {
+        const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.antaranews.com/rss/kesehatan');
+        const data = await res.json();
+        
+        if (data.items && data.items.length > 0) {
+          const newsItems = data.items.slice(0, 2).map((item: any) => ({
+            time: new Date(item.pubDate).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+            type: 'GLOBAL',
+            color: 'slate',
+            content: item.title,
+            link: item.link
+          }));
+
+          // Pinned Local Facts + Fresh National News
+          setHealthIntel(prev => {
+            const localFacts = prev.slice(0, 3); // Keep the 3 Kediri facts
+            return [...localFacts, ...newsItems];
+          });
+          
+          setLastUpdated(new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }));
+        }
+      } catch (e) {
+        console.warn("Sentinel Connection Delay - Using Pinned Intel Only.");
+      }
+    };
+    
+    fetchNationalNews();
+    // Auto-refresh news every 3 days
+    const interval = setInterval(fetchNationalNews, 3 * 24 * 60 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const bstr = evt.target?.result;
+      const wb = XLSX.read(bstr, { type: 'binary' });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      
+      // Assume data is in format: [["Penyakit", "Jumlah"], ["Flu", 50], ...]
+      // Transform to chart format
+      const transformedData = (data as any[]).slice(1).map((row: any) => ({
+        label: row[0] as string,
+        value: parseInt(row[1] as string) || 0
+      })).filter(item => item.label && item.value > 0).slice(0, 7); // Take top 7
+
+      if (transformedData.length > 0) {
+        setChartData(transformedData);
+      }
+    };
+    reader.readAsBinaryString(file);
+  };
 
   const now = new Date();
   const formattedDate = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -302,157 +494,297 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
   const faqs = [
     {
       q: "Apa saja yang saya dapat di versi uji coba?",
-      a: "Anda mendapat akses penuh ke seluruh fitur inti Sentra Referralink: (1) Validasi ICD-10 real-time dengan AI inference yang dapat mendeteksi kode diagnosis dari deskripsi klinis natural language, (2) Rekomendasi rujukan pintar berbasis kombinasi rule-based system dan Large Language Model yang memetakan kondisi pasien ke faskes tujuan sesuai kapabilitas dan jarak geografis, (3) Generator otomatis untuk Surat Rujukan, Surat Keterangan Sakit, dan Surat Keterangan Sehat dengan template yang dapat disesuaikan, (4) Visualisasi Genetic Growth Map yang menampilkan jaringan rujukan antar faskes secara interaktif di peta Kediri, (5) Audit trail lengkap per sesi untuk compliance dan quality assurance, (6) Prioritas dukungan teknis dengan response time <6 jam kerja melalui kanal QA dedicated. Seluruh data dapat dieksport dalam format PDF untuk dokumentasi medis resmi."
+      a: "Anda mendapat akses penuh semua fitur: Generate kode ICD-10 otomatis dari gejala pasien, rekomendasi rujukan rumah sakit yang sesuai, buat surat rujukan/keterangan sakit/sehat otomatis, dan dukungan teknis prioritas. Semua dokumen bisa diexport PDF."
     },
     {
       q: "Apakah butuh keahlian teknis?",
-      a: "Tidak sama sekali. Platform dirancang untuk tenaga kesehatan dengan workflow klinis standar - bukan untuk IT specialist. Interface menggunakan format SOAP (Subjective, Objective, Assessment, Plan) yang familiar bagi dokter dan perawat. Anda cukup mengisi keluhan pasien dan temuan objektif seperti biasa, lalu sistem akan otomatis: (1) Mengvalidasi dan menyarankan kode ICD-10 yang sesuai, (2) Memetakan ke rumah sakit rujukan berdasarkan severity dan kapabilitas faskes, (3) Generate dokumen rujukan lengkap dengan sekali klik. Untuk admin fasilitas kesehatan, ada dashboard konfigurasi berbasis GUI untuk menyesuaikan template surat, daftar faskes rujukan, dan threshold rujukan otomatis - semuanya tanpa perlu menulis kode. Tim support kami juga menyediakan onboarding session dan dokumentasi lengkap dalam bahasa Indonesia."
+      a: "Tidak sama sekali. Anda hanya perlu input keluhan dan gejala pasien seperti biasa. Sistem akan otomatis memberikan kode ICD-10, rekomendasi rujukan, dan generate surat lengkap. Tidak perlu tahu coding atau IT."
     },
     {
       q: "Kapan rencana peluncuran umum?",
-      a: "Target go-live untuk General Availability (GA) adalah Q1 2026, dengan roadmap bertahap: (1) Q4 2025 - Alpha testing dengan 5 faskes terpilih di Kediri untuk validasi workflow dan akurasi model, (2) Q1 2026 - Beta testing dengan ekspansi ke 20+ faskes dengan fokus pada stabilitas sistem dan integrasi SIMRS, (3) Q2 2026 - Production release dengan full support dan SLA guarantee. Sebelum rilis publik, kami melakukan validasi ketat: model AI di-training ulang dengan feedback dari kasus real, terminologi klinis diverifikasi oleh dokter spesialis, dan sistem menjalani uji regresi mingguan untuk memastikan zero breaking changes. Kepatuhan terhadap standar koding ICD-10 WHO dan regulasi data kesehatan Indonesia (UU Perlindungan Data Pribadi) menjadi prioritas utama sebelum peluncuran umum."
+      a: "Target peluncuran resmi Q1 2026. Saat ini fase beta testing untuk faskes di Kediri. Semua feedback dari pengguna akan digunakan untuk menyempurnakan sistem sebelum peluncuran umum."
     },
     {
       q: "Apakah saya bisa berhenti kapan saja?",
-      a: "Ya, 100% fleksibel tanpa lock-in period atau penalty. Anda dapat opt-out kapan saja melalui portal pengaturan akun dengan proses instant: (1) Klik 'Nonaktifkan Akun' di dashboard settings, (2) Seluruh token autentikasi dan session keys akan di-revoke secara otomatis dalam hitungan detik, (3) Cache diagnosis lokal dan temporary data di browser akan dibersihkan otomatis, (4) Data historis pasien yang tersimpan di server tetap dapat di-export dalam format PDF/CSV selama 30 hari sebelum penghapusan permanen. Tidak ada biaya tersembunyi, tidak ada kontrak minimal, dan tidak ada pertanyaan yang diajukan - hak Anda sepenuhnya untuk mengontrol penggunaan platform. Jika Anda memutuskan untuk kembali menggunakan layanan, reaktivasi akun dapat dilakukan dengan menggunakan kredensial yang sama tanpa kehilangan data historis (selama masih dalam periode retensi 30 hari)."
+      a: "Ya, 100% bebas. Tidak ada kontrak, tidak ada biaya penalty. Anda bisa nonaktifkan akun kapan saja dari dashboard. Data Anda masih bisa diexport selama 30 hari setelah nonaktif."
     },
     {
       q: "Bagaimana keamanan data pasien?",
-      a: "Keamanan dan privasi data pasien adalah prioritas tertinggi kami dengan implementasi multi-layer security: (1) **Enkripsi Transit**: Semua komunikasi menggunakan TLS 1.3 dengan perfect forward secrecy, mencegah man-in-the-middle attacks, (2) **Enkripsi At-Rest**: Data pasien di database dienkripsi menggunakan AES-256, dengan key rotation otomatis setiap 90 hari, (3) **Zero-PHI Logging**: Log sistem dan error tracking tidak pernah mencatat Protected Health Information (PHI) seperti nama, NIK, atau data identitas pasien, (4) **Memory Sanitization**: Data sensitif di RAM server dibersihkan segera setelah response dikirim untuk mencegah memory dump attacks, (5) **Access Control**: Role-based access control (RBAC) dengan principle of least privilege - setiap user hanya dapat akses data yang relevan dengan perannya, (6) **Audit Trail**: Setiap akses data tercatat dengan timestamp, user ID, dan action type untuk compliance tracking, (7) **No Third-Party Sharing**: Data pasien tidak pernah dikirim ke pihak ketiga atau cloud provider eksternal - semuanya diproses dalam infrastruktur Sentra yang ter-isolasi. Platform kami didesain untuk compliance dengan UU Perlindungan Data Pribadi Indonesia dan best practices ISO 27001 untuk information security."
+      a: "Data pasien dienkripsi penuh saat disimpan dan saat dikirim. Kami tidak pernah share data ke pihak ketiga. Setiap akses data tercatat untuk audit. Sistem kami dirancang sesuai standar keamanan data kesehatan Indonesia."
     },
     {
       q: "Bagaimana jika ada ketidaksesuaian ICD atau rujukan?",
-      a: "Kami memiliki quality assurance loop yang ketat untuk continuous improvement: (1) **QA Reporting Button**: Setiap output AI dilengkapi tombol 'Laporkan Ketidaksesuaian' yang dapat Anda klik untuk submit feedback langsung dengan konteks kasus lengkap, (2) **Clinical Validation**: Laporan masuk ke queue review yang diprioritaskan berdasarkan severity - high-impact mismatches (diagnosis life-threatening) di-review dalam <24 jam oleh dokter penanggung jawab, (3) **Model Retraining**: Setiap validated feedback digunakan untuk fine-tuning model AI melalui supervised learning cycle dengan human-in-the-loop validation, (4) **Prompt Engineering Update**: Guardrails dan prompt templates diperbarui untuk mencegah error pattern yang sama terjadi di masa depan, (5) **Rollback-Safe Deployment**: Update model di-deploy melalui blue-green deployment dengan automatic rollback jika accuracy metrics menurun, (6) **Feedback Loop Closure**: Anda akan menerima notifikasi email ketika issue yang Anda laporkan sudah di-resolve dan model sudah diupdate, (7) **Public Changelog**: Setiap update model dan improvement accuracy dipublikasikan di changelog untuk transparansi. Target kami adalah response time <48 jam untuk setiap laporan QA dan continuous improvement dengan target accuracy >95% untuk kode ICD-10 dan >90% untuk kesesuaian rujukan."
+      a: "Ada tombol 'Laporkan' di setiap hasil untuk kirim feedback. Tim klinis kami akan review dalam 24 jam untuk kasus urgent. Setiap feedback digunakan untuk meningkatkan akurasi AI. Anda akan dapat notifikasi saat issue sudah diperbaiki."
     },
   ];
 
   return (
     <div className="min-h-screen relative overflow-hidden z-0" style={{ backgroundColor: tokens.bgLight, fontFamily: "'Geist', sans-serif" }}>
       <div
-        className="absolute inset-0 z-0 h-full w-full bg-[#E0E5EC] bg-[radial-gradient(rgba(200,205,215,0.7)_1px,transparent_1px)] [background-size:14px_14px]"
+        className="absolute inset-0 z-0 h-full w-full bg-[#E0E5EC] bg-[radial-gradient(rgba(140,150,170,0.6)_1.5px,transparent_1.5px)] [background-size:14px_14px]"
       />
-      <div className="relative z-10">
-
-      {/* Weather Widget */}
-      <div
-        className="fixed top-24 left-20 z-40 w-[240px] max-w-[80vw] rounded-2xl border"
+      {/* Vignette Shadow Overlay */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          backgroundColor: tokens.bgLight,
-          borderColor: 'rgba(255,255,255,0.6)',
-          boxShadow: '8px 8px 16px rgba(0,0,0,0.08), -8px -8px 16px rgba(255,255,255,0.9)',
-          padding: 12
+          background: 'radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(0,0,0,0.05) 100%)'
         }}
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl flex items-center justify-center"
-            style={{
-              backgroundColor: tokens.bgLight,
-              boxShadow: '4px 4px 8px rgba(0,0,0,0.08), -4px -4px 8px rgba(255,255,255,0.9)'
-            }}
-          >
-            <CloudSun size={20} style={{ color: tokens.coral }} />
-          </div>
-          <div className="flex-1">
-            <p className="text-[12px] font-semibold" style={{ color: tokens.dark }}>Kediri</p>
-            <p className="text-[11px]" style={{ color: tokens.gray }}>{formattedDate}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-[14px] font-semibold" style={{ color: tokens.dark }}>29°C</p>
-            <p className="text-[11px]" style={{ color: tokens.gray }}>Berawan</p>
-          </div>
-        </div>
-      </div>
+      />
+      
+      {/* iOS Weather Widget - Removed */}
+
+      <div className="relative z-10">
 
       {/* Roadmap Widget (toggle) */}
       {!showRoadmap && (
-        <button
-          onClick={() => setShowRoadmap(true)}
-          className="fixed top-6 right-6 z-40 px-4 py-2 rounded-full border text-[12px] font-semibold uppercase tracking-[0.14em] shadow-sm hover:shadow-md transition"
-          style={{ backgroundColor: tokens.cardBg, borderColor: tokens.border, color: tokens.dark }}
+        <motion.button
+          onClick={handleOpenRoadmap}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="fixed top-6 right-6 z-40 group"
         >
-          From CEO
-        </button>
+          {/* Pulsing Ring - Only if unread */}
+          {hasUnreadMessage && (
+            <>
+              <div className="absolute inset-0 rounded-full border border-emerald-500/30 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]" />
+              <div className="absolute inset-0 rounded-full border border-emerald-500/10 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite_1.5s]" />
+            </>
+          )}
+          
+          {/* Glass Capsule */}
+          <div 
+            className="relative flex items-center gap-3 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-xl hover:shadow-emerald-500/20 hover:border-emerald-500/30 transition-all duration-300"
+            style={{ backgroundColor: '#002147' }}
+          >
+            {/* Status Dot */}
+            <div className="relative">
+              <MessageSquare size={16} style={{ color: '#FFFFFF' }} />
+              {hasUnreadMessage && (
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#002147] animate-pulse" />
+              )}
+            </div>
+
+            <div className="flex flex-col items-start leading-none">
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{hasUnreadMessage ? 'INCOMING' : 'MESSAGE'}</span>
+              <span className="text-[11px] font-black uppercase tracking-wider" style={{ color: '#FFFFFF', fontFamily: "'JetBrains Mono', monospace" }}>FROM CEO</span>
+            </div>
+          </div>
+        </motion.button>
       )}
       {showRoadmap && (
-        <div
-          className="fixed top-6 right-6 z-40 w-[340px] max-w-[80vw] rounded-2xl border"
+        <motion.div
+          ref={ceoPanelRef}
+          initial={{ opacity: 0, scale: 0.9, y: -20, x: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          className="fixed top-6 right-6 z-40 w-[320px] max-w-[85vw] rounded-2xl border backdrop-blur-xl flex flex-col"
           style={{
-            backgroundColor: tokens.cardBg,
+            backgroundColor: 'rgba(225, 230, 235, 0.98)',
             borderColor: tokens.border,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-            padding: 14
+            boxShadow: '0 20px 50px -12px rgba(0,0,0,0.25)',
+            maxHeight: '80vh'
           }}
         >
-          <div className="flex items-center gap-2 mb-2">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: tokens.dark }}>
-              From CEO
-            </p>
-            <span className="ml-auto text-[11px] font-semibold px-2 py-1 rounded-full" style={{ backgroundColor: tokens.badgeBg, color: tokens.coral }}>
-              IN_PROGRESS
-            </span>
-            <button
-              onClick={() => setShowRoadmap(false)}
-              className="ml-2 p-1 rounded-md hover:bg-black/5"
-              aria-label="Close roadmap"
-            >
-              <X size={14} style={{ color: tokens.gray }} />
+          {/* Panel Header */}
+          <div className="p-3 border-b border-black/5 flex items-center justify-between bg-[#002147] rounded-t-2xl">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>CEO Transmissions</span>
+            </div>
+            <button onClick={() => setShowRoadmap(false)} className="text-white/60 hover:text-white transition-colors">
+              <X size={16} />
             </button>
           </div>
-          <div className="border-t" style={{ borderColor: tokens.border }} />
-          <div className="flex items-start gap-3 mt-3">
-            <div
-              className="w-11 h-11 rounded-lg overflow-hidden"
-              style={{ backgroundColor: tokens.badgeBg, border: cardBorder, boxShadow: '0 6px 14px rgba(0,0,0,0.12)' }}
-            >
-              <img
-                src="/chief.svg"
-                alt="Principal Architect"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="flex-1 space-y-2 text-[13px]" style={{ color: tokens.dark }}>
-              <p className="font-semibold">drferdiskandar // Lead Architect</p>
-              <div className="space-y-2 leading-relaxed text-[13px]" style={{ color: tokens.gray }}>
-                <p className="font-semibold">Upcoming Strategic Updates:</p>
-                <ol className="list-decimal list-inside space-y-1">
-                  <li>
-                    <strong>Dynamic Dashboard Integration</strong>: Integrasi ReferraLink ke pusat kendali Thee Abys dengan visualisasi garis berjalan real-time.
-                  </li>
-                  <li>
-                    <strong>Automated Conversion Logic</strong>: Optimasi klasifikasi rujukan berdasar spesialisasi dan <em>Trust Score</em>.
-                  </li>
-                  <li>
-                    <strong>Enhanced Asset Security</strong>: Enkripsi tambahan untuk setiap data diagnosa lintas jaringan Sentra.
-                  </li>
-                </ol>
+
+          {/* Messages List */}
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-3">
+            {CEO_BROADCASTS.map((msg) => (
+              <div 
+                key={msg.id}
+                className="rounded-xl transition-all duration-300 overflow-hidden"
+              >
+                {/* Header / Trigger */}
+                <button 
+                  onClick={() => setActiveMsgId(activeMsgId === msg.id ? null : msg.id)}
+                  className={`w-full p-3 flex items-start justify-between text-left rounded-xl transition-all duration-200 ${activeMsgId === msg.id ? 'bg-[#002147]/5' : 'hover:bg-black/5'}`}
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[9px] font-bold text-slate-400 font-mono">{msg.date}</span>
+                      {msg.priority === 'HIGH' && (
+                        <span className="text-[8px] font-black text-red-600 bg-red-50 px-1 rounded">URGENT</span>
+                      )}
+                    </div>
+                    <h4 className="text-[12px] font-bold text-[#002147] leading-tight">{msg.content.heading}</h4>
+                  </div>
+                  <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${activeMsgId === msg.id ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Expanded Content with Neumorphism Inset */}
+                <motion.div 
+                  initial={false}
+                  animate={{ height: activeMsgId === msg.id ? 'auto' : 0, opacity: activeMsgId === msg.id ? 1 : 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-3 pb-3 pt-1">
+                    <div className="p-3 rounded-xl space-y-3" style={{ boxShadow: 'inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8)', backgroundColor: 'rgba(0,0,0,0.01)' }}>
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-black/5">
+                          <img src="/chief.svg" alt="CEO" className="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                          <p className="text-[12px] font-bold text-slate-700" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{msg.title}</p>
+                          <p className="text-[10px] text-slate-400 uppercase tracking-wider" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{msg.role}</p>
+                        </div>
+                        <span className="ml-auto text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-[#E1E6EB] text-slate-500 border border-black/5">
+                          {msg.status}
+                        </span>
+                      </div>
+
+                      <div className="space-y-2 pl-1">
+                        <ol className="list-decimal list-inside space-y-1.5">
+                          {msg.content.items.map((item, i) => (
+                            <li key={i} className="text-[13px] text-slate-600 leading-relaxed font-mono" dangerouslySetInnerHTML={{ __html: item }} />
+                          ))}
+                        </ol>
+                      </div>
+
+                      <div className="bg-[#002147]/5 p-2 rounded-lg border-l-2 border-[#002147]">
+                        <p className="text-[12px] italic text-slate-500 font-mono">{msg.footer}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
-              <p className="font-semibold">Next Milestone:</p>
-              <p>Deploy <em>Smart Automation</em> untuk rujukan otomatis ke fasilitas tingkat lanjut.</p>
-            </div>
+            ))}
           </div>
-        </div>
+
+          {/* Panel Footer */}
+          <div className="p-3 bg-black/5 text-center rounded-b-2xl">
+            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.3em]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>End of Transmission</span>
+          </div>
+        </motion.div>
       )}
 
-      {/* Back Button */}
-      {onBack && (
-        <button
-          onClick={onBack}
-          className="fixed top-6 left-6 z-50 flex items-center gap-2 px-5 py-2.5 bg-white border rounded-full text-[14px] font-medium transition-all cursor-pointer hover:border-[#1c1c1c]"
-          style={{ borderColor: tokens.border, color: tokens.gray }}
-        >
-          <ArrowLeft size={16} />
-          Back
-        </button>
-      )}
+      {/* Back Button removed */}
 
       {/* Main Content */}
       <main className="relative z-10 max-w-[900px] mx-auto px-8">
 
+                                {/* Left Side: Health Intel / News Widget (Collapsible) */}
+
+                                <div 
+
+                                  ref={newsPanelRef}
+
+                                  className="fixed top-1/2 -translate-y-1/2 z-40 transition-transform duration-500 cubic-bezier(0.34, 1.56, 0.64, 1) flex"
+
+                                  style={{ 
+
+                                    left: 0,
+
+                                    transform: isNewsOpen ? 'translateX(0)' : 'translateX(-100%)' 
+
+                                  }}
+
+                                >
+
+                                   <div className="flex flex-col gap-0">
+                     {/* Kediri Radar Widget (Moved to Top) */}
+                     <div 
+                       className="w-56 p-3 rounded-tr-lg border-t border-r border-black/10 shadow-lg transition-all duration-300"
+                       style={{ 
+                         backgroundColor: tokens.cardBg,
+                       }}
+                     >
+                        <div className="flex items-center gap-2 pb-2.5 mb-2.5 border-b border-black/5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse miniature-ping"/>
+                          <span className="text-[13px] font-bold uppercase tracking-[0.05em]" style={{ color: tokens.dark, fontFamily: "'JetBrains Mono', monospace" }}>KEDIRI RADAR</span>
+                        </div>
+                        
+                        <div className="space-y-2 p-2 rounded-xl" style={{ boxShadow: 'inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8)', backgroundColor: 'rgba(0,0,0,0.01)' }}>
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-medium" style={{ color: tokens.gray, fontFamily: "'JetBrains Mono', monospace" }}>DBD</span>
+                              <span className="text-[8px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100">WASPADA (98%)</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-medium" style={{ color: tokens.gray, fontFamily: "'JetBrains Mono', monospace" }}>TBC</span>
+                              <span className="text-[8px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">AMAN (92%)</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-medium" style={{ color: tokens.gray, fontFamily: "'JetBrains Mono', monospace" }}>HIV</span>
+                              <span className="text-[8px] font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded border border-amber-100">STABIL (100%)</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-medium" style={{ color: tokens.gray, fontFamily: "'JetBrains Mono', monospace" }}>GIZI</span>
+                              <span className="text-[8px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">TURUN (0.1%)</span>
+                            </div>
+                        </div>
+                     </div>
+        
+                     {/* SENTRA NEWS Widget */}
+                     <div 
+                       className="w-56 p-3 rounded-br-lg border-b border-r border-black/10 shadow-lg relative"
+                       style={{ 
+                         backgroundColor: tokens.cardBg,
+                       }}
+                     >
+                                        {/* Header */}
+                                        <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-black/5">
+                                           <div className="flex items-center gap-2">
+                                              <div className="w-1.5 h-1.5 bg-[#E03D00] rounded-full animate-pulse"/>
+                                              <span className="text-[13px] font-bold uppercase tracking-[0.05em]" style={{ color: tokens.dark, fontFamily: "'JetBrains Mono', monospace" }}>SENTRA NEWS</span>
+                                           </div>
+                                           <button onClick={() => setIsNewsOpen(false)} className="hover:bg-black/5 p-1 rounded">
+                                              <ChevronLeft size={14} className="animate-pulse" style={{ color: '#E03D00' }} />
+                                           </button>
+                                        </div>        
+                        {/* News Feed */}
+                        <div className="space-y-4 p-2.5 rounded-xl" style={{ boxShadow: 'inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8)', backgroundColor: 'rgba(0,0,0,0.01)' }}>
+                           {healthIntel.map((item, idx) => (
+                             <div key={idx} className="group cursor-pointer" onClick={() => item.link && window.open(item.link, '_blank')}>
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-[7px] font-mono opacity-50">{item.time}</span>
+                                  <span className={`text-[6px] font-bold px-1 py-0.5 rounded bg-${item.color}-100 text-${item.color}-600`}>
+                                    {item.type}
+                                  </span>
+                                </div>
+                                <p className="text-[10px] font-medium leading-relaxed group-hover:text-[#E03D00] transition-colors line-clamp-3" style={{ color: tokens.dark, fontFamily: "'JetBrains Mono', monospace" }}>
+                                   {item.content}
+                                </p>
+                             </div>
+                           ))}
+                        </div>
+        
+                        {/* Footer */}
+                        <div className="mt-4 pt-3 border-t border-black/5 text-center">
+                          <div className="flex flex-col items-center gap-1 opacity-50">
+                            <span className="text-[7px] font-black uppercase tracking-widest">Sentinel Last Sync</span>
+                            <span className="text-[9px] font-bold">{lastUpdated}</span>
+                          </div>
+                        </div>
+                     </div>
+                   </div>
+        
+                   {/* Toggle Button (Visible when closed) */}
+        
+                   {/* Toggle Button (Visible when closed) */}
+                   <button 
+                     onClick={() => setIsNewsOpen(!isNewsOpen)}
+                     className={`absolute left-full top-12 bg-[#002147] text-white p-2 rounded-r-lg shadow-md hover:bg-[#E03D00] transition-colors ${isNewsOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                     title="Open News"
+                   >
+                     <ChevronRight size={16} />
+                   </button>
+                </div>
         {/* Hero Section */}
-        <section className="pt-[100px] pb-20 flex flex-col items-center gap-16">
+        <section className="pt-[60px] pb-10 flex flex-col items-center gap-10">
 
           {/* Heading */}
-          <div className="flex flex-col items-center gap-10 w-full">
+          <div className="flex flex-col items-center gap-8 w-full">
 
             {/* Content */}
             <div className="flex flex-col items-center gap-10 w-full">
@@ -460,54 +792,81 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
               {/* Text Block */}
               <div className="flex flex-col items-center gap-4 w-full">
 
-                {/* Status Badge */}
-                <div
-                  className="flex items-center gap-2.5 px-5 py-2.5 rounded-full"
-                  style={{ backgroundColor: tokens.badgeBg }}
-                >
-                  <div className="relative">
-                    <div
-                      className="w-2.5 h-2.5 rounded-full animate-ping absolute"
-                      style={{ backgroundColor: tokens.green, opacity: 0.3 }}
-                    />
-                    <div
-                      className="w-2.5 h-2.5 rounded-full relative"
-                      style={{ backgroundColor: tokens.green }}
-                    />
-                  </div>
-                  <span className="text-[14px] font-medium" style={{ color: tokens.dark }}>
-                    Beta goes live soon
-                  </span>
-                </div>
-
                 {/* Title */}
                 <h1
-                  className="text-center leading-[1.1] space-y-1"
-                  style={{ color: tokens.dark, letterSpacing: '-0.06em', maxWidth: 560, fontFamily: "'Geist', sans-serif" }}
+                  className="text-center leading-[1.1] space-y-1 mb-0"
+                  style={{ 
+                    color: tokens.dark, 
+                    letterSpacing: '-0.06em', 
+                    maxWidth: 560, 
+                    fontFamily: "'Geist', sans-serif",
+                    textShadow: '2px 2px 3px rgba(0,0,0,0.07), -2px -2px 3px rgba(255,255,255,0.8)'
+                  }}
                 >
-                  <span className="block text-[32px] font-medium tracking-[0.01em]" style={{ color: tokens.gray }}>
-                    Sentra Solutions
-                  </span>
-                  <span className="block text-[64px] font-semibold">
-                    Referra
-                    <span
-                      className="italic font-light"
-                      style={{
-                        color: tokens.coral
-                      }}
-                    >
-                      Link
-                    </span>
+                  <span className="block text-[64px] font-semibold tracking-tighter">
+                    REFERRA
+                    <TypewriterLink />
                   </span>
                 </h1>
 
-              {/* Subtitle */}
-              <p
-                className="text-[18px] text-center leading-relaxed"
-                style={{ color: tokens.gray, maxWidth: 540, fontFamily: "'Geist', sans-serif" }}
-              >
-                You don't have to ask again <span style={{ color: tokens.coral, fontStyle: 'italic' }}>"Diagnosa rujukan apa, Dok?"</span> — All you need is here.
-              </p>
+                {/* Dock Demo */}
+                <div className="mb-4 scale-75 -mt-4">
+                  <DockDemo />
+                </div>
+
+                {/* Social Proof */}
+                <div className="flex items-center gap-4">
+                  {/* Avatar Stack */}
+                  <div className="flex -space-x-2">
+                    {[
+                      'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=80&h=80&fit=crop&crop=face',
+                      'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=80&h=80&fit=crop&crop=face',
+                      'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=80&h=80&fit=crop&crop=face'
+                    ].map((src, i) => (
+                      <img
+                        key={i}
+                        src={src}
+                        alt={`Healthcare professional ${i + 1}`}
+                        className="w-10 h-10 rounded-full border-2 border-white object-cover"
+                        style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+                      />
+                    ))}
+                  </div>
+                  {/* Text with neumorphic background pill (Inset) */}
+                  <div 
+                    className="flex items-center gap-1.5 px-5 py-2 rounded-full border border-white/10"
+                    style={{ 
+                      backgroundColor: 'rgba(0,0,0,0.01)',
+                      boxShadow: 'inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8)'
+                    }}
+                  >
+                    <TextScramble 
+                      as="span" 
+                      trigger={scrambleTrigger} 
+                      className="text-[18px]" 
+                      style={{ color: tokens.dark }}
+                    >
+                      Join
+                    </TextScramble>
+                    <TextScramble 
+                      as="span" 
+                      trigger={scrambleTrigger} 
+                      className="text-[18px] font-medium" 
+                      style={{ color: tokens.dark }}
+                    >
+                      8,258
+                    </TextScramble>
+                    <Plus size={16} style={{ color: tokens.dark }} />
+                    <TextScramble 
+                      as="span" 
+                      trigger={scrambleTrigger} 
+                      className="text-[18px]" 
+                      style={{ color: tokens.dark }}
+                    >
+                      Sentra Healthcare Solutions Group
+                    </TextScramble>
+                  </div>
+                </div>
             </div>
 
               {/* Input Form */}
@@ -528,35 +887,21 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                   <button
                     onClick={handleGenerate}
                     disabled={isLoading || !diagnosis.trim()}
-                    className="px-7 py-3.5 rounded-full text-[14px] font-semibold uppercase tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="px-7 py-3.5 rounded-full text-[14px] font-medium cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     style={{
                       backgroundColor: isLoading ? tokens.gray : tokens.dark,
                       color: iconOnDark,
                       boxShadow: shadowBtn,
-                      transform: isLoading ? 'scale(0.97)' : 'scale(1)',
-                      transition: 'transform 200ms ease-out, background-color 300ms ease-out, box-shadow 300ms ease-out',
-                      animation: isLoading ? 'pulseGlow 1.5s ease-in-out infinite' : 'none'
-                    }}
-                    onMouseDown={(e) => {
-                      if (!isLoading) (e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.95)';
-                    }}
-                    onMouseUp={(e) => {
-                      if (!isLoading) (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isLoading) (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
+                      transition: 'background-color 300ms ease-out'
                     }}
                   >
                     {isLoading ? (
                       <>
                         <Loader2 size={16} className="animate-spin" />
-                        <span style={{
-                          opacity: 0,
-                          animation: 'fadeInSmooth 400ms ease-out 100ms forwards'
-                        }}>Menganalisis...</span>
+                        <span>Menganalisis...</span>
                       </>
                     ) : (
-                      'Proses'
+                      'Generate'
                     )}
                   </button>
                 </div>
@@ -574,33 +919,6 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                   onClearCache={handleClearCache}
                 />
               )}
-
-              {/* Social Proof */}
-              <div className="flex items-center gap-4">
-                {/* Avatar Stack */}
-                <div className="flex -space-x-2">
-                  {[
-                    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=80&h=80&fit=crop&crop=face',
-                    'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=80&h=80&fit=crop&crop=face',
-                    'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=80&h=80&fit=crop&crop=face'
-                  ].map((src, i) => (
-                    <img
-                      key={i}
-                      src={src}
-                      alt={`Healthcare professional ${i + 1}`}
-                      className="w-10 h-10 rounded-full border-2 border-white object-cover"
-                      style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
-                    />
-                  ))}
-                </div>
-                {/* Text */}
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[18px]" style={{ color: tokens.dark }}>Join</span>
-                  <span className="text-[18px] font-medium" style={{ color: tokens.dark }}>8,258</span>
-                  <Plus size={16} style={{ color: tokens.dark }} />
-                  <span className="text-[18px]" style={{ color: tokens.dark }}>Sentra Healthcare Solutions Group</span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -610,31 +928,34 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
               icon={<FileText size={18} />}
               tag="Smart Automation"
               title="Surat Keterangan Sakit"
+              subtitle="Pemeriksaan Dokter"
               onClick={() => setShowSickLeaveModal(true)}
             />
             <FeatureCard
               icon={<FileText size={18} />}
               tag="Smart Automation"
               title="Surat Keterangan Sehat"
+              subtitle="Pemeriksaan Tenaga Medis"
               onClick={() => setShowHealthCertModal(true)}
             />
             <FeatureCard
               icon={<Building2 size={18} />}
               tag="Smart Hospital"
               title="Permohonan Rujukan"
+              subtitle="12 RS Rujukan"
               onClick={() => {
                 // Pre-fill with current diagnosis result if available
                 if (result) {
                   setReferralData({
                     ...referralData,
-                    diagnosa: result.proposed_referrals?.[0]?.description || result.description || diagnosis,
-                    gejala: result.evidence?.red_flags?.join(', ') || result.clinical_notes || ''
+                    diagnosaKerja: result.proposed_referrals?.[0]?.description || result.description || diagnosis,
+                    keluhan: result.evidence?.red_flags?.join(', ') || result.clinical_notes || ''
                   });
                 } else if (diagnosis) {
                   setReferralData({
                     ...referralData,
-                    diagnosa: diagnosis,
-                    gejala: ''
+                    diagnosaKerja: diagnosis,
+                    keluhan: ''
                   });
                 }
                 setShowReferralModal(true);
@@ -642,93 +963,123 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
             />
           </div>
 
-          {/* Second Row - Genetic Growth Map */}
-          <div className="w-full pt-5">
+          {/* New Graph Row (1.5 : 1.5 Split) */}
+          <div className="grid grid-cols-2 gap-5 w-full pt-5">
+            
+            {/* Left: Statistic Graph */}
             <div
-              className="relative pt-8 cursor-pointer transition-all"
-              onClick={() => setShowGeneticMap(!showGeneticMap)}
+              className="p-6 rounded-3xl relative overflow-hidden group cursor-pointer transition-all duration-300"
+              style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = `0 0 0 0.5px ${tokens.coral}`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
-              {/* Icon Circle */}
-              <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10"
-                style={{ backgroundColor: tokens.dark, boxShadow: shadowBtn }}
-              >
-                <span style={{ color: iconOnDark }}>
-                  <Network size={18} />
-                </span>
-              </div>
-              {/* Header Card */}
-              <div
-                className="pt-12 pb-6 px-5 rounded-3xl transition-all"
-                style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
-              >
-                <div className="flex items-center justify-between gap-6">
-                  {/* Left - Title */}
-                  <div className="text-left flex-1">
-                    <h6 className="text-[18px] font-semibold mb-2" style={{ color: tokens.dark, fontFamily: "'Geist', sans-serif" }}>
-                      Smart Automation
-                    </h6>
-                    <p className="text-[18px]" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
-                      Genetic Growth Map
-                    </p>
-                    <p className="text-[18px] mt-1 opacity-70" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
-                      Visualisasi Jaringan Rujukan
-                    </p>
-                    <div className="mt-3 text-[18px] text-slate-500">
-                      {showGeneticMap ? '▲ Sembunyikan Peta' : '▼ Tampilkan Peta'}
+               <div className="flex justify-between items-start mb-8">
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h6 className="text-[16px] font-semibold" style={{ color: tokens.dark, fontFamily: "'Geist', sans-serif" }}>Tren Diagnosis</h6>
+                      <span className="flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
                     </div>
+                    <p className="text-[11px] font-bold uppercase tracking-wider" style={{ color: tokens.gray }}>Sentra Network Live Data</p>
                   </div>
+                  <div className="px-2.5 py-1 rounded-lg bg-white/50 border border-black/5 text-[10px] font-bold text-emerald-600 flex items-center gap-1">
+                    <TrendingUp size={12} />
+                    +12.5%
+                  </div>
+               </div>
 
-                  {/* Right - Statistics */}
-                  <div className="flex gap-6">
-                    {(() => {
-                      const stats = getNetworkStats();
+               {/* Dynamic Bars with Inset Container */}
+               <div className="h-32 w-full p-4 rounded-2xl mb-2" style={{ boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.06), inset -2px -2px 6px rgba(255,255,255,0.8)', backgroundColor: 'rgba(0,0,0,0.01)' }}>
+                 <div className="h-full w-full flex items-end justify-between gap-3 px-1">
+                    {chartData.map((d, i) => {
+                      const maxVal = Math.max(...chartData.map(c => c.value));
+                      const height = (d.value / maxVal) * 100;
                       return (
-                        <>
-                          <div className="text-center px-4">
-                            <div className="text-3xl font-black" style={{ color: tokens.coral }}>
-                              {stats.totalFaskes}
-                            </div>
-                            <div className="text-xs font-semibold mt-1" style={{ color: tokens.gray }}>
-                              FASKES
-                            </div>
-                          </div>
-                          <div className="text-center px-4">
-                            <div className="text-3xl font-black" style={{ color: tokens.coral }}>
-                              {stats.totalPatients.toLocaleString()}
-                            </div>
-                            <div className="text-xs font-semibold mt-1" style={{ color: tokens.gray }}>
-                              PASIEN
-                            </div>
-                          </div>
-                          <div className="text-center px-4">
-                            <div className="text-3xl font-black" style={{ color: tokens.coral }}>
-                              {stats.totalConnections}
-                            </div>
-                            <div className="text-xs font-semibold mt-1" style={{ color: tokens.gray }}>
-                              RUJUKAN
-                            </div>
-                          </div>
-                        </>
+                        <div key={i} className="w-full relative group/bar flex flex-col justify-end items-center gap-1 h-full">
+                           <span className="text-[11px] font-bold opacity-0 group-hover/bar:opacity-100 transition-opacity absolute -top-5 whitespace-nowrap" style={{ color: tokens.dark }}>{d.value}</span>
+                           <div 
+                            className="w-full rounded-t-sm transition-all duration-500 ease-out group-hover/bar:bg-opacity-80"
+                            style={{ 
+                              height: `${height}%`, 
+                              backgroundColor: height === 100 ? tokens.dark : '#cbd5e1' // Darkest for peak
+                            }} 
+                           />
+                           <span className="text-[10px] font-bold truncate w-full text-center opacity-0 group-hover/bar:opacity-100 absolute bottom-1 text-white mix-blend-difference">{d.label.substring(0, 3)}</span>
+                        </div>
                       );
-                    })()}
-                  </div>
-                </div>
-              </div>
+                    })}
+                 </div>
+               </div>
+
+               {/* Legend below chart */}
+               <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 justify-center">
+                 {chartData.map((d, i) => (
+                   <div key={i} className="flex items-center gap-2">
+                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: d.value === Math.max(...chartData.map(c => c.value)) ? tokens.dark : '#cbd5e1' }}></div>
+                     <span className="text-[12px] font-medium" style={{ color: tokens.gray }}>
+                       {d.label}: <span className="font-bold" style={{ color: tokens.dark }}>{d.value}</span>
+                     </span>
+                   </div>
+                 ))}
+               </div>
             </div>
 
-            {/* Embedded Map - Expands when clicked */}
-            {showGeneticMap && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
-                className="mt-5 overflow-hidden"
-              >
-                <GeneticGrowthMapLeaflet />
-              </motion.div>
-            )}
+            {/* Right: Referral Graph */}
+            <div
+              className="p-6 rounded-3xl relative overflow-hidden group cursor-pointer transition-all duration-300"
+              style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = `0 0 0 0.5px ${tokens.coral}`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+               <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h6 className="text-[16px] font-semibold" style={{ color: tokens.dark, fontFamily: "'Geist', sans-serif" }}>Rujukan Eksternal</h6>
+                    <p className="text-[11px] font-bold uppercase tracking-wider" style={{ color: tokens.gray }}>Real-time Referral Flow</p>
+                  </div>
+                  <div className="px-2.5 py-1 rounded-lg bg-white/50 border border-black/5 flex flex-col items-end leading-tight">
+                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Last Update</span>
+                    <span className="text-[10px] font-black text-emerald-600">JUST NOW</span>
+                  </div>
+               </div>
+
+               {/* Dynamic Bars for Referrals with Inset Container */}
+               <div className="p-4 rounded-2xl" style={{ boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.06), inset -2px -2px 6px rgba(255,255,255,0.8)', backgroundColor: 'rgba(0,0,0,0.01)' }}>
+                 <div className="space-y-3">
+                    {referralChartData.map((d, i) => {
+                      const maxVal = Math.max(...referralChartData.map(c => c.value));
+                      const width = (d.value / maxVal) * 100;
+                      return (
+                        <div key={i} className="w-full flex items-center gap-3 group/bar">
+                           <div className="w-24 text-right">
+                              <span className="text-[10px] font-medium truncate block" style={{ color: tokens.gray }} title={d.label}>{d.label}</span>
+                           </div>
+                           <div className="flex-1 h-3 bg-slate-200 rounded-full overflow-hidden relative">
+                              <div 
+                                className="h-full rounded-full transition-all duration-500 ease-out group-hover/bar:bg-opacity-80"
+                                style={{ 
+                                  width: `${width}%`, 
+                                  backgroundColor: i === 0 ? tokens.coral : '#fca5a5' // Darkest for peak
+                                }} 
+                              />
+                           </div>
+                           <span className="text-[10px] font-bold w-8" style={{ color: tokens.dark }}>{d.value}</span>
+                        </div>
+                      );
+                    })}
+                 </div>
+               </div>
+            </div>
+
           </div>
         </section>
 
@@ -752,7 +1103,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
             data={sickLeaveData}
             config={institutionConfig}
             onClose={() => setShowLetterPreview(false)}
-            letterRef={letterRef}
+            letterRef={letterRef as React.RefObject<HTMLDivElement>}
           />
         )}
 
@@ -775,7 +1126,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
             data={healthCertData}
             config={institutionConfig}
             onClose={() => setShowHealthCertPreview(false)}
-            letterRef={healthCertRef}
+            letterRef={healthCertRef as React.RefObject<HTMLDivElement>}
           />
         )}
 
@@ -790,7 +1141,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
         )}
 
         {/* Mission Section */}
-        <section className="py-20">
+        <section className="pt-2 pb-2">
           <div
             className="rounded-3xl p-3"
             style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
@@ -816,11 +1167,19 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                   New Era of Human-AI Healthcare
                 </h3>
 
-                <p className="text-[18px] leading-relaxed" style={{ color: tokens.gray }}>
-                  The future of healthcare isn't about replacing the human touch; it is about securing it.
-                  At Sentra, we are architecting a new era of Augmented Humanity—where ethical intelligence
-                  handles the complexity of data, so healthcare professionals can focus entirely on the complexity of care.
-                </p>
+                <div 
+                  className="p-6 rounded-2xl"
+                  style={{ 
+                    boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.05), inset -2px -2px 6px rgba(255,255,255,0.8)', 
+                    backgroundColor: 'rgba(0,0,0,0.01)' 
+                  }}
+                >
+                  <p className="text-[16px] leading-relaxed" style={{ color: tokens.gray }}>
+                    The future of healthcare isn't about replacing the human touch; it is about securing it.
+                    At Sentra, we are architecting a new era of Augmented Humanity—where ethical intelligence
+                    handles the complexity of data, so healthcare professionals can focus entirely on the complexity of care.
+                  </p>
+                </div>
 
                 {/* Info Items */}
                 <div className="space-y-2">
@@ -853,7 +1212,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20">
+        <section className="pt-0 pb-20">
           {/* Heading */}
           <div className="flex flex-col items-center gap-5 mb-10">
             <div
@@ -930,7 +1289,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
 // Sub-components
 const FeatureCard = ({ icon, tag, title, subtitle, onClick }: { icon: React.ReactNode; tag: string; title: string; subtitle?: string; onClick?: () => void }) => (
   <div
-    className="relative pt-8 cursor-pointer transition-transform hover:scale-[1.02] active:scale-[0.98]"
+    className="relative pt-8 cursor-pointer"
     onClick={onClick}
   >
     {/* Icon Circle */}
@@ -942,17 +1301,23 @@ const FeatureCard = ({ icon, tag, title, subtitle, onClick }: { icon: React.Reac
     </div>
     {/* Card */}
     <div
-      className="pt-12 pb-8 px-5 rounded-3xl text-center"
+      className="pt-12 pb-8 px-5 rounded-3xl text-center transition-all duration-300"
       style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 0 0 0.5px ${tokens.coral}`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = 'none';
+      }}
     >
       <h6 className="text-[18px] font-semibold mb-2" style={{ color: tokens.dark, fontFamily: "'Geist', sans-serif" }}>
         {tag}
       </h6>
-      <p className="text-[18px]" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
+      <p className="text-[16px]" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
         {title}
       </p>
       {subtitle && (
-        <p className="text-[18px] mt-1 opacity-70" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
+        <p className="text-[10px] mt-1 font-semibold uppercase tracking-wider" style={{ color: '#10b981', fontFamily: "'Geist', sans-serif" }}>
           {subtitle}
         </p>
       )}
@@ -963,7 +1328,7 @@ const FeatureCard = ({ icon, tag, title, subtitle, onClick }: { icon: React.Reac
 const InfoItem = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-center gap-3">
     <span className="text-[14px] font-semibold" style={{ color: tokens.dark }}>{label}</span>
-    <span className="text-[18px]" style={{ color: tokens.gray }}>{value}</span>
+    <span className="text-[16px]" style={{ color: tokens.gray }}>{value}</span>
   </div>
 );
 
@@ -1240,32 +1605,56 @@ const DiagnosisResultCard = ({
             ))}
           </svg>
 
-          {/* Left Side - AI Provider Icons */}
-          <div className="absolute left-0 flex flex-col gap-10" style={{ transform: 'translateY(-50%)', top: '50%' }}>
-            {aiProviders.map((provider, idx) => (
-              <div
-                key={provider.name}
-                className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                style={{
-                  backgroundColor: '#f6fbff',
-                  boxShadow: sekamShadow,
-                  opacity: 0,
-                  animation: `iconPop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) ${idx * 150}ms forwards`
-                }}
-              >
+          {/* Left Side - AI Provider Icons with Labels */}
+          <div className="absolute flex flex-col gap-10" style={{ transform: 'translateY(-50%)', top: '50%', left: '-150px' }}>
+            {aiProviders.map((provider, idx) => {
+              const agentParts = [
+                ['The', 'Intake', 'Agent'],
+                ['The', 'Reasoning', 'Agent'],
+                ['The', 'Output', 'Agent']
+              ];
+              return (
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: tokens.dark }}
+                  key={provider.name}
+                  className="flex items-center gap-3"
+                  style={{
+                    opacity: 0,
+                    animation: `iconPop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) ${idx * 150}ms forwards`
+                  }}
                 >
-                  <img
-                    src={provider.icon}
-                    alt={provider.name}
-                    className="w-6 h-6"
-                    style={{ filter: 'brightness(0) invert(1)' }}
-                  />
+                  <div className="text-right" style={{ minWidth: '100px' }}>
+                    {agentParts[idx].map((line, lineIdx) => (
+                      <div
+                        key={lineIdx}
+                        className="text-xs font-semibold uppercase tracking-wider hidden md:block"
+                        style={{ color: tokens.gray, lineHeight: '1.2' }}
+                      >
+                        {line}
+                      </div>
+                    ))}
+                  </div>
+                  <div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+                    style={{
+                      backgroundColor: '#f6fbff',
+                      boxShadow: sekamShadow
+                    }}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: tokens.dark }}
+                    >
+                      <img
+                        src={provider.icon}
+                        alt={provider.name}
+                        className="w-5 h-5"
+                        style={{ filter: 'brightness(0) invert(1)' }}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Center Logo - Sentra Brain */}
@@ -1370,6 +1759,8 @@ const DiagnosisResultCard = ({
 
   // Generate medical interventions for clinicians
   const getMedicalInterventions = (idx: number) => {
+    if (!result) return [];
+
     const clinicalNotes = result.clinical_notes || '';
     const reasoning = displayReferrals[idx]?.clinical_reasoning || '';
     const assessment = result.assessment;
@@ -1475,13 +1866,26 @@ const DiagnosisResultCard = ({
                 setTimeout(() => { el.style.opacity = '0'; }, 1200);
               }
             }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center z-10 cursor-pointer transition-transform hover:scale-105 active:scale-95"
-            style={{ backgroundColor: tokens.dark, boxShadow: shadowBtn }}
+            className="absolute top-0 left-1/2 -translate-x-1/2 px-8 py-2.5 rounded-xl text-[13px] font-semibold uppercase tracking-wider cursor-pointer flex items-center justify-center z-10"
+            style={{
+              backgroundColor: tokens.dark,
+              color: iconOnDark,
+              boxShadow: shadowBtn,
+              transform: 'scale(1)',
+              transition: 'transform 200ms ease-out, background-color 300ms ease-out, box-shadow 300ms ease-out'
+            }}
+            onMouseDown={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.95)';
+            }}
+            onMouseUp={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
+            }}
             title="Klik untuk copy kode ICD-10"
           >
-            <span style={{ color: iconOnDark, fontFamily: "'Geist', sans-serif" }} className="text-[12px] font-semibold">
-              {ref.code}
-            </span>
+            {ref.code}
             {/* Copy Toast */}
             <span
               id={`copy-toast-${idx}`}
@@ -1493,18 +1897,24 @@ const DiagnosisResultCard = ({
           </button>
           {/* Card */}
           <div
-            className="relative pt-12 pb-6 px-5 rounded-3xl text-center"
+            className="relative pt-12 pb-6 px-5 rounded-3xl text-center transition-all duration-300"
             style={{ backgroundColor: tokens.cardBg, border: cardBorder }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = `0 0 0 0.5px ${tokens.coral}`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           >
             {/* Certified Label */}
             <span
               className="absolute top-3 left-4 text-[10px] font-bold uppercase tracking-wider"
-              style={{ color: '#E03D00' }}
+              style={{ color: '#10b981' }}
             >
               Certified
             </span>
             <p
-              className="text-[18px] font-semibold leading-relaxed mb-1 line-clamp-3 h-[5.4rem]"
+              className="text-[18px] font-semibold leading-relaxed mb-0 line-clamp-3 h-[5.4rem]"
               style={{ color: tokens.dark, fontFamily: "'Geist', sans-serif" }}
               title={ref.description}
             >
@@ -1512,7 +1922,7 @@ const DiagnosisResultCard = ({
             </p>
             {/* Confidence Percentage */}
             <p
-              className="text-[14px] font-bold mb-2 flex items-center justify-center gap-1"
+              className="text-[14px] font-bold mb-3 flex items-center justify-center gap-1"
               style={{ color: idx === 0 ? '#10b981' : '#f59e0b' }}
             >
               {idx === 0 ? (
@@ -1592,7 +2002,7 @@ const DiagnosisResultCard = ({
                   </ul>
 
                   {/* Tanda Bahaya */}
-                  {result.evidence?.red_flags && result.evidence.red_flags.length > 0 && (
+                  {result?.evidence?.red_flags && result.evidence.red_flags.length > 0 && (
                     <div className="mt-4 pt-3 border-t" style={{ borderColor: tokens.border }}>
                       <p className="text-[12px] font-semibold uppercase tracking-wider mb-2" style={{ color: tokens.coral, fontFamily: "'Geist', sans-serif" }}>
                         Tanda Bahaya
@@ -1612,7 +2022,7 @@ const DiagnosisResultCard = ({
                   )}
 
                   {/* Literatur / Guidelines */}
-                  {result.evidence?.guidelines && result.evidence.guidelines.length > 0 && (
+                  {result?.evidence?.guidelines && result.evidence.guidelines.length > 0 && (
                     <div className="mt-3 pt-3 border-t" style={{ borderColor: tokens.border }}>
                       <p className="text-[11px] font-medium italic" style={{ color: tokens.gray, fontFamily: "'Geist', sans-serif" }}>
                         Berdasarkan: {result.evidence.guidelines.slice(0, 2).join(', ')}
@@ -1972,7 +2382,7 @@ const LetterPreviewModal = ({
         <div
           ref={letterRef}
           className="bg-white p-8 border rounded-xl print:border-0 print:p-0"
-          style={{ borderColor: tokens.border, fontFamily: 'Times New Roman, serif', fontSize: '12pt', lineHeight: '1.6' }}
+          style={{ borderColor: tokens.border, fontFamily: 'Geist, sans-serif', fontSize: '12pt', lineHeight: '1.6' }}
         >
           {/* Kop Surat */}
           <div className="flex items-start gap-4 pb-3 border-b-2 border-black mb-6">
@@ -2448,7 +2858,7 @@ const HealthCertificatePreviewModal = ({
         <div
           ref={letterRef}
           className="bg-white p-8 border rounded-xl print:border-0 print:p-0"
-          style={{ borderColor: tokens.border, fontFamily: 'Times New Roman, serif', fontSize: '12pt', lineHeight: '1.6' }}
+          style={{ borderColor: tokens.border, fontFamily: 'Geist, sans-serif', fontSize: '12pt', lineHeight: '1.6' }}
         >
           {/* Kop Surat */}
           <div className="flex items-start gap-4 pb-3 border-b-2 border-black mb-6">

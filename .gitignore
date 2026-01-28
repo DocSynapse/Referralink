@@ -11,6 +11,12 @@ node_modules
 dist
 dist-ssr
 *.local
+pnpm-lock.yaml
+.env
+Credential/
+*.bak
+.bin/
+.claude/
 
 # Editor directories and files
 .vscode/*
@@ -24,3 +30,9 @@ dist-ssr
 *.sw?
 
 .vercel
+.env*.local
+
+# Python memory service artifacts
+services/memory_service/.venv/
+services/memory_service/__pycache__/
+services/memory_service/*.db

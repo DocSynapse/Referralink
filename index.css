@@ -37,6 +37,8 @@ body {
   min-height: 100vh;
 }
 
+
+
 /* TYPOGRAPHY UTILITIES */
 .font-display { font-family: var(--font-body); }
 .font-technical { font-family: var(--font-mono); }
@@ -229,6 +231,15 @@ h2[data-role="triage-title"] {
 
 .animate-marquee {
   animation: marquee 20s linear infinite;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { transform: translateY(0); box-shadow: 0 6px 14px rgba(11,31,58,0.12); }
+  50% { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(11,31,58,0.18); }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2.4s ease-in-out infinite;
 }
 
 @keyframes caretBlink {
@@ -438,6 +449,48 @@ h2[data-role="triage-title"] {
   100% {
     offset-distance: 100%;
     opacity: 0;
+  }
+}
+
+/* Agent Workflow Animations */
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes agentBlink {
+  0%, 66%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  10%, 23% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  16.5% {
+    opacity: 0.6;
+    transform: scale(1.08);
   }
 }
 

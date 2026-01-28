@@ -64,3 +64,23 @@ export interface ProcessedResult {
   durationMs: number;
   status: 'processing' | 'completed' | 'failed';
 }
+
+/**
+ * Streaming callbacks for progressive AI reasoning display
+ */
+export interface StreamCallbacks {
+  onThinkingChunk: (text: string) => void;
+  onComplete: (result: ICD10Result) => void;
+  onError: (error: Error) => void;
+}
+
+/**
+ * Cache entry structure for diagnosis caching
+ */
+export interface CacheEntry {
+  result: ICD10Result;
+  timestamp: number;
+  queryHash: string;
+  originalQuery: string;
+  model: string;
+}

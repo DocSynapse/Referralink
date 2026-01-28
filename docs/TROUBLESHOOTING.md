@@ -707,7 +707,7 @@ fnm use 18
 
 ### Q: How do I contribute fixes?
 
-**A:** See [CONTRIBUTING.md](../CONTRIBUTING.md)
+**A:** See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Q: Where do I report bugs?
 

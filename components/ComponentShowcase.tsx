@@ -224,11 +224,18 @@ export const ComponentShowcase: React.FC<ComponentShowcaseProps> = ({ onBack }) 
 };
 
 // Helper Components
-const SectionHeader = ({ number, icon, title, description }: any) => (
+interface SectionHeaderProps {
+  number: string;
+  icon: React.ReactElement;
+  title: string;
+  description: string;
+}
+
+const SectionHeader = ({ number, icon, title, description }: SectionHeaderProps) => (
   <div className="flex items-start gap-4">
     <div className="w-12 h-12 rounded-2xl bg-[#002147] text-white flex items-center justify-center shadow-lg shadow-blue-900/20 shrink-0 relative overflow-hidden">
       <div className="absolute top-0 left-0 bg-white/10 px-1.5 py-0.5 text-[8px] font-black">{number}</div>
-      {React.cloneElement(icon, { size: 24 })}
+      {React.cloneElement(icon as React.ReactElement<any>, { size: 24 })}
     </div>
     <div>
       <h3 className="text-2xl font-black text-[#002147] tracking-tight">{title}</h3>

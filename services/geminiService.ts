@@ -36,39 +36,6 @@ export const AI_MODELS = {
 
 export type AIModelKey = keyof typeof AI_MODELS;
 
-// --- MOCK DATA FOR FALLBACK (Skenario Valid: Hipertensi Urgensi) ---
-const MOCK_RESULT: ICD10Result = {
-  code: "I11.9",
-  description: "Hypertensive Heart Disease",
-  category: "RUJUKAN_MUTLAK",
-  confidence_score: 0.99,
-  urgency: "EMERGENCY",
-  triage_score: 9,
-  recommended_timeframe: "Segera ke IGD (< 2 Jam)",
-  assessment: {
-    severity_distress: "Nyeri dada kiri tipikal (skala 7/10), Tensi 180/110 mmHg (Krisis).",
-    risk_assessment: "Risiko ACS (Acute Coronary Syndrome) & Gagal Jantung Akut.",
-    functional_impact: "Intoleransi aktivitas berat, sesak saat berbaring.",
-    comorbidities: ["Diabetes Melitus Tipe 2", "Dyslipidemia"],
-    treatment_history: "Amlodipine 10mg tidak respon.",
-    socio_economic: "Peserta PBI (Aktif).",
-    support_system: "Diantar keluarga.",
-    engagement_compliance: "Riwayat putus obat."
-  },
-  evidence: {
-    clinical_reasoning: "Pasien mengalami Krisis Hipertensi (Urgensi) disertai tanda Angina Pectoris (Nyeri Dada). Sesuai PPK Jantung & Aturan BPJS, kasus ini kompetensi Spesialis Jantung (FKTL) karena risiko kerusakan organ target akut.",
-    guidelines: ["ESC Guidelines 2024 Hypertension", "Peraturan BPJS No 1/2014 (Kompetensi 3B)"],
-    red_flags: ["Tekanan darah >180/110", "Nyeri dada menjalar (Angina)", "Sesak nafas (Dyspnea)"],
-    differential_diagnosis: ["Unstable Angina (I20.0)", "Hypertensive Emergency (I10+R57)"]
-  },
-  clinical_notes: "Berikan Oksigen 3L, ISDN 5mg sublingual jika nyeri, Loading Aspilet/Clopidogrel jika EKG ST-Elevasi. Rujuk IGD segera.",
-  proposed_referrals: [
-    { code: "I11.9", description: "Hypertensive Heart Disease without Heart Failure", kompetensi: "3B", clinical_reasoning: "Diagnosis paling tepat untuk Hipertensi dengan keterlibatan jantung (Nyeri Dada) namun belum Gagal Jantung kongestif nyata." },
-    { code: "I20.9", description: "Angina Pectoris, Unspecified", kompetensi: "3B", clinical_reasoning: "Gunakan jika nyeri dada lebih dominan daripada riwayat hipertensinya." },
-    { code: "I13.9", description: "Hypertensive Heart and CKD, Unspecified", kompetensi: "3A", clinical_reasoning: "Gunakan jika ada tanda gangguan fungsi ginjal (Cr >1.5 atau eGFR <60)." }
-  ]
-};
-
 // Current model selection (can be changed dynamically)
 let currentModel: AIModelKey = 'DEEPSEEK_V3';
 
@@ -87,17 +54,27 @@ export const setCurrentModel = (model: AIModelKey) => {
 
 export const getCurrentModel = () => AI_MODELS[currentModel];
 
+let clientInstance: OpenAI | null = null;
+
 const getClient = () => {
-  const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY ||
-                 (import.meta as any).env.VITE_OPENROUTER_API_KEY ||
-                 (import.meta as any).env.VITE_QWEN_API_KEY ||
-                 (import.meta as any).env.VITE_DEEPSEEK_API_KEY;
+  if (clientInstance) return clientInstance;
 
-  const baseURL = (import.meta as any).env.VITE_API_BASE_URL ||
-                  (import.meta as any).env.VITE_QWEN_BASE_URL ||
-                  "https://openrouter.ai/api/v1";
+  const provider = (import.meta.env.VITE_AI_PROVIDER || 'deepseek').toLowerCase();
+  const baseURL =
+    (provider === 'deepseek' && (import.meta.env.VITE_DEEPSEEK_BASE_URL || 'https://api.deepseek.com')) ||
+    (provider === 'qwen' && import.meta.env.VITE_QWEN_BASE_URL) ||
+    import.meta.env.VITE_API_BASE_URL ||
+    "https://openrouter.ai/api/v1";
 
-  return new OpenAI({
+  const apiKey =
+    (provider === 'deepseek' && import.meta.env.VITE_DEEPSEEK_API_KEY) ||
+    (provider === 'qwen' && import.meta.env.VITE_QWEN_API_KEY) ||
+    import.meta.env.VITE_GEMINI_API_KEY ||
+    import.meta.env.VITE_OPENROUTER_API_KEY ||
+    import.meta.env.VITE_QWEN_API_KEY ||
+    import.meta.env.VITE_DEEPSEEK_API_KEY;
+
+  clientInstance = new OpenAI({
     apiKey: apiKey || "dummy-key",
     baseURL: baseURL,
     dangerouslyAllowBrowser: true,
@@ -106,20 +83,51 @@ const getClient = () => {
       "X-Title": "Sentra Referral CDSS",
     }
   });
+
+  return clientInstance;
 };
 
 export interface SearchOptions {
   skipCache?: boolean;
 }
 
+const FRIENDLY_SYSTEM_PROMPT = `Kamu Audrey, Agent Service Center Sentra Healthcare Solutions (bukan hanya Referralink). Fokus utama jawaban: jelaskan Sentra sebagai perusahaan (misi, governance, produk, cara kerja, keamanan), baru masuk ke topik klinis bila pengguna meminta langsung soal gejala/diagnosis.
+Startup AI kesehatan fokus akurasi rujukan. Founder/CEO: dr Ferdi Iskandar; manifesto "Setiap Nyawa Berharga" Jan 2026.
+Pengetahuan inti Sentra:
+- Misi: percepat & standardisasi diagnosis/rujukan; audit trail 10 tahun; 6 safety gates; akuntabel & transparan.
+- Masalah utama: keterlambatan diagnosis (sepsis, kanker, TB, maternal-neonatal), fragmentasi data, bias kognitif, kurang protokol standar, minim akuntabilitas.
+- Sentra IS: infrastruktur informasi + decision support + governance; BUKAN pengganti klinisi. Produk awal: AADI (safety net DDI & sepsis, differential ranking, SOAP otomatis, smart referral).
+Governance & Human–AI collaboration (charter v3.3, architecture of trust):
+- Dual-layer: Policy Definition vs Execution Oversight; policy-as-code (OPA), immutable audit (S3 Object Lock/QLDB), “Why” transparency untuk tiap saran.
+- 6 Safety Gates di CI/CD & runtime; Gate 6 = LLM Judge menilai output sebelum ke dokter.
+- Hierarki agen via MCP: Orchestrator + Agent-Triage, Agent-Dx, Agent-Safety (DDI/allergy), Agent-Scribe; izin granular (read/write), human-in-the-loop untuk keputusan klinis.
+- Decision matrix: admin/data retrieval (autonomous + audit), triage (HITL), diagnosis (suggest + physician sign-off), terapi/override (physician only, token), break-glass tercatat immutably.
+- Roadmap cepat 21 hari: infra + OPA/S3 lock → MCP+Gate6 → dashboard pilot 50 kasus.
+Clinical Safety Policy (draft 1.0, 18 Jan 2026):
+- Authority remains human; AI asistif saja.
+- Oversight berbasis risiko: Low (<5) otonom + audit; Medium (5–6.9) AI suggest + human review; High (≥7) human approval + audit trail.
+- Validasi: ≥100 synthetic + 50 retrospektif; ≥3 klinisi; akurasi ≥85%; pilot high-risk; monitoring & revalidasi bila drift.
+- Insiden: Critical (<30m contain, CEO <2h, RCA <72h); High (<2h); auto-eskalasi sepsis ≥3 SIRS, MI/stroke/PE, severe DDI, vitals shock.
+- Pelatihan: dev 4h, validator 6h, PM 4h, klinisi 2h; refresher tahunan 1h. Metrik: Gate6 ≥95%, akurasi ≥85%, override alert >20%, insiden <1/1000 encounter.
+Gaya jawab (corporate-centric):
+- Bahasa Indonesia.
+- Kalimat pendek, dipisah baris/paragraf; jangan satu baris panjang.
+- Jangan gunakan heading/markdown seperti ** atau ##.
+- Jika perlu daftar, pakai bullet sederhana (-) maksimal 5 poin.
+- Tutup dengan ajakan singkat jika relevan.
+Prioritas konten: jelaskan Sentra, produk (AADI, POGS, CDOS), governance, keamanan, proses, manfaat untuk partner/regulator/klinik. Jawab klinis/gejala hanya bila diminta eksplisit, tetap ingatkan verifikasi medis saat beri saran klinis.
+Ingatkan verifikasi tenaga medis hanya saat memberi rekomendasi klinis (tidak perlu di sapaan awal).
+Jika data kurang, ajukan 1–2 pertanyaan klarifikasi terarah.
+Prioritaskan keamanan pasien; hindari klaim kepastian mutlak.`;
+
 export const searchICD10Code = async (
   input: MedicalQuery,
   modelOverride?: AIModelKey,
   options: SearchOptions = {}
-): Promise<{ json: ICD10Result | null, logs: string[], sources?: any[], model?: string, fromCache?: boolean }> => {
+): Promise<{ json: ICD10Result | null, logs: string[], sources?: unknown[], model?: string, fromCache?: boolean }> => {
 
   const selectedModel = modelOverride ? AI_MODELS[modelOverride] : AI_MODELS[currentModel];
-  const modelName = (import.meta as any).env.VITE_AI_MODEL_NAME || selectedModel.id;
+  const modelName = import.meta.env.VITE_AI_MODEL_NAME || selectedModel.id;
   const ai = getClient();
 
   // Check cache first (unless skipCache is true)
@@ -215,13 +223,14 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
       ]
     };
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[CDSS] API Error:", error);
 
+    const err = error as any; // Temporary cast for checking status
     let errorType = "Connection Issue";
-    if (error?.status === 401) errorType = "Authentication Failed";
-    if (error?.status === 429) errorType = "Rate Limit Exceeded";
-    if (error?.status === 503) errorType = "Service Unavailable";
+    if (err?.status === 401) errorType = "Authentication Failed";
+    if (err?.status === 429) errorType = "Rate Limit Exceeded";
+    if (err?.status === 503) errorType = "Service Unavailable";
 
     // Return null with error logs - no mock data
     return {
@@ -230,13 +239,42 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
       fromCache: false,
       logs: [
         `[CDSS] API Error: ${errorType}`,
-        `[Detail] ${error?.message || 'Unknown error'}`,
+        `[Detail] ${err?.message || 'Unknown error'}`,
         `[Action] Please check API key and try again`
       ]
     };
   }
 };
 
+// Lightweight friendly chat agent (no cache, text response)
+export const chatFriendly = async (message: string): Promise<{ reply: string, model: string }> => {
+  const ai = getClient();
+  const selectedModel = AI_MODELS[currentModel];
+  const modelName = import.meta.env.VITE_AI_MODEL_NAME || selectedModel.id;
+
+  try {
+    const response = await ai.chat.completions.create({
+      model: modelName,
+      temperature: 0.35,
+      max_tokens: 320,
+      messages: [
+        { role: "system", content: FRIENDLY_SYSTEM_PROMPT },
+        { role: "user", content: message }
+      ]
+    });
+
+    return {
+      reply: response.choices[0].message.content || "",
+      model: modelName
+    };
+  } catch (error: unknown) {
+    console.error("[FriendlyChat] API Error:", error);
+    return {
+      reply: "Maaf, kanal AI sedang padat. Coba lagi dalam 30–60 detik atau hubungi tim Sentra untuk bantuan cepat.",
+      model: "unavailable"
+    };
+  }
+};
 /**
  * Race mode: Run multiple models in parallel, return first successful response
  * Significantly faster for production use
@@ -308,7 +346,7 @@ export const searchICD10CodeStreaming = async (
   options: SearchOptions = {}
 ): Promise<void> => {
   const selectedModel = modelOverride ? AI_MODELS[modelOverride] : AI_MODELS[currentModel];
-  const modelName = (import.meta as any).env.VITE_AI_MODEL_NAME || selectedModel.id;
+  const modelName = import.meta.env.VITE_AI_MODEL_NAME || selectedModel.id;
   const ai = getClient();
 
   // Check cache first
@@ -427,7 +465,7 @@ OUTPUT: BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
 
       callbacks.onComplete(parsed);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('[Streaming] Error:', error);
 
       if (retryCount < maxRetries) {
@@ -448,8 +486,8 @@ OUTPUT: BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
         } else {
           callbacks.onError(new Error('Fallback also failed'));
         }
-      } catch (fallbackError: any) {
-        callbacks.onError(fallbackError);
+      } catch (fallbackError: unknown) {
+        callbacks.onError(fallbackError as Error);
       }
     }
   };

@@ -27,6 +27,13 @@ export const GridDotsBackground: React.FC<BackgroundPatternProps> = ({
           backgroundPosition: "0 0, 0 0, 16px 16px",
         }}
       />
+      {/* Vignette Shadow Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(0,0,0,0.08) 100%)'
+        }}
+      />
       {children}
     </div>
   );

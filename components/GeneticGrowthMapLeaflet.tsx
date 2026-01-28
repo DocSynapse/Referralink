@@ -11,6 +11,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Fix Leaflet default marker icon issue with Webpack
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
@@ -272,7 +273,7 @@ export const GeneticGrowthMapLeaflet: React.FC = () => {
         id: `${facility.id}-${targetId}`
       };
     }).filter(Boolean)
-  ) as Array<{ positions: [number, number][]; style: any; id: string }>;
+  ) as Array<{ positions: [number, number][]; style: { color: string; weight: number; opacity: number }; id: string }>;
 
   return (
     <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50' : 'w-full'} bg-slate-100 rounded-2xl overflow-hidden`}>

@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 
 interface SplashScreenProps {
   onComplete?: (portal: 'referralink') => void;
-  onPortalSelect?: (portal: 'referralink') => void;
+  onPortalSelect?: (portal: 'referralink' | 'puskesmas') => void;
   duration?: number;
 }
 
@@ -60,18 +60,19 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     );
 
     // Phase 4: Portal options fade in (1600ms after start, 500ms duration)
-    tl.fromTo(
-      buttonsRef.current?.querySelectorAll('.portal-btn'),
-      { opacity: 0, y: 20 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out'
-      },
-      1.6
-    );
-
+    if (buttonsRef.current) {
+      gsap.fromTo(
+        buttonsRef.current?.querySelectorAll('.portal-btn') as any,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+          delay: 1.6
+        }
+      );
+    }
   }, { scope: containerRef });
 
   return (
@@ -106,8 +107,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       </div>
 
       {/* Portal Selection - Horizontal Layout */}
-      <div ref={buttonsRef} className="mt-12 pt-12 border-t border-white/30 w-full max-w-2xl">
-        <div className="flex items-center justify-center gap-12 px-6">
+      <div ref={buttonsRef} className="mt-12 pt-12 border-t border-white/30 w-full max-w-2xl flex flex-col items-center">
+        <div className="flex items-center justify-center gap-12 px-6 w-full">
           {/* Referralink Option */}
           <button
             onClick={() => onPortalSelect?.('referralink')}
@@ -133,6 +134,24 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               Coming Soon
             </p>
           </div>
+        </div>
+
+        {/* Puskesmas Balowerti Override Node */}
+        <div className="mt-10 portal-btn opacity-0">
+            <button
+                onClick={() => onPortalSelect?.('puskesmas')}
+                className="group relative px-8 py-3 bg-[#00A86B]/10 hover:bg-[#00A86B]/20 border border-[#00A86B]/30 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(0,168,107,0.3)]"
+            >
+                <div className="flex items-center gap-3">
+                    <div className="relative">
+                        <div className="w-2 h-2 rounded-full bg-[#00A86B] animate-pulse relative z-10"></div>
+                        <div className="absolute inset-0 w-2 h-2 rounded-full bg-[#00A86B] animate-ping opacity-50"></div>
+                    </div>
+                    <span className="text-xs font-technical uppercase tracking-[0.2em] text-[#00A86B] group-hover:text-[#4ADE80] transition-colors">
+                        Puskesmas Balowerti Node • 144 DX Active
+                    </span>
+                </div>
+            </button>
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ export default {
       fontFamily: {
         display: ["Geist", "sans-serif"],
         technical: ["JetBrains Mono", "monospace"],
+        mono: ["JetBrains Mono", "monospace"],
       },
       colors: {
         oxford: "#002147",
