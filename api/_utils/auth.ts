@@ -2,7 +2,7 @@
 // Password hashing, token generation, validation
 
 import { createHash, randomBytes, pbkdf2Sync } from 'crypto';
-import type { ValidationError } from '../types/registration';
+import type { ValidationError } from '../_types/registration';
 
 /**
  * Hash password using PBKDF2 with salt

@@ -1,7 +1,7 @@
 // License Verification Service
 // Integration with Indonesian Medical Board APIs (KEMENKES, IDI, etc.)
 
-import type { LicenseVerificationResult, LicenseType } from '../types/registration';
+import type { LicenseVerificationResult, LicenseType } from '../_types/registration';
 
 /**
  * Verify medical license against Indonesian medical board database

@@ -2,16 +2,16 @@
 // Step 4: Complete Onboarding (Terms + HIPAA + API Key Generation)
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import type { ApiResponse, OnboardingData } from '../../lib/api/types/registration';
+import type { ApiResponse, OnboardingData } from '../_types/registration';
 
-import { generateApiKey } from '../../lib/api/utils/auth';
+import { generateApiKey } from '../_utils/auth';
 import {
   completeOnboarding,
   findUserById,
   validateSession,
   logAuditEvent
-} from '../../lib/api/utils/db';
-import { sendWelcomeEmail } from '../../lib/api/services/email';
+} from '../_utils/db';
+import { sendWelcomeEmail } from '../_services/email';
 
 export default async function handler(
   req: VercelRequest,

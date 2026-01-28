@@ -2,11 +2,11 @@
 // Step 2a: Email Verification (Gate 2: Integrity Check)
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import type { ApiResponse } from '../../lib/api/types/registration';
+import type { ApiResponse } from '../_types/registration';
 
-import { verifyEmailWithToken, findUserById, logAuditEvent } from '../../lib/api/utils/db';
-import { verifyMedicalLicense } from '../../lib/api/services/licenseVerification';
-import { updateLicenseVerification } from '../../lib/api/utils/db';
+import { verifyEmailWithToken, findUserById, logAuditEvent } from '../_utils/db';
+import { verifyMedicalLicense } from '../_services/licenseVerification';
+import { updateLicenseVerification } from '../_utils/db';
 
 export default async function handler(
   req: VercelRequest,

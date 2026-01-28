@@ -2,20 +2,20 @@
 // User Login with email and password
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import type { ApiResponse, LoginResponse } from '../../lib/api/types/registration';
+import type { ApiResponse, LoginResponse } from '../_types/registration';
 
 import {
   verifyPassword,
   generateSessionToken,
   checkRateLimit
-} from '../../lib/api/utils/auth';
+} from '../_utils/auth';
 
 import {
   findUserByEmailWithPassword,
   createSession,
   updateLastLogin,
   logAuditEvent
-} from '../../lib/api/utils/db';
+} from '../_utils/db';
 
 export default async function handler(
   req: VercelRequest,
