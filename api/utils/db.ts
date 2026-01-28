@@ -1,8 +1,11 @@
-// Vercel Postgres database utilities
+// Neon Postgres database utilities
 // Connection pooling and query helpers
 
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
 import type { MedicalProfessional } from '../types/registration';
+
+// Initialize Neon client with connection string from environment
+const sql = neon(process.env.POSTGRES_URL!);
 
 /**
  * Create new medical professional in database

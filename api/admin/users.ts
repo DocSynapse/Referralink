@@ -2,9 +2,12 @@
 // Admin endpoint untuk manage medical professionals
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
 import type { ApiResponse, MedicalProfessional } from '../types/registration';
 import { validateSession, findUserById } from '../utils/db';
+
+// Initialize Neon client
+const sql = neon(process.env.POSTGRES_URL!);
 
 export default async function handler(
   req: VercelRequest,
