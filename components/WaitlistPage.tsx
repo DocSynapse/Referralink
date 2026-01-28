@@ -716,12 +716,19 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
     });
   };
 
-  // Admin: Load users when admin modal opens or filter changes
+  // Admin: Load initial stats on mount
   useEffect(() => {
-    if (userIsAdmin && showAdminModal) {
+    if (userIsAdmin) {
+      loadUsers(); // Load with current filter (default: 'all')
+    }
+  }, [userIsAdmin]);
+
+  // Admin: Reload when filter changes
+  useEffect(() => {
+    if (userIsAdmin && userFilter !== 'all') {
       loadUsers();
     }
-  }, [showAdminModal, userFilter]);
+  }, [userFilter]);
 
   const faqs = [
     {
