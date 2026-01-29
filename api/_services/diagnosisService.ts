@@ -9,6 +9,7 @@
 import OpenAI from "openai";
 import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../../constants";
 import { ICD10Result } from "../../types";
+import { circuitBreaker, executeWithCircuitBreaker } from "./circuitBreakerService";
 
 // AI Model Configuration
 export const AI_MODELS = {
@@ -165,51 +166,134 @@ function classifyError(error: any): string {
 }
 
 /**
- * Main diagnosis generation entrypoint
+ * Automatic fallback chain - priority order
+ */
+const FALLBACK_CHAIN: AIModelKey[] = ['DEEPSEEK_V3', 'GLM_CODING', 'QWEN_TURBO'];
+
+/**
+ * Get healthy models from fallback chain (excluding OPEN circuits)
+ */
+async function getHealthyModels(): Promise<AIModelKey[]> {
+  const healthyModels: AIModelKey[] = [];
+
+  for (const modelKey of FALLBACK_CHAIN) {
+    const canExecute = await circuitBreaker.canExecute(modelKey);
+    if (canExecute) {
+      healthyModels.push(modelKey);
+    }
+  }
+
+  return healthyModels;
+}
+
+/**
+ * Main diagnosis generation entrypoint with circuit breaker & automatic fallback
  */
 export async function generateDiagnosis(
   query: string,
   options: GenerateOptions = {}
 ): Promise<DiagnosisResponse> {
   const startTime = Date.now();
-  const modelKey = options.model || 'DEEPSEEK_V3';
 
-  try {
-    console.log(`[DiagnosisService] Generate START - Model: ${modelKey}`);
+  // If specific model requested, try that first
+  if (options.model) {
+    const canExecute = await circuitBreaker.canExecute(options.model);
+    if (canExecute) {
+      try {
+        console.log(`[DiagnosisService] Generate START - Model: ${options.model} (user-specified)`);
 
-    const result = await callAIModel(query, modelKey, options);
-    const latencyMs = Date.now() - startTime;
+        const result = await executeWithCircuitBreaker(
+          options.model,
+          () => callAIModel(query, options.model!, options)
+        );
 
-    console.log(`[DiagnosisService] Generate SUCCESS - Latency: ${latencyMs}ms`);
+        const latencyMs = Date.now() - startTime;
+        console.log(`[DiagnosisService] Generate SUCCESS - Latency: ${latencyMs}ms`);
 
-    return {
-      success: true,
-      data: result,
-      metadata: {
-        fromCache: false,
-        model: AI_MODELS[modelKey].id,
-        latencyMs,
-        timestamp: Date.now()
+        return {
+          success: true,
+          data: result,
+          metadata: {
+            fromCache: false,
+            model: AI_MODELS[options.model].id,
+            latencyMs,
+            timestamp: Date.now()
+          }
+        };
+      } catch (error: any) {
+        console.warn(`[DiagnosisService] User-specified model ${options.model} failed, trying fallback chain`);
+        // Continue to fallback chain
       }
-    };
+    }
+  }
 
-  } catch (error: any) {
+  // Automatic fallback chain with circuit breaker
+  const healthyModels = await getHealthyModels();
+
+  if (healthyModels.length === 0) {
     const latencyMs = Date.now() - startTime;
-    const errorType = classifyError(error);
-
-    console.error(`[DiagnosisService] Generate FAILED - ${errorType}:`, error.message);
+    console.error('[DiagnosisService] All models UNAVAILABLE (circuits OPEN)');
 
     return {
       success: false,
-      error: `AI model error: ${errorType}`,
+      error: 'All AI models temporarily unavailable. Please try again in 30 seconds.',
       metadata: {
         fromCache: false,
-        model: AI_MODELS[modelKey].id,
         latencyMs,
         timestamp: Date.now()
       }
     };
   }
+
+  // Try each healthy model in fallback chain
+  let lastError: Error | null = null;
+
+  for (const modelKey of healthyModels) {
+    try {
+      console.log(`[DiagnosisService] Trying model: ${modelKey} (${healthyModels.indexOf(modelKey) + 1}/${healthyModels.length})`);
+
+      const result = await executeWithCircuitBreaker(
+        modelKey,
+        () => callAIModel(query, modelKey, options)
+      );
+
+      const latencyMs = Date.now() - startTime;
+      console.log(`[DiagnosisService] Generate SUCCESS - Model: ${modelKey}, Latency: ${latencyMs}ms`);
+
+      return {
+        success: true,
+        data: result,
+        metadata: {
+          fromCache: false,
+          model: AI_MODELS[modelKey].id,
+          latencyMs,
+          timestamp: Date.now()
+        }
+      };
+
+    } catch (error: any) {
+      lastError = error;
+      console.warn(`[DiagnosisService] Model ${modelKey} failed:`, error.message);
+      // Circuit breaker already recorded failure via executeWithCircuitBreaker
+      // Continue to next model
+    }
+  }
+
+  // All models failed
+  const latencyMs = Date.now() - startTime;
+  const errorType = classifyError(lastError);
+
+  console.error(`[DiagnosisService] All healthy models FAILED - Last error: ${errorType}`);
+
+  return {
+    success: false,
+    error: `All AI models failed: ${errorType}. Please try again.`,
+    metadata: {
+      fromCache: false,
+      latencyMs,
+      timestamp: Date.now()
+    }
+  };
 }
 
 /**
