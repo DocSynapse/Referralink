@@ -60,11 +60,18 @@ const getClient = (): OpenAI => {
   if (clientInstance) return clientInstance;
 
   // Priority: DeepSeek > OpenRouter
-  const baseURL = process.env.VITE_DEEPSEEK_BASE_URL ||
+  // SERVER-SIDE: Use non-VITE prefixed env vars (runtime accessible)
+  // Fallback to VITE_ for backward compatibility during transition
+  const baseURL = process.env.DEEPSEEK_BASE_URL ||
+                  process.env.API_BASE_URL ||
+                  process.env.VITE_DEEPSEEK_BASE_URL ||
                   process.env.VITE_API_BASE_URL ||
                   "https://openrouter.ai/api/v1";
 
-  const apiKey = process.env.VITE_DEEPSEEK_API_KEY ||
+  const apiKey = process.env.DEEPSEEK_API_KEY ||
+                 process.env.OPENROUTER_API_KEY ||
+                 process.env.GEMINI_API_KEY ||
+                 process.env.VITE_DEEPSEEK_API_KEY ||
                  process.env.VITE_OPENROUTER_API_KEY ||
                  process.env.VITE_GEMINI_API_KEY;
 
