@@ -129,8 +129,6 @@ export const searchICD10Code = async (
 ): Promise<{ json: ICD10Result | null, logs: string[], sources?: unknown[], model?: string, fromCache?: boolean, similarity?: number }> => {
 
   const selectedModel = modelOverride ? AI_MODELS[modelOverride] : AI_MODELS[currentModel];
-  const modelName = import.meta.env.VITE_AI_MODEL_NAME || selectedModel.id;
-  const ai = getClient();
 
   // LAYER 1: Semantic cache DISABLED (CSP violation - client-side fetch blocked)
   // TODO: Move to server-side API endpoint
@@ -186,81 +184,46 @@ export const searchICD10Code = async (
   }
 
   try {
-    // Compact prompt for faster response
-    const prompt = `KASUS: "${input.query}"
+    // LAYER 3: Call server-side API endpoint (no CSP/CORS issues)
+    console.log('[CDSS] Calling server-side /api/diagnosis');
 
-BLACKLIST 4A: ${NON_REFERRAL_DIAGNOSES.slice(0, 10).join(', ')}
-
-TUGAS: Berikan 3 diagnosa alternatif kompetensi 3B/3A yang LOLOS BPJS.
-- JANGAN pakai kode 4A
-- Urutan: [Paling Aman] → [Moderat] → [Agresif Valid]
-- Sertakan tindakan medis & red flags
-
-OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
-
-    // Check if using Gemini (doesn't support response_format)
-    const isGemini = modelName.includes('gemini');
-
-    const response = await ai.chat.completions.create({
-      model: modelName,
-      messages: [
-        { role: "system", content: SYSTEM_INSTRUCTION_REFERRAL },
-        { role: "user", content: prompt }
-      ],
-      temperature: 0.05,
-      max_tokens: 800,
-      ...(isGemini ? {} : { response_format: { type: "json_object" } })
+    const response = await fetch('/api/diagnosis', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: input.query,
+        model: modelOverride || currentModel,
+      }),
     });
 
-    const text = response.choices[0].message.content || "{}";
-
-    // Clean JSON response
-    let jsonStr = text
-      .replace(/```json\n?/g, '')
-      .replace(/```\n?/g, '')
-      .replace(/^\s*[\r\n]/gm, '')
-      .trim();
-
-    // Extract JSON object if there's extra text
-    const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      jsonStr = jsonMatch[0];
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: { message: 'Unknown error' } }));
+      throw new Error(errorData.error?.message || `API returned ${response.status}`);
     }
 
-    // Parse and validate with error handling
-    let parsed: ICD10Result;
+    const apiResponse = await response.json();
+
+    if (!apiResponse.success || !apiResponse.data) {
+      throw new Error('Invalid API response structure');
+    }
+
+    const parsed = apiResponse.data.result as ICD10Result;
+    const returnedModel = apiResponse.data.model;
+
+    console.log('[CDSS] Server API success - Code:', parsed.code);
+
+    // Store in exact match cache
     try {
-      parsed = JSON.parse(jsonStr) as ICD10Result;
-    } catch (parseError) {
-      console.error('[CDSS] JSON Parse Error:', parseError);
-      console.error('[CDSS] Raw response:', text.substring(0, 500));
-      throw new Error('Invalid JSON response from AI model. Please try again.');
-    }
-
-    // Ensure proposed_referrals exists and has at least 3 entries
-    if (!parsed.proposed_referrals || parsed.proposed_referrals.length === 0) {
-      parsed.proposed_referrals = [
-        {
-          code: parsed.code,
-          description: parsed.description,
-          clinical_reasoning: parsed.evidence?.clinical_reasoning || parsed.clinical_notes || "Primary diagnosis"
-        }
-      ];
-    }
-
-    // Store in BOTH caches (exact match + semantic)
-    try {
-      await Promise.all([
-        diagnosisCache.set(input.query, parsed, modelName),
-        semanticCache.set(input.query, parsed, modelName)
-      ]);
+      await diagnosisCache.set(input.query, parsed, returnedModel);
     } catch (cacheError) {
       console.warn('[Cache] Write error:', cacheError);
     }
 
     return {
       json: parsed,
-      model: modelName,
+      model: returnedModel,
       fromCache: false,
       logs: [
         `[CDSS] Clinical Analysis Engine Active`,
@@ -274,11 +237,19 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
   } catch (error: unknown) {
     console.error("[CDSS] API Error:", error);
 
-    const err = error as any; // Temporary cast for checking status
+    const err = error as any;
     let errorType = "Connection Issue";
-    if (err?.status === 401) errorType = "Authentication Failed";
-    if (err?.status === 429) errorType = "Rate Limit Exceeded";
-    if (err?.status === 503) errorType = "Service Unavailable";
+
+    // Check for network errors
+    if (err?.message?.includes('Failed to fetch')) {
+      errorType = "Network Error";
+    } else if (err?.message?.includes('401') || err?.message?.includes('Authentication')) {
+      errorType = "Authentication Failed";
+    } else if (err?.message?.includes('429') || err?.message?.includes('Rate Limit')) {
+      errorType = "Rate Limit Exceeded";
+    } else if (err?.message?.includes('503') || err?.message?.includes('Unavailable')) {
+      errorType = "Service Unavailable";
+    }
 
     // Return null with error logs - no mock data
     return {
@@ -288,7 +259,7 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
       logs: [
         `[CDSS] API Error: ${errorType}`,
         `[Detail] ${err?.message || 'Unknown error'}`,
-        `[Action] Please check API key and try again`
+        `[Action] Please check connection and try again`
       ]
     };
   }
