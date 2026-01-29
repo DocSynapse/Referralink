@@ -1,0 +1,25 @@
+# ReferraLink by Sentra Healthcare Solutions
+# AI-Powered Clinical Referral System
+
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /*.css
+Allow: /*.js
+Allow: /*.svg
+Allow: /*.jpg
+Allow: /*.png
+Allow: /*.webp
+
+# Disallow private/authenticated routes
+Disallow: /#/referralink
+Disallow: /#/augmented
+
+# Disallow API endpoints (internal use only)
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://sentra-referralink.vercel.app/sitemap.xml
+
+# Crawl-delay to be respectful
+Crawl-delay: 1

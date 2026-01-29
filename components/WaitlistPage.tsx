@@ -830,7 +830,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
                     <div className="p-3 rounded-xl space-y-3" style={{ boxShadow: 'inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8)', backgroundColor: 'rgba(0,0,0,0.01)' }}>
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-black/5">
-                          <img src="/chief.svg" alt="CEO" className="w-full h-full object-cover" />
+                          <img src="/chief.svg" alt="dr Ferdi Iskandar - CEO Sentra Healthcare Solutions" className="w-full h-full object-cover" width="32" height="32" loading="lazy" />
                         </div>
                         <div>
                           <p className="text-[12px] font-bold text-slate-700" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{msg.title}</p>
@@ -2645,8 +2645,11 @@ const LetterPreviewModal = ({
           <div className="flex items-start gap-4 pb-3 border-b-2 border-black mb-6">
             <img
               src="/logo-kediri.png"
-              alt="Logo"
+              alt="Logo RSIA Melinda Dhia Kediri - Partner Hospital Sentra ReferraLink"
               className="w-16 h-16 object-contain"
+              width="64"
+              height="64"
+              loading="lazy"
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
             <div className="flex-1 text-center">
@@ -3121,8 +3124,11 @@ const HealthCertificatePreviewModal = ({
           <div className="flex items-start gap-4 pb-3 border-b-2 border-black mb-6">
             <img
               src="/logo-kediri.png"
-              alt="Logo"
+              alt="Logo RSIA Melinda Dhia Kediri - Partner Hospital Sentra ReferraLink"
               className="w-16 h-16 object-contain"
+              width="64"
+              height="64"
+              loading="lazy"
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
             <div className="flex-1 text-center">

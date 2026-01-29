@@ -392,6 +392,11 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
             <div className="flex items-end justify-between mb-10">
               {/* Left: Sentra Referralink */}
               <div className="flex flex-col items-start gap-0">
+                  {/* SEO-optimized H1 (hidden visually, visible to search engines and screen readers) */}
+                  <h1 className="sr-only">
+                    Sentra ReferraLink - AI-Powered Clinical Referral System for Healthcare Professionals in Indonesia
+                  </h1>
+
                   <TextBlockAnimation blockColor="#002147" animateOnScroll={false} delay={0.1} duration={0.6} isEnabled={heroAnimationReady}>
                       <p className="hero-subtitle-label" style={{ fontSize: '42px', lineHeight: '44px' }}>
                           Sentra
@@ -400,9 +405,10 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
                   <p className="text-[11px] font-technical uppercase tracking-[0.3em] text-slate-500 mt-1">
                     Powered by RSIA Melinda Dhia
                   </p>
-                  <h1 ref={referralinkRef} className="font-saans-title -mt-2">
+                  {/* Visual title for users (decorative, not H1) */}
+                  <div ref={referralinkRef} className="font-saans-title -mt-2" aria-hidden="true">
                       <span style={{ color: '#002147' }}>Artificial</span><span style={{ color: '#FF4500' }}> Intelligence</span>
-                  </h1>
+                  </div>
               </div>
 
               {/* Right: Enter Dashboard */}
@@ -506,7 +512,7 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
                 >
                   <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-200/70">
                     <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-emerald-200">
-                      <img src="/audrey.png" alt="Audrey" className="w-full h-full object-cover" />
+                      <img src="/audrey.png" alt="Audrey AI - Sentra Healthcare Clinical Support Chatbot Assistant" className="w-full h-full object-cover" width="40" height="40" loading="lazy" />
                     </div>
                     <div className="flex-1 min-w-0">
                   <p className="text-[16px] font-semibold text-[#0b1f3a]">Audrey • Sentra</p>
