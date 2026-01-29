@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/diagnosis.ts": {
+      "maxDuration": 60
+    }
+  },
   "env": {
     "VITE_USE_SERVER_DIAGNOSIS": "false"
   },
