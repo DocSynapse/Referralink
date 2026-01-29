@@ -19,7 +19,7 @@ Disallow: /#/augmented
 Disallow: /api/
 
 # Sitemap location
-Sitemap: https://sentra-referralink.vercel.app/sitemap.xml
+Sitemap: https://referralink.vercel.app/sitemap.xml
 
 # Crawl-delay to be respectful
 Crawl-delay: 1

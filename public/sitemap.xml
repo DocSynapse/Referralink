@@ -2,17 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://sentra-referralink.vercel.app/</loc>
+    <loc>https://referralink.vercel.app/</loc>
     <lastmod>2026-01-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://sentra-referralink.vercel.app/reff.jpg</image:loc>
+      <image:loc>https://referralink.vercel.app/reff.jpg</image:loc>
       <image:title>Sentra ReferraLink - AI Clinical Referral Platform Interface</image:title>
       <image:caption>AI-powered clinical decision support system dashboard with diagnostic accuracy and referral management</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://sentra-referralink.vercel.app/sentra-bl.svg</image:loc>
+      <image:loc>https://referralink.vercel.app/sentra-bl.svg</image:loc>
       <image:title>Sentra Healthcare Solutions Logo</image:title>
       <image:caption>Official logo of Sentra Healthcare Solutions - ReferraLink AI Platform</image:caption>
     </image:image>
