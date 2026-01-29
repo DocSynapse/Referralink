@@ -77,17 +77,19 @@ const getClient = (): OpenAI => {
     throw new Error('[DiagnosisService] No API key found in environment');
   }
 
+  console.log(`[DiagnosisService] Initializing client - Base: ${baseURL}, Key: ${apiKey.substring(0, 20)}...`);
+
   clientInstance = new OpenAI({
     apiKey,
     baseURL,
     // SERVER-SIDE ONLY - dangerouslyAllowBrowser REMOVED
     defaultHeaders: {
-      "HTTP-Referer": "https://sentra.healthcare",
+      "HTTP-Referer": "https://www.sentraai.id",
       "X-Title": "Sentra Referral CDSS",
     }
   });
 
-  console.log(`[DiagnosisService] Client initialized - Base: ${baseURL}`);
+  console.log(`[DiagnosisService] Client initialized successfully`);
   return clientInstance;
 };
 
