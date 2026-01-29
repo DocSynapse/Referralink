@@ -2,11 +2,11 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  *
- * Diagnosis Generation API Endpoint
+ * Diagnosis Generation API Endpoint (VERCEL FORMAT)
  * POST /api/diagnosis/generate
  */
 
-import type { Handler, HandlerEvent } from "@netlify/functions";
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from "zod";
 import { generateDiagnosis, type AIModelKey, type GenerateOptions } from "../_services/diagnosisService";
 import { checkRateLimit } from "../_utils/auth";
@@ -32,53 +32,49 @@ const CORS_HEADERS = {
 /**
  * Rate limiting per IP: 100 requests/hour
  */
-function getRateLimitIdentifier(event: HandlerEvent): string {
-  return event.headers['x-forwarded-for']?.split(',')[0] ||
-         event.headers['client-ip'] ||
-         'unknown';
+function getRateLimitIdentifier(req: VercelRequest): string {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string') {
+    return forwarded.split(',')[0];
+  }
+  return req.headers['x-real-ip'] as string || 'unknown';
 }
 
 /**
- * Main handler
+ * Main handler (Vercel Serverless Function)
  */
-export const handler: Handler = async (event) => {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS preflight
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 204,
-      headers: CORS_HEADERS,
-      body: ''
-    };
+  if (req.method === 'OPTIONS') {
+    return res.status(204).setHeader('Access-Control-Allow-Origin', CORS_HEADERS['Access-Control-Allow-Origin'])
+      .setHeader('Access-Control-Allow-Methods', CORS_HEADERS['Access-Control-Allow-Methods'])
+      .setHeader('Access-Control-Allow-Headers', CORS_HEADERS['Access-Control-Allow-Headers'])
+      .end();
   }
 
   // Only POST allowed
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Method Not Allowed' })
-    };
+  if (req.method !== 'POST') {
+    return res.status(405)
+      .setHeader('Access-Control-Allow-Origin', CORS_HEADERS['Access-Control-Allow-Origin'])
+      .json({ success: false, error: 'Method Not Allowed' });
   }
 
   try {
     // Rate limiting check
-    const ipIdentifier = getRateLimitIdentifier(event);
+    const ipIdentifier = getRateLimitIdentifier(req);
     const rateLimitOk = checkRateLimit(ipIdentifier, 100, 3600000); // 100 req/hour
 
     if (!rateLimitOk) {
-      return {
-        statusCode: 429,
-        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      return res.status(429)
+        .setHeader('Access-Control-Allow-Origin', CORS_HEADERS['Access-Control-Allow-Origin'])
+        .json({
           success: false,
           error: 'Rate limit exceeded. Please try again later.'
-        })
-      };
+        });
     }
 
     // Parse and validate request body
-    const body = JSON.parse(event.body || '{}');
-    const validated = RequestSchema.parse(body);
+    const validated = RequestSchema.parse(req.body);
 
     console.log(`[API] Diagnosis request - IP: ${ipIdentifier}, Query length: ${validated.query.length}`);
 
@@ -88,49 +84,32 @@ export const handler: Handler = async (event) => {
       validated.options as GenerateOptions
     );
 
-    return {
-      statusCode: result.success ? 200 : 500,
-      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify(result)
-    };
+    return res.status(result.success ? 200 : 500)
+      .setHeader('Access-Control-Allow-Origin', CORS_HEADERS['Access-Control-Allow-Origin'])
+      .setHeader('Content-Type', 'application/json')
+      .json(result);
 
   } catch (error: any) {
     console.error('[API] Request failed:', error);
 
     // Handle validation errors
     if (error instanceof z.ZodError) {
-      return {
-        statusCode: 400,
-        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      return res.status(400)
+        .setHeader('Access-Control-Allow-Origin', CORS_HEADERS['Access-Control-Allow-Origin'])
+        .json({
           success: false,
           error: 'Invalid request format',
           details: error.errors
-        })
-      };
-    }
-
-    // Handle JSON parse errors
-    if (error instanceof SyntaxError) {
-      return {
-        statusCode: 400,
-        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          success: false,
-          error: 'Invalid JSON in request body'
-        })
-      };
+        });
     }
 
     // Generic error
-    return {
-      statusCode: 500,
-      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    return res.status(500)
+      .setHeader('Access-Control-Allow-Origin', CORS_HEADERS['Access-Control-Allow-Origin'])
+      .json({
         success: false,
         error: 'Internal server error',
         message: error.message
-      })
-    };
+      });
   }
-};
+}
