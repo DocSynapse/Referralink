@@ -12,25 +12,24 @@ import { ICD10Result } from "../../types.js";
 import { circuitBreaker, executeWithCircuitBreaker } from "./circuitBreakerService.js";
 
 // AI Model Configuration
-// Using DeepSeek direct API (for now - single model only)
-// TODO: Add OpenRouter for multi-model support
+// Using OpenRouter for fast model routing (5-8s vs 18-24s direct)
 export const AI_MODELS = {
   DEEPSEEK_V3: {
-    id: 'deepseek-chat', // DeepSeek native format
+    id: 'deepseek/deepseek-chat', // OpenRouter format
     name: 'DeepSeek V3',
-    provider: 'DeepSeek',
-    description: 'Primary model - fast & accurate'
+    provider: 'OpenRouter → DeepInfra',
+    description: 'Primary model - fast (5-8s) & accurate'
   },
   GLM_CODING: {
-    id: 'deepseek-chat', // Fallback to same model for now
+    id: 'deepseek/deepseek-chat', // Same model for now
     name: 'DeepSeek V3 (Fallback)',
-    provider: 'DeepSeek',
+    provider: 'OpenRouter',
     description: 'Secondary model - reliable fallback'
   },
   QWEN_TURBO: {
-    id: 'deepseek-chat', // Fallback to same model for now
+    id: 'deepseek/deepseek-chat', // Same model for now
     name: 'DeepSeek V3 (Tertiary)',
-    provider: 'DeepSeek',
+    provider: 'OpenRouter',
     description: 'Tertiary model - backup'
   }
 } as const;
@@ -61,20 +60,17 @@ let clientInstance: OpenAI | null = null;
 const getClient = (): OpenAI => {
   if (clientInstance) return clientInstance;
 
-  // Priority: DeepSeek > OpenRouter
+  // Priority: OpenRouter (fast, 5-8s) > DeepSeek Direct (slow, 18-24s)
   // SERVER-SIDE: Use non-VITE prefixed env vars (runtime accessible)
-  // Fallback to VITE_ for backward compatibility during transition
-  const baseURL = process.env.DEEPSEEK_BASE_URL ||
+  const baseURL = process.env.OPENROUTER_API_URL ||
                   process.env.API_BASE_URL ||
-                  process.env.VITE_DEEPSEEK_BASE_URL ||
-                  process.env.VITE_API_BASE_URL ||
                   "https://openrouter.ai/api/v1";
 
-  const apiKey = process.env.DEEPSEEK_API_KEY ||
-                 process.env.OPENROUTER_API_KEY ||
+  const apiKey = process.env.OPENROUTER_API_KEY ||
+                 process.env.DEEPSEEK_API_KEY ||
                  process.env.GEMINI_API_KEY ||
-                 process.env.VITE_DEEPSEEK_API_KEY ||
                  process.env.VITE_OPENROUTER_API_KEY ||
+                 process.env.VITE_DEEPSEEK_API_KEY ||
                  process.env.VITE_GEMINI_API_KEY;
 
   if (!apiKey) {
