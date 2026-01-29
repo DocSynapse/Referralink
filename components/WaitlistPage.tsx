@@ -14,7 +14,8 @@ const WhatsAppIcon = ({ size = 16, style }: { size?: number; style?: React.CSSPr
   <MessageCircle size={size} style={style} />
 );
 import * as XLSX from 'xlsx';
-import { searchICD10Code, searchICD10CodeStreaming, clearDiagnosisCache } from '../services/geminiService';
+import { searchICD10Code, clearDiagnosisCache } from '../services/diagnosisApiClient';
+import { searchICD10CodeStreaming } from '../services/geminiService'; // Streaming masih pakai old impl
 import { ICD10Result } from '../types';
 import { GeneticGrowthMapLeaflet, getNetworkStats } from './GeneticGrowthMapLeaflet';
 import { CEO_BROADCASTS } from '../constants/ceo-broadcast';
