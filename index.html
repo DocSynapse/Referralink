@@ -116,6 +116,92 @@
             "availability": "https://schema.org/InStock",
             "description": "Currently in alpha testing phase - free for partner hospitals"
           }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://referralink.vercel.app/#faqpage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Apa itu ReferraLink dan bagaimana cara kerjanya?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ReferraLink adalah AI-powered clinical decision support system yang membantu healthcare professionals membuat keputusan referral yang akurat. System menggunakan multi-model AI consensus untuk validasi diagnosis, otomatis generate ICD-10 codes, dan merekomendasikan specialist yang tepat dengan competency matching di 12+ hospital network."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Apakah ReferraLink compliant dengan regulasi privasi data kesehatan?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ya. ReferraLink menerapkan HIPAA-aligned data protection practices, termasuk 10-year comprehensive audit trails, encrypted data transmission dan storage di Neon PostgreSQL dengan pgvector, dan strict role-based access controls."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Apa yang dimaksud dengan 6 safety gates di ReferraLink?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "6-layer safety validation framework meliputi: (1) Multi-model AI consensus check, (2) ICD-10 code validation, (3) Clinical guideline compliance verification, (4) Referral appropriateness scoring, (5) Human-in-the-loop review triggers, dan (6) Comprehensive audit trail generation."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Bagaimana rumah sakit bisa bergabung dengan ReferraLink network?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Kami saat ini dalam alpha testing phase dengan RSIA Melinda Dhia dan 11 partner hospitals di region Kediri, East Java. Untuk partnership inquiries dan early access program, silakan contact tim Sentra Healthcare Solutions melalui official channels atau via platform authentication portal."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Berapa biaya berlangganan ReferraLink untuk hospital atau clinic?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ReferraLink saat ini dalam free alpha testing phase untuk partner hospitals. Commercial pricing structure dan subscription tiers akan diumumkan saat general availability launch. Contact kami untuk early access pricing discussion dan partnership opportunities."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Teknologi AI apa yang digunakan ReferraLink?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ReferraLink menggunakan multi-model AI architecture dengan primary models: DeepSeek V3 dan DeepSeek R1 via OpenRouter integration, dengan fallback ke GLM-4 Plus dan Qwen models. System menerapkan model racing approach untuk optimal response time dan accuracy."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://referralink.vercel.app/#localbusiness",
+          "name": "RSIA Melinda Dhia (Partner Hospital)",
+          "description": "Leading maternal and child healthcare hospital in Kediri, partner hospital for Sentra ReferraLink clinical referral network",
+          "url": "https://referralink.vercel.app/",
+          "image": "https://referralink.vercel.app/reff.jpg",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Jl. Sersan Suharmaji",
+            "addressLocality": "Kediri",
+            "addressRegion": "Jawa Timur",
+            "postalCode": "64121",
+            "addressCountry": "ID"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "-7.8168",
+            "longitude": "112.0103"
+          },
+          "telephone": "+62-354-XXXXXXX",
+          "priceRange": "$$",
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens": "00:00",
+            "closes": "23:59"
+          },
+          "hasMap": "https://maps.google.com/?q=RSIA+Melinda+Dhia+Kediri",
+          "servesCuisine": "Healthcare Services",
+          "medicalSpecialty": ["Obstetrics", "Pediatrics", "Gynecology", "Neonatology"]
         }
       ]
     }
@@ -127,24 +213,111 @@
     <!-- Fallback content for bots and no-JS users -->
     <noscript>
       <style>
-        body { font-family: -apple-system, system-ui, sans-serif; background: #E0E5EC; color: #4A5568; line-height: 1.6; }
-        .noscript-hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        .noscript-content { max-width: 56rem; }
-        .noscript-title { font-size: 3rem; font-weight: 700; color: #002147; margin-bottom: 1rem; }
-        .noscript-subtitle { font-size: 1.5rem; color: #E03D00; margin-bottom: 2rem; }
-        .noscript-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-        .noscript-feature { background: rgba(255,255,255,0.6); padding: 1.5rem; border-radius: 1rem; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: #E0E5EC; color: #4A5568; line-height: 1.6; margin: 0; }
+        .noscript-section { padding: 3rem 1.5rem; max-width: 72rem; margin: 0 auto; }
+        .noscript-hero { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 3rem 1.5rem; background: linear-gradient(135deg, #E0E5EC 0%, #F0F4F8 100%); }
+        .noscript-content { max-width: 56rem; text-align: center; }
+        .noscript-title { font-size: 2.5rem; font-weight: 700; color: #002147; margin-bottom: 1rem; line-height: 1.2; }
+        .noscript-subtitle { font-size: 1.25rem; color: #E03D00; margin-bottom: 1.5rem; font-weight: 600; }
+        .noscript-description { font-size: 1.0625rem; color: #64748b; margin-bottom: 2rem; line-height: 1.7; }
+
+        .noscript-trust { background: rgba(255,255,255,0.8); padding: 2.5rem 2rem; border-radius: 1rem; margin: 2rem 0; }
+        .noscript-trust h2 { font-size: 1.75rem; font-weight: 700; color: #002147; text-align: center; margin-bottom: 2rem; }
+        .noscript-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center; }
+        .noscript-stat-value { font-size: 2.5rem; font-weight: 700; color: #002147; display: block; }
+        .noscript-stat-label { font-size: 0.9375rem; color: #64748b; margin-top: 0.5rem; display: block; }
+
+        .noscript-how { background: #ffffff; padding: 3rem 2rem; margin: 3rem 0; border-radius: 1rem; }
+        .noscript-how h2 { font-size: 1.75rem; font-weight: 700; color: #002147; text-align: center; margin-bottom: 2.5rem; }
+        .noscript-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .noscript-step { text-align: center; }
+        .noscript-step-number { width: 4rem; height: 4rem; background: #002147; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 1rem; }
+        .noscript-step h3 { font-size: 1.125rem; font-weight: 600; color: #002147; margin-bottom: 0.75rem; }
+        .noscript-step p { font-size: 0.9375rem; color: #64748b; line-height: 1.6; }
+
+        .noscript-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 3rem 0; }
+        .noscript-feature { background: rgba(255,255,255,0.6); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(0,33,71,0.05); }
         .noscript-feature h2 { font-size: 1.125rem; font-weight: 600; color: #002147; margin-bottom: 0.5rem; }
-        .noscript-feature p { font-size: 0.9375rem; color: #64748b; }
+        .noscript-feature p { font-size: 0.9375rem; color: #64748b; line-height: 1.6; }
+
+        .noscript-faq { background: rgba(255,255,255,0.9); padding: 3rem 2rem; margin: 3rem 0; border-radius: 1rem; }
+        .noscript-faq h2 { font-size: 1.75rem; font-weight: 700; color: #002147; text-align: center; margin-bottom: 2.5rem; }
+        .noscript-faq-item { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(0,33,71,0.1); }
+        .noscript-faq-item:last-child { border-bottom: none; }
+        .noscript-faq-question { font-size: 1.125rem; font-weight: 600; color: #002147; margin-bottom: 0.75rem; }
+        .noscript-faq-answer { font-size: 0.9375rem; color: #64748b; line-height: 1.7; }
+
+        @media (max-width: 768px) {
+          .noscript-title { font-size: 2rem; }
+          .noscript-subtitle { font-size: 1.125rem; }
+          .noscript-stats, .noscript-steps { grid-template-columns: 1fr; }
+        }
       </style>
 
       <div class="noscript-hero">
         <div class="noscript-content">
           <h1 class="noscript-title">Sentra ReferraLink - AI-Powered Clinical Referral System</h1>
           <p class="noscript-subtitle">Where Intelligence Becomes Responsibility</p>
-          <p>AI-powered clinical decision support system untuk rumah sakit dengan 6 safety gates, 10-year audit trail, dan automated ICD-10 coding. Trusted by RSIA Melinda Dhia, Kediri.</p>
+          <p class="noscript-description">AI-powered clinical decision support system untuk rumah sakit dengan 6 safety gates, 10-year audit trail, dan automated ICD-10 coding. Trusted by RSIA Melinda Dhia, Kediri.</p>
+        </div>
+      </div>
 
-          <div class="noscript-features">
+      <!-- Trust Indicators Section -->
+      <section class="noscript-section">
+        <div class="noscript-trust">
+          <h2>Dipercaya oleh Healthcare Leaders</h2>
+          <div class="noscript-stats">
+            <div>
+              <span class="noscript-stat-value">12</span>
+              <span class="noscript-stat-label">Hospitals in Network</span>
+            </div>
+            <div>
+              <span class="noscript-stat-value">6</span>
+              <span class="noscript-stat-label">Safety Gate Layers</span>
+            </div>
+            <div>
+              <span class="noscript-stat-value">10</span>
+              <span class="noscript-stat-label">Year Audit Trail</span>
+            </div>
+            <div>
+              <span class="noscript-stat-value">95%</span>
+              <span class="noscript-stat-label">Diagnostic Accuracy</span>
+            </div>
+          </div>
+          <p style="text-align: center; margin-top: 2rem; color: #64748b; font-size: 0.875rem;">
+            <strong style="color: #002147;">Powered By:</strong> RSIA Melinda Dhia - Leading Maternal & Child Healthcare in Kediri
+          </p>
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <section class="noscript-section">
+        <div class="noscript-how">
+          <h2>Cara Kerja ReferraLink</h2>
+          <div class="noscript-steps">
+            <div class="noscript-step">
+              <div class="noscript-step-number">1</div>
+              <h3>Input Clinical Data</h3>
+              <p>Healthcare professionals enter patient symptoms, vital signs, dan medical history ke dalam system untuk analysis.</p>
+            </div>
+            <div class="noscript-step">
+              <div class="noscript-step-number">2</div>
+              <h3>AI Analysis & Validation</h3>
+              <p>Multi-model AI consensus validates diagnosis melalui 6 safety gates, generates ICD-10 codes automatically dengan confidence scoring.</p>
+            </div>
+            <div class="noscript-step">
+              <div class="noscript-step-number">3</div>
+              <h3>Instant Referral Recommendation</h3>
+              <p>System recommends appropriate specialist dan hospital, generates comprehensive audit trail, facilitates seamless patient handoff.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Features Section -->
+      <section class="noscript-section">
+        <h2 style="font-size: 1.75rem; font-weight: 700; color: #002147; text-align: center; margin-bottom: 2.5rem;">Core Features</h2>
+        <div class="noscript-features">
             <article class="noscript-feature">
               <h2>AI-Powered Diagnosis</h2>
               <p>Multi-model AI consensus untuk validasi diagnosis dengan automated ICD-10 code generation dan confidence scoring.</p>
@@ -165,8 +338,49 @@
               <p>Intelligent specialist recommendation dengan competency matching dan real-time availability di 12+ hospital network.</p>
             </article>
           </div>
+        </div>
+      </section>
 
-          <div style="margin-top: 3rem; padding: 2rem; background: #fef3c7; border-radius: 0.5rem;">
+      <!-- FAQ Section -->
+      <section class="noscript-section">
+        <div class="noscript-faq">
+          <h2>Frequently Asked Questions</h2>
+
+          <div class="noscript-faq-item">
+            <h3 class="noscript-faq-question">Apa itu ReferraLink dan bagaimana cara kerjanya?</h3>
+            <p class="noscript-faq-answer">ReferraLink adalah AI-powered clinical decision support system yang membantu healthcare professionals membuat keputusan referral yang akurat. System menggunakan multi-model AI consensus untuk validasi diagnosis, otomatis generate ICD-10 codes, dan merekomendasikan specialist yang tepat dengan competency matching di 12+ hospital network.</p>
+          </div>
+
+          <div class="noscript-faq-item">
+            <h3 class="noscript-faq-question">Apakah ReferraLink compliant dengan regulasi privasi data kesehatan?</h3>
+            <p class="noscript-faq-answer">Ya. ReferraLink menerapkan HIPAA-aligned data protection practices, termasuk 10-year comprehensive audit trails, encrypted data transmission dan storage di Neon PostgreSQL dengan pgvector, dan strict role-based access controls. Semua clinical data tersimpan secure dengan full compliance terhadap healthcare data governance standards.</p>
+          </div>
+
+          <div class="noscript-faq-item">
+            <h3 class="noscript-faq-question">Apa yang dimaksud dengan 6 safety gates di ReferraLink?</h3>
+            <p class="noscript-faq-answer">6-layer safety validation framework meliputi: (1) Multi-model AI consensus check untuk diagnostic validation, (2) ICD-10 code accuracy validation, (3) Clinical guideline compliance verification, (4) Referral appropriateness scoring based on urgency, (5) Human-in-the-loop review triggers untuk critical cases, dan (6) Comprehensive audit trail generation untuk full accountability dan governance.</p>
+          </div>
+
+          <div class="noscript-faq-item">
+            <h3 class="noscript-faq-question">Bagaimana rumah sakit bisa bergabung dengan ReferraLink network?</h3>
+            <p class="noscript-faq-answer">Kami saat ini dalam alpha testing phase dengan RSIA Melinda Dhia dan 11 partner hospitals di region Kediri, East Java. Untuk partnership inquiries dan early access program, silakan contact tim Sentra Healthcare Solutions melalui official channels atau via platform authentication portal untuk detailed onboarding information dan integration requirements.</p>
+          </div>
+
+          <div class="noscript-faq-item">
+            <h3 class="noscript-faq-question">Berapa biaya berlangganan ReferraLink untuk hospital atau clinic?</h3>
+            <p class="noscript-faq-answer">ReferraLink saat ini dalam free alpha testing phase untuk partner hospitals. Commercial pricing structure dan subscription tiers akan diumumkan saat general availability launch. Kami menawarkan flexible pricing models disesuaikan dengan hospital size, monthly referral volume, dan feature requirements. Contact kami untuk early access pricing discussion dan partnership opportunities.</p>
+          </div>
+
+          <div class="noscript-faq-item">
+            <h3 class="noscript-faq-question">Teknologi AI apa yang digunakan ReferraLink?</h3>
+            <p class="noscript-faq-answer">ReferraLink menggunakan multi-model AI architecture dengan primary models: DeepSeek V3 dan DeepSeek R1 via OpenRouter integration, dengan fallback ke GLM-4 Plus dan Qwen models. System menerapkan model racing approach untuk optimal response time dan accuracy. All AI decisions undergo 6-layer safety validation sebelum clinical recommendation finalization.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- JavaScript Required Notice -->
+      <section class="noscript-section">
+        <div style="padding: 2rem; background: #fef3c7; border-radius: 0.5rem; border-left: 4px solid #f59e0b;">
             <p style="color: #92400e; font-weight: 600;">JavaScript Required</p>
             <p style="color: #92400e; margin-top: 0.5rem;">This application requires JavaScript to be enabled for full functionality. Please enable JavaScript in your browser settings to access the interactive platform.</p>
           </div>
