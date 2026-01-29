@@ -11,6 +11,7 @@ import OpenAI from "openai";
 import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../constants";
 import { MedicalQuery, ICD10Result, StreamCallbacks } from "../types";
 import { diagnosisCache } from "./cacheService";
+import { semanticCache } from "../src/services/semanticCacheService";
 
 // Supported AI Model Providers
 export const AI_MODELS = {
@@ -124,23 +125,52 @@ export const searchICD10Code = async (
   input: MedicalQuery,
   modelOverride?: AIModelKey,
   options: SearchOptions = {}
-): Promise<{ json: ICD10Result | null, logs: string[], sources?: unknown[], model?: string, fromCache?: boolean }> => {
+): Promise<{ json: ICD10Result | null, logs: string[], sources?: unknown[], model?: string, fromCache?: boolean, similarity?: number }> => {
 
   const selectedModel = modelOverride ? AI_MODELS[modelOverride] : AI_MODELS[currentModel];
   const modelName = import.meta.env.VITE_AI_MODEL_NAME || selectedModel.id;
   const ai = getClient();
 
-  // Check cache first (unless skipCache is true)
+  // LAYER 1: Semantic cache check (NEW! Vector similarity matching)
+  if (!options.skipCache) {
+    try {
+      const semanticMatch = await semanticCache.get(input.query);
+      if (semanticMatch) {
+        return {
+          json: semanticMatch.result,
+          model: 'cached',
+          fromCache: true,
+          similarity: semanticMatch.similarity,
+          logs: [
+            `[CDSS] Semantic Cache HIT ✅`,
+            `[Similarity] ${(semanticMatch.similarity * 100).toFixed(1)}% match`,
+            `[Provider] ${selectedModel.provider}`,
+            `[Original Query] "${semanticMatch.query.substring(0, 50)}..."`,
+            `[Status] Instant Response (<500ms) ✓`
+          ]
+        };
+      }
+    } catch (semanticError) {
+      console.warn('[SemanticCache] Read error (graceful degradation):', semanticError);
+    }
+  }
+
+  // LAYER 2: Exact match cache (existing L2 cache)
   if (!options.skipCache) {
     try {
       const cached = await diagnosisCache.get(input.query);
       if (cached) {
+        // Populate semantic cache untuk future similar queries
+        semanticCache.set(input.query, cached.result, cached.model || 'unknown').catch(err => {
+          console.warn('[SemanticCache] Background set error:', err);
+        });
+
         return {
           json: cached.result,
           model: cached.model,
           fromCache: true,
           logs: [
-            `[CDSS] Cache HIT`,
+            `[CDSS] Exact Cache HIT`,
             `[Provider] ${selectedModel.provider}`,
             `[Model] ${cached.model}`,
             `[Cached] ${new Date(cached.timestamp).toLocaleString('id-ID')}`,
@@ -216,9 +246,12 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
       ];
     }
 
-    // Store in cache
+    // Store in BOTH caches (exact match + semantic)
     try {
-      await diagnosisCache.set(input.query, parsed, modelName);
+      await Promise.all([
+        diagnosisCache.set(input.query, parsed, modelName),
+        semanticCache.set(input.query, parsed, modelName)
+      ]);
     } catch (cacheError) {
       console.warn('[Cache] Write error:', cacheError);
     }
@@ -297,16 +330,26 @@ export const searchICD10CodeRace = async (
   options: SearchOptions = {}
 ): Promise<{ json: ICD10Result | null, logs: string[], model?: string, fromCache?: boolean }> => {
 
-  // Check cache first
+  // Check semantic cache first
   if (!options.skipCache) {
     try {
+      const semanticMatch = await semanticCache.get(input.query);
+      if (semanticMatch) {
+        return {
+          json: semanticMatch.result,
+          model: 'cached',
+          fromCache: true,
+          logs: [`[RACE] Semantic Cache HIT (${(semanticMatch.similarity * 100).toFixed(1)}%) - Instant Response ✓`]
+        };
+      }
+
       const cached = await diagnosisCache.get(input.query);
       if (cached) {
         return {
           json: cached.result,
           model: cached.model,
           fromCache: true,
-          logs: [`[RACE] Cache HIT - Instant Response ✓`]
+          logs: [`[RACE] Exact Cache HIT - Instant Response ✓`]
         };
       }
     } catch (e) {
@@ -362,12 +405,19 @@ export const searchICD10CodeStreaming = async (
   const modelName = import.meta.env.VITE_AI_MODEL_NAME || selectedModel.id;
   const ai = getClient();
 
-  // Check cache first
+  // Check semantic cache first
   if (!options.skipCache) {
     try {
+      const semanticMatch = await semanticCache.get(input.query);
+      if (semanticMatch) {
+        callbacks.onThinkingChunk(`[Semantic Cache HIT] ${(semanticMatch.similarity * 100).toFixed(1)}% similarity match - returning cached result...`);
+        callbacks.onComplete(semanticMatch.result);
+        return;
+      }
+
       const cached = await diagnosisCache.get(input.query);
       if (cached) {
-        callbacks.onThinkingChunk('[Cache HIT] Returning cached result...');
+        callbacks.onThinkingChunk('[Exact Cache HIT] Returning cached result...');
         callbacks.onComplete(cached.result);
         return;
       }
@@ -469,9 +519,12 @@ OUTPUT: BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
         ];
       }
 
-      // Store in cache
+      // Store in BOTH caches
       try {
-        await diagnosisCache.set(input.query, parsed, modelName);
+        await Promise.all([
+          diagnosisCache.set(input.query, parsed, modelName),
+          semanticCache.set(input.query, parsed, modelName)
+        ]);
       } catch (cacheError) {
         console.warn('[Cache] Write error:', cacheError);
       }
