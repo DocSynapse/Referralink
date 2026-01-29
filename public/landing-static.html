@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Meta Tags -->
+  <title>Sentra ReferraLink - AI Clinical Referral System | RSIA Melinda Dhia</title>
+  <meta name="title" content="Sentra ReferraLink - AI Clinical Referral System | RSIA Melinda Dhia" />
+  <meta name="description" content="AI-powered clinical decision support system untuk rumah sakit. 6 safety gates, 10-year audit trail, automated ICD-10 coding. Trusted by RSIA Melinda Dhia, Kediri." />
+  <meta name="keywords" content="AI clinical referral, healthcare decision support, automated ICD-10, referral management software Indonesia, clinical AI platform, diagnostic accuracy, healthcare SaaS" />
+  <meta name="author" content="dr Ferdi Iskandar - Sentra Healthcare Solutions" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://referralink.vercel.app/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://referralink.vercel.app/" />
+  <meta property="og:title" content="Sentra ReferraLink - AI Clinical Referral System" />
+  <meta property="og:description" content="AI-powered clinical decision support dengan 6 safety gates dan 10-year audit trail. Automated ICD-10 coding untuk rumah sakit di Indonesia." />
+  <meta property="og:image" content="https://referralink.vercel.app/reff.jpg" />
+  <meta property="og:image:alt" content="Sentra ReferraLink AI Platform Interface" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:site_name" content="Sentra ReferraLink" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://referralink.vercel.app/" />
+  <meta name="twitter:title" content="Sentra ReferraLink - AI Clinical Referral System" />
+  <meta name="twitter:description" content="AI-powered clinical decision support dengan 6 safety gates dan 10-year audit trail." />
+  <meta name="twitter:image" content="https://referralink.vercel.app/reff.jpg" />
+
+  <!-- Additional SEO Meta -->
+  <meta name="theme-color" content="#002147" />
+  <meta name="application-name" content="Sentra ReferraLink" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/sentra-bl.svg" />
+  <link rel="apple-touch-icon" href="/sentra-bl.svg" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://referralink.vercel.app/#organization",
+        "name": "Sentra Healthcare Solutions",
+        "url": "https://referralink.vercel.app/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://referralink.vercel.app/sentra-bl.svg",
+          "width": 512,
+          "height": 512
+        },
+        "founder": {
+          "@type": "Person",
+          "name": "dr Ferdi Iskandar",
+          "jobTitle": "Founder & CEO",
+          "description": "Healthcare technology entrepreneur specializing in AI-powered clinical decision support systems"
+        },
+        "description": "AI-powered healthcare technology solutions for clinical decision support and diagnostic referral accuracy",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kediri",
+          "addressRegion": "Jawa Timur",
+          "addressCountry": "ID"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://referralink.vercel.app/#website",
+        "url": "https://referralink.vercel.app/",
+        "name": "Sentra ReferraLink",
+        "description": "AI-powered clinical referral and decision support system",
+        "publisher": {
+          "@id": "https://referralink.vercel.app/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://referralink.vercel.app/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://referralink.vercel.app/#softwareapp",
+        "name": "Sentra ReferraLink",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web Browser",
+        "creator": {
+          "@id": "https://referralink.vercel.app/#organization"
+        },
+        "description": "AI-powered clinical decision support system with automated ICD-10 coding, 6-layer safety validation, and comprehensive audit trails for healthcare professionals",
+        "featureList": [
+          "AI-powered diagnostic support with multi-model consensus",
+          "Automated ICD-10 code generation and validation",
+          "6-layer safety gate validation framework",
+          "10-year comprehensive audit trail storage",
+          "Multi-hospital referral network coordination",
+          "Real-time clinical urgency assessment",
+          "Specialist recommendation with competency matching"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "IDR",
+          "availability": "https://schema.org/InStock",
+          "description": "Currently in alpha testing phase - free for partner hospitals"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Critical CSS (Inlined for performance) -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #E0E5EC;
+      color: #4A5568;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-container {
+      max-width: 80rem;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .hero-title-wrapper {
+      margin-bottom: 3rem;
+    }
+
+    .hero-subtitle-label {
+      font-size: 2.625rem;
+      line-height: 2.75rem;
+      font-weight: 600;
+      color: #002147;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgba(0, 33, 71, 0.04);
+    }
+
+    .powered-by {
+      font-size: 0.6875rem;
+      font-family: monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: #94a3b8;
+      margin-top: 0.25rem;
+    }
+
+    .hero-title {
+      font-size: 6.25rem;
+      line-height: 6.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-top: -0.5rem;
+    }
+
+    .hero-title-primary {
+      color: #002147;
+    }
+
+    .hero-title-accent {
+      color: #FF4500;
+    }
+
+    .hero-subtitle {
+      font-size: 1.75rem;
+      line-height: 2.5rem;
+      font-weight: 600;
+      color: #E03D00;
+      letter-spacing: -0.01em;
+      max-width: 42rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #002147 0%, #003d82 100%);
+      color: white;
+      font-size: 1.125rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px rgba(0, 33, 71, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 33, 71, 0.3);
+    }
+
+    .alpha-badge {
+      font-size: 0.75rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+      padding: 0 1rem;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.6);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 2px 2px 8px rgba(203, 213, 225, 0.5), -2px -2px 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .feature-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #002147;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+      font-size: 0.9375rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* Screen reader only utility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 3rem;
+        line-height: 3rem;
+      }
+
+      .hero-subtitle-label {
+        font-size: 1.5rem;
+        line-height: 1.75rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- SEO-optimized H1 (hidden visually, visible to search engines) -->
+  <h1 class="sr-only">Sentra ReferraLink - AI-Powered Clinical Referral System for Healthcare Professionals in Indonesia</h1>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-title-wrapper">
+        <p class="hero-subtitle-label">Sentra</p>
+        <p class="powered-by">Powered by RSIA Melinda Dhia</p>
+        <div class="hero-title" aria-hidden="true">
+          <span class="hero-title-primary">Artificial</span><span class="hero-title-accent"> Intelligence</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="hero-subtitle">Where Intelligence Becomes Responsibility.</p>
+
+        <a href="https://referralink.vercel.app/#/referralink" class="hero-cta">
+          <span>Enter Referralink</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+
+        <p class="alpha-badge">Alpha (Internal Testing)</p>
+      </div>
+
+      <!-- Key Features -->
+      <div class="features-grid">
+        <article class="feature-card">
+          <h2 class="feature-title">AI-Powered Diagnosis</h2>
+          <p class="feature-desc">Multi-model AI consensus untuk validasi diagnosis dengan automated ICD-10 code generation dan confidence scoring.</p>
+        </article>
+
+        <article class="feature-card">
+          <h2 class="feature-title">6-Layer Safety Gates</h2>
+          <p class="feature-desc">Comprehensive validation framework dengan human-in-the-loop review triggers untuk maximum clinical accuracy dan patient safety.</p>
+        </article>
+
+        <article class="feature-card">
+          <h2 class="feature-title">10-Year Audit Trail</h2>
+          <p class="feature-desc">Complete governance compliance dengan encrypted audit trails untuk semua clinical decisions dan referral transactions.</p>
+        </article>
+
+        <article class="feature-card">
+          <h2 class="feature-title">Specialist Matching</h2>
+          <p class="feature-desc">Intelligent specialist recommendation dengan competency matching dan real-time availability di 12+ hospital network.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer SEO Content -->
+  <footer style="background: #002147; color: white; padding: 2rem; text-align: center; font-size: 0.875rem;">
+    <p style="margin-bottom: 0.5rem;">
+      <strong>Sentra Healthcare Solutions</strong> - AI-Powered Clinical Referral System
+    </p>
+    <p style="color: #94a3b8; margin-bottom: 0.5rem;">
+      RSIA Melinda Dhia, Kediri, Jawa Timur, Indonesia
+    </p>
+    <p style="color: #94a3b8; font-size: 0.75rem;">
+      &copy; 2026 Sentra Healthcare Solutions. All rights reserved.
+    </p>
+  </footer>
+
+  <!-- No JavaScript - Pure HTML for bots -->
+  <noscript>
+    <p style="text-align: center; padding: 2rem; background: #fef3c7; color: #92400e;">
+      This is a JavaScript application. Please enable JavaScript for full functionality.
+    </p>
+  </noscript>
+</body>
+</html>
