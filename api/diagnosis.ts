@@ -42,24 +42,27 @@ let clientInstance: OpenAI | null = null;
 function getClient(): OpenAI {
   if (clientInstance) return clientInstance;
 
-  const provider = (process.env.VITE_AI_PROVIDER || 'deepseek').toLowerCase();
+  // Server-side: Use non-VITE_ prefixed env vars (Vercel serverless)
+  const provider = (process.env.AI_PROVIDER || 'deepseek').toLowerCase();
   const baseURL =
-    (provider === 'deepseek' && (process.env.VITE_DEEPSEEK_BASE_URL || 'https://api.deepseek.com')) ||
-    (provider === 'qwen' && process.env.VITE_QWEN_BASE_URL) ||
-    process.env.VITE_API_BASE_URL ||
+    process.env.OPENROUTER_API_URL ||
+    process.env.API_BASE_URL ||
     "https://openrouter.ai/api/v1";
 
   const apiKey =
-    (provider === 'deepseek' && process.env.VITE_DEEPSEEK_API_KEY) ||
-    (provider === 'qwen' && process.env.VITE_QWEN_API_KEY) ||
-    process.env.VITE_GEMINI_API_KEY ||
-    process.env.VITE_OPENROUTER_API_KEY ||
-    process.env.VITE_QWEN_API_KEY ||
-    process.env.VITE_DEEPSEEK_API_KEY;
+    process.env.OPENROUTER_API_KEY ||
+    process.env.DEEPSEEK_API_KEY ||
+    process.env.QWEN_API_KEY ||
+    process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
+    console.error('[Diagnosis API] No API key found in environment');
+    console.error('[Diagnosis API] Available env vars:', Object.keys(process.env).filter(k => k.includes('API_KEY')));
     throw new Error('No AI API key configured');
   }
+
+  console.log('[Diagnosis API] Using baseURL:', baseURL);
+  console.log('[Diagnosis API] API key found:', apiKey ? 'YES' : 'NO');
 
   clientInstance = new OpenAI({
     apiKey,
@@ -117,7 +120,7 @@ export default async function handler(
     }
 
     const selectedModel = AI_MODELS[modelKey];
-    const modelName = process.env.VITE_AI_MODEL_NAME || selectedModel.id;
+    const modelName = process.env.AI_MODEL_NAME || selectedModel.id;
 
     console.log('[Diagnosis API] Processing query:', query.substring(0, 50) + '...');
     console.log('[Diagnosis API] Using model:', modelName);
