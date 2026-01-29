@@ -12,23 +12,25 @@ import { ICD10Result } from "../../types.js";
 import { circuitBreaker, executeWithCircuitBreaker } from "./circuitBreakerService.js";
 
 // AI Model Configuration
+// Using DeepSeek direct API (for now - single model only)
+// TODO: Add OpenRouter for multi-model support
 export const AI_MODELS = {
   DEEPSEEK_V3: {
-    id: 'deepseek/deepseek-chat',
+    id: 'deepseek-chat', // DeepSeek native format
     name: 'DeepSeek V3',
     provider: 'DeepSeek',
     description: 'Primary model - fast & accurate'
   },
   GLM_CODING: {
-    id: 'thudm/glm-4-plus',
-    name: 'GLM-4 Plus',
-    provider: 'Zhipu AI',
+    id: 'deepseek-chat', // Fallback to same model for now
+    name: 'DeepSeek V3 (Fallback)',
+    provider: 'DeepSeek',
     description: 'Secondary model - reliable fallback'
   },
   QWEN_TURBO: {
-    id: 'qwen/qwen-turbo',
-    name: 'Qwen Turbo',
-    provider: 'Alibaba',
+    id: 'deepseek-chat', // Fallback to same model for now
+    name: 'DeepSeek V3 (Tertiary)',
+    provider: 'DeepSeek',
     description: 'Tertiary model - backup'
   }
 } as const;
