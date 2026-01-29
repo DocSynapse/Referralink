@@ -8,8 +8,8 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from "zod";
-import { generateDiagnosis, type AIModelKey, type GenerateOptions } from "../_services/diagnosisService";
-import { checkRateLimit } from "../_utils/auth";
+import { generateDiagnosis, type AIModelKey, type GenerateOptions } from "../_services/diagnosisService.js";
+import { checkRateLimit } from "../_utils/auth.js";
 
 // Request validation schema
 const RequestSchema = z.object({

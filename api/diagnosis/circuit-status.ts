@@ -9,7 +9,7 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { circuitBreaker } from '../_services/circuitBreakerService';
+import { circuitBreaker } from '../_services/circuitBreakerService.js';
 
 // CORS configuration
 const CORS_HEADERS = {

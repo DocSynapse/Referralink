@@ -7,9 +7,9 @@
  */
 
 import OpenAI from "openai";
-import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../../constants";
-import { ICD10Result } from "../../types";
-import { circuitBreaker, executeWithCircuitBreaker } from "./circuitBreakerService";
+import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../../constants.js";
+import { ICD10Result } from "../../types.js";
+import { circuitBreaker, executeWithCircuitBreaker } from "./circuitBreakerService.js";
 
 // AI Model Configuration
 export const AI_MODELS = {
