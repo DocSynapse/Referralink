@@ -1,7 +1,7 @@
 {
   "version": 2,
   "env": {
-    "VITE_USE_SERVER_DIAGNOSIS": "true"
+    "VITE_USE_SERVER_DIAGNOSIS": "false"
   },
   "rewrites": [
     {
