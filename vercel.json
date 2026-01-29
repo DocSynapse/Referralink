@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "env": {
+    "VITE_USE_SERVER_DIAGNOSIS": "true"
+  },
   "rewrites": [
     {
       "source": "/api/:path*",
