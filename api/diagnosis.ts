@@ -9,6 +9,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import OpenAI from "openai";
+import { Index } from "@upstash/vector";
 import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../constants";
 import type { ICD10Result } from "../types";
 
@@ -38,6 +39,82 @@ type AIModelKey = keyof typeof AI_MODELS;
 
 // Lazy OpenAI client initialization
 let clientInstance: OpenAI | null = null;
+let vectorIndex: Index | null = null;
+
+// Get Upstash Vector index
+function getVectorIndex(): Index {
+  if (vectorIndex) return vectorIndex;
+
+  const url = process.env.UPSTASH_VECTOR_REST_URL;
+  const token = process.env.UPSTASH_VECTOR_REST_TOKEN;
+
+  if (!url || !token) {
+    throw new Error('Upstash Vector credentials not configured');
+  }
+
+  vectorIndex = new Index({ url, token });
+  return vectorIndex;
+}
+
+// Generate embedding for semantic search
+async function generateEmbedding(text: string): Promise<number[]> {
+  const ai = getClient();
+
+  const normalized = text.toLowerCase().trim().replace(/\s+/g, ' ').substring(0, 500);
+
+  const response = await ai.embeddings.create({
+    model: "text-embedding-3-small",
+    input: normalized,
+    encoding_format: "float"
+  });
+
+  return response.data[0].embedding;
+}
+
+// Check semantic cache
+async function checkSemanticCache(query: string): Promise<{ result: ICD10Result; similarity: number } | null> {
+  try {
+    const embedding = await generateEmbedding(query);
+    const index = getVectorIndex();
+
+    const results = await index.query({
+      vector: embedding,
+      topK: 1,
+      includeMetadata: true
+    });
+
+    if (results.length === 0 || results[0].score < 0.95) {
+      return null;
+    }
+
+    const metadata = results[0].metadata as any;
+    return {
+      result: metadata.result,
+      similarity: results[0].score
+    };
+  } catch (error) {
+    console.warn('[Semantic Cache] Error:', error);
+    return null;
+  }
+}
+
+// Store in semantic cache
+async function storeSemanticCache(query: string, result: ICD10Result): Promise<void> {
+  try {
+    const embedding = await generateEmbedding(query);
+    const index = getVectorIndex();
+
+    const id = `diag_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    await index.upsert({
+      id,
+      vector: embedding,
+      metadata: { query, result, timestamp: Date.now() }
+    });
+  } catch (error) {
+    console.warn('[Semantic Cache] Store error:', error);
+  }
+}
 
 function getClient(): OpenAI {
   if (clientInstance) return clientInstance;
@@ -125,6 +202,24 @@ export default async function handler(
     console.log('[Diagnosis API] Processing query:', query.substring(0, 50) + '...');
     console.log('[Diagnosis API] Using model:', modelName);
 
+    // Check semantic cache first
+    const cachedResult = await checkSemanticCache(query);
+    if (cachedResult) {
+      console.log('[Diagnosis API] Semantic cache HIT - Similarity:', (cachedResult.similarity * 100).toFixed(1) + '%');
+      return res.status(200).json({
+        success: true,
+        data: {
+          result: cachedResult.result,
+          model: modelName,
+          provider: selectedModel.provider,
+          fromCache: true,
+          similarity: cachedResult.similarity
+        }
+      });
+    }
+
+    console.log('[Diagnosis API] Cache MISS - Calling AI model');
+
     // Get AI client
     const ai = getClient();
 
@@ -201,13 +296,19 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
 
     console.log('[Diagnosis API] Success - Code:', parsed.code);
 
+    // Store in semantic cache (non-blocking)
+    storeSemanticCache(query, parsed).catch(err => {
+      console.warn('[Diagnosis API] Failed to store in cache:', err);
+    });
+
     // Return success response
     return res.status(200).json({
       success: true,
       data: {
         result: parsed,
         model: modelName,
-        provider: selectedModel.provider
+        provider: selectedModel.provider,
+        fromCache: false
       }
     });
 
