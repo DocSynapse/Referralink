@@ -11,7 +11,8 @@ import OpenAI from "openai";
 import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../constants";
 import { MedicalQuery, ICD10Result, StreamCallbacks } from "../types";
 import { diagnosisCache } from "./cacheService";
-import { semanticCache } from "../src/services/semanticCacheService";
+// DISABLED: CSP violation (client-side fetch to Upstash blocked by browser security)
+// import { semanticCache } from "../src/services/semanticCacheService";
 
 // Supported AI Model Providers
 export const AI_MODELS = {
@@ -131,39 +132,40 @@ export const searchICD10Code = async (
   const modelName = import.meta.env.VITE_AI_MODEL_NAME || selectedModel.id;
   const ai = getClient();
 
-  // LAYER 1: Semantic cache check (NEW! Vector similarity matching)
-  if (!options.skipCache) {
-    try {
-      const semanticMatch = await semanticCache.get(input.query);
-      if (semanticMatch) {
-        return {
-          json: semanticMatch.result,
-          model: 'cached',
-          fromCache: true,
-          similarity: semanticMatch.similarity,
-          logs: [
-            `[CDSS] Semantic Cache HIT ✅`,
-            `[Similarity] ${(semanticMatch.similarity * 100).toFixed(1)}% match`,
-            `[Provider] ${selectedModel.provider}`,
-            `[Original Query] "${semanticMatch.query.substring(0, 50)}..."`,
-            `[Status] Instant Response (<500ms) ✓`
-          ]
-        };
-      }
-    } catch (semanticError) {
-      console.warn('[SemanticCache] Read error (graceful degradation):', semanticError);
-    }
-  }
+  // LAYER 1: Semantic cache DISABLED (CSP violation - client-side fetch blocked)
+  // TODO: Move to server-side API endpoint
+  // if (!options.skipCache) {
+  //   try {
+  //     const semanticMatch = await semanticCache.get(input.query);
+  //     if (semanticMatch) {
+  //       return {
+  //         json: semanticMatch.result,
+  //         model: 'cached',
+  //         fromCache: true,
+  //         similarity: semanticMatch.similarity,
+  //         logs: [
+  //           `[CDSS] Semantic Cache HIT ✅`,
+  //           `[Similarity] ${(semanticMatch.similarity * 100).toFixed(1)}% match`,
+  //           `[Provider] ${selectedModel.provider}`,
+  //           `[Original Query] "${semanticMatch.query.substring(0, 50)}..."`,
+  //           `[Status] Instant Response (<500ms) ✓`
+  //         ]
+  //       };
+  //     }
+  //   } catch (semanticError) {
+  //     console.warn('[SemanticCache] Read error (graceful degradation):', semanticError);
+  //   }
+  // }
 
   // LAYER 2: Exact match cache (existing L2 cache)
   if (!options.skipCache) {
     try {
       const cached = await diagnosisCache.get(input.query);
       if (cached) {
-        // Populate semantic cache untuk future similar queries
-        semanticCache.set(input.query, cached.result, cached.model || 'unknown').catch(err => {
-          console.warn('[SemanticCache] Background set error:', err);
-        });
+        // Semantic cache DISABLED (CSP violation)
+        // semanticCache.set(input.query, cached.result, cached.model || 'unknown').catch(err => {
+        //   console.warn('[SemanticCache] Background set error:', err);
+        // });
 
         return {
           json: cached.result,
@@ -519,12 +521,9 @@ OUTPUT: BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
         ];
       }
 
-      // Store in BOTH caches
+      // Store in exact match cache only (semantic cache disabled due to CSP)
       try {
-        await Promise.all([
-          diagnosisCache.set(input.query, parsed, modelName),
-          semanticCache.set(input.query, parsed, modelName)
-        ]);
+        await diagnosisCache.set(input.query, parsed, modelName);
       } catch (cacheError) {
         console.warn('[Cache] Write error:', cacheError);
       }
