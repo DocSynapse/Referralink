@@ -99,7 +99,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .json({
           success: false,
           error: 'Invalid request format',
-          details: error.errors
+          details: error.issues // Zod v4 uses 'issues' not 'errors'
         });
     }
 
