@@ -12,24 +12,25 @@ import { ICD10Result } from "../../types.js";
 import { circuitBreaker, executeWithCircuitBreaker } from "./circuitBreakerService.js";
 
 // AI Model Configuration
-// Using OpenRouter for fast model routing (5-8s vs 18-24s direct)
+// Using DeepSeek direct API (for now - single model only)
+// TODO: Add OpenRouter for multi-model support
 export const AI_MODELS = {
   DEEPSEEK_V3: {
-    id: 'deepseek/deepseek-chat', // OpenRouter format
+    id: 'deepseek-chat', // DeepSeek native format
     name: 'DeepSeek V3',
-    provider: 'OpenRouter → DeepInfra',
-    description: 'Primary model - fast (5-8s) & accurate'
+    provider: 'DeepSeek',
+    description: 'Primary model - fast & accurate'
   },
   GLM_CODING: {
-    id: 'deepseek/deepseek-chat', // Same model for now
+    id: 'deepseek-chat', // Fallback to same model for now
     name: 'DeepSeek V3 (Fallback)',
-    provider: 'OpenRouter',
+    provider: 'DeepSeek',
     description: 'Secondary model - reliable fallback'
   },
   QWEN_TURBO: {
-    id: 'deepseek/deepseek-chat', // Same model for now
+    id: 'deepseek-chat', // Fallback to same model for now
     name: 'DeepSeek V3 (Tertiary)',
-    provider: 'OpenRouter',
+    provider: 'DeepSeek',
     description: 'Tertiary model - backup'
   }
 } as const;
@@ -60,36 +61,37 @@ let clientInstance: OpenAI | null = null;
 const getClient = (): OpenAI => {
   if (clientInstance) return clientInstance;
 
-  // Priority: OpenRouter (fast, 5-8s) > DeepSeek Direct (slow, 18-24s)
+  // Priority: DeepSeek > OpenRouter
   // SERVER-SIDE: Use non-VITE prefixed env vars (runtime accessible)
-  const baseURL = process.env.OPENROUTER_API_URL ||
+  // Fallback to VITE_ for backward compatibility during transition
+  const baseURL = process.env.DEEPSEEK_BASE_URL ||
                   process.env.API_BASE_URL ||
+                  process.env.VITE_DEEPSEEK_BASE_URL ||
+                  process.env.VITE_API_BASE_URL ||
                   "https://openrouter.ai/api/v1";
 
-  const apiKey = process.env.OPENROUTER_API_KEY ||
-                 process.env.DEEPSEEK_API_KEY ||
+  const apiKey = process.env.DEEPSEEK_API_KEY ||
+                 process.env.OPENROUTER_API_KEY ||
                  process.env.GEMINI_API_KEY ||
-                 process.env.VITE_OPENROUTER_API_KEY ||
                  process.env.VITE_DEEPSEEK_API_KEY ||
+                 process.env.VITE_OPENROUTER_API_KEY ||
                  process.env.VITE_GEMINI_API_KEY;
 
   if (!apiKey) {
     throw new Error('[DiagnosisService] No API key found in environment');
   }
 
-  console.log(`[DiagnosisService] Initializing client - Base: ${baseURL}, Key: ${apiKey.substring(0, 20)}...`);
-
   clientInstance = new OpenAI({
     apiKey,
     baseURL,
     // SERVER-SIDE ONLY - dangerouslyAllowBrowser REMOVED
     defaultHeaders: {
-      "HTTP-Referer": "https://www.sentraai.id",
+      "HTTP-Referer": "https://sentra.healthcare",
       "X-Title": "Sentra Referral CDSS",
     }
   });
 
-  console.log(`[DiagnosisService] Client initialized successfully`);
+  console.log(`[DiagnosisService] Client initialized - Base: ${baseURL}`);
   return clientInstance;
 };
 
