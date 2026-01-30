@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Diagnosis Test</title>
+  <style>
+    body { font-family: monospace; padding: 20px; }
+    button { padding: 10px 20px; font-size: 16px; }
+    pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+    .success { color: green; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Diagnosis API Test</h1>
+
+  <button onclick="testDiagnosis()">Test Diagnosis API</button>
+
+  <div id="output"></div>
+
+  <script>
+    async function testDiagnosis() {
+      const output = document.getElementById('output');
+      output.innerHTML = '<p>Testing...</p>';
+
+      try {
+        console.log('[TEST] Calling API...');
+
+        const response = await fetch('/api/diagnosis', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: 'demam tinggi 3 hari' })
+        });
+
+        console.log('[TEST] Response status:', response.status);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('[TEST] Response data:', result);
+
+        // Check structure
+        const checks = {
+          'success field': result.success === true,
+          'data exists': !!result.data,
+          'metadata exists': !!result.metadata,
+          'proposed_referrals exists': !!result.data?.proposed_referrals,
+          'referrals count': result.data?.proposed_referrals?.length || 0
+        };
+
+        let html = '<h2 class="success">✅ API Response Received</h2>';
+        html += '<h3>Structure Checks:</h3><ul>';
+        for (const [key, value] of Object.entries(checks)) {
+          const status = value ? '✅' : '❌';
+          html += `<li>${status} ${key}: ${value}</li>`;
+        }
+        html += '</ul>';
+
+        html += '<h3>Full Response:</h3>';
+        html += '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+
+        output.innerHTML = html;
+
+      } catch (error) {
+        console.error('[TEST] Error:', error);
+        output.innerHTML = `<h2 class="error">❌ Error</h2><pre>${error.message}\n${error.stack}</pre>`;
+      }
+    }
+  </script>
+</body>
+</html>
