@@ -246,20 +246,14 @@ async def add_memories_batch(
 ):
     """Add multiple memories in batch with agent isolation."""
     search_service = SearchService(db)
-    added_ids = []
 
-    for mem_request in memories:
-        memory = await search_service.add_memory(
-            user_id=user_id,
-            content=mem_request.content,
-            memory_type=mem_request.memory_type,
-            agent_id=mem_request.agent_id,
-            access_mode=mem_request.access_mode,
-            importance=mem_request.importance,
-            metadata=mem_request.metadata,
-            source_conversation_id=mem_request.source_conversation_id
-        )
-        added_ids.append(str(memory.id))
+    # Use optimized batch service method
+    added_memories = await search_service.add_memories_batch(
+        user_id=user_id,
+        memories_data=memories
+    )
+
+    added_ids = [str(m.id) for m in added_memories]
 
     return {
         "success": True,
