@@ -123,7 +123,7 @@ async function callServerDiagnosis(
       error: error.message,
       stack: error.stack,
       url: endpoint,
-      query: input.query
+      query: query
     });
 
     return {
