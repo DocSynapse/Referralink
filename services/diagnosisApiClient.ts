@@ -41,7 +41,7 @@ function useServerDiagnosis(): boolean {
  */
 function getApiEndpoint(): string {
   const base = import.meta.env.VITE_API_BASE_PATH || '';
-  return `${base}/api/diagnosis/generate`;
+  return `${base}/api/diagnosis`; // Consolidated endpoint (generate.ts deleted)
 }
 
 /**
