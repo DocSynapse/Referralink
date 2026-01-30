@@ -9,7 +9,9 @@ import { TextScramble } from './components/ui/text-scramble';
 
 import { generateMockQuery, NON_REFERRAL_DIAGNOSES, EXAMPLE_QUERIES } from './constants';
 import { MedicalQuery, ProcessedResult } from './types';
-import { searchICD10Code, chatFriendly, setCurrentModel } from './services/geminiService';
+import { searchICD10Code } from './services/diagnosisApiClient';
+// Removed geminiService imports - deprecated due to CSP violation
+// chatFriendly and setCurrentModel are no longer available
 import { DataCard } from './components/DataCard';
 import { LogTerminal } from './components/LogTerminal';
 import { ReferralDeck } from './components/ReferralDeck';
@@ -172,8 +174,9 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
     { role: 'assistant', content: 'Hai, saya Audrey dari Sentra. Ada yang bisa Audrey bantu seputar Sentra Solutions atau Referralink?' }
   ]);
   useEffect(() => {
-    // gunakan deepseek via OpenRouter (lebih CORS-friendly)
-    setCurrentModel('DEEPSEEK_V3');
+    // DEPRECATED: geminiService removed (CSP violation)
+    // setCurrentModel now handled server-side
+    // setCurrentModel('DEEPSEEK_V3');
   }, []);
   const pickAudreyReply = (text: string) => {
     const t = text.toLowerCase();
@@ -204,12 +207,16 @@ const referralinkRef = React.useRef<HTMLHeadingElement>(null);
     setChatMessages((m) => [...m, { role: 'user', content: text }]);
     setChatInput('');
     try {
-      // race AI call with 6s timeout; fallback to rules
-      const aiCall = chatFriendly(text);
-      const timeout = new Promise<{ reply: string; model: string }>((resolve) =>
-        setTimeout(() => resolve({ reply: '', model: 'timeout' }), 6000)
-      );
-      const res = await Promise.race([aiCall, timeout]);
+      // DEPRECATED: chatFriendly removed (CSP violation in geminiService)
+      // Temporarily disable AI chat until server-side chat endpoint is ready
+      const res = { reply: '', model: 'unavailable' };
+
+      // Legacy code (commented out):
+      // const aiCall = chatFriendly(text);
+      // const timeout = new Promise<{ reply: string; model: string }>((resolve) =>
+      //   setTimeout(() => resolve({ reply: '', model: 'timeout' }), 6000)
+      // );
+      // const res = await Promise.race([aiCall, timeout]);
 
       const rawReply = (res.reply || '').trim();
       const lower = rawReply.toLowerCase();
