@@ -31,9 +31,14 @@ interface ServerResponse {
 
 /**
  * Check if server-side diagnosis is enabled
+ * FORCED TRUE - client-side mode deprecated due to CSP restrictions
  */
 function useServerDiagnosis(): boolean {
-  return import.meta.env.VITE_USE_SERVER_DIAGNOSIS === 'true';
+  // Always use server-side diagnosis (client-side deprecated)
+  return true;
+
+  // Original env check (disabled):
+  // return import.meta.env.VITE_USE_SERVER_DIAGNOSIS === 'true';
 }
 
 /**
