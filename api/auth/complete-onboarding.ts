@@ -4,7 +4,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import type { ApiResponse, OnboardingData } from '../_types/registration.js';
 
-import { generateApiKey } from '../_utils/auth.js';
+import { generateApiKey, generateMcpToken } from '../_utils/auth.js';
 import {
   completeOnboarding,
   findUserById,
@@ -116,8 +116,8 @@ export default async function handler(
     // Generate API key
     const apiKey = generateApiKey();
 
-    // Optional: Generate MCP token (if needed)
-    const mcpToken = undefined; // TODO: Implement MCP token generation if needed
+    // Generate MCP token (required for agent orchestration)
+    const mcpToken = generateMcpToken();
 
     // Complete onboarding
     await completeOnboarding(userId, apiKey, mcpToken);
