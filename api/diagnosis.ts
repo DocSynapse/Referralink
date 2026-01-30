@@ -245,6 +245,8 @@ export default async function handler(
   }
 
   try {
+    const startTime = Date.now();
+
     // Parse request body
     const { query, model = 'DEEPSEEK_V3' } = req.body;
 
@@ -276,12 +278,12 @@ export default async function handler(
       console.log('[Diagnosis API] Semantic cache HIT - Similarity:', (cachedResult.similarity * 100).toFixed(1) + '%');
       return res.status(200).json({
         success: true,
-        data: {
-          result: cachedResult.result,
-          model: modelName,
-          provider: selectedModel.provider,
+        data: cachedResult.result,
+        metadata: {
           fromCache: true,
-          similarity: cachedResult.similarity
+          model: modelName,
+          latencyMs: Date.now() - startTime,
+          timestamp: Date.now()
         }
       });
     }
@@ -372,11 +374,12 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
     // Return success response
     return res.status(200).json({
       success: true,
-      data: {
-        result: parsed,
+      data: parsed,
+      metadata: {
+        fromCache: false,
         model: modelName,
-        provider: selectedModel.provider,
-        fromCache: false
+        latencyMs: Date.now() - startTime,
+        timestamp: Date.now()
       }
     });
 
