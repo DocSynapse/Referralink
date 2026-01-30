@@ -7,6 +7,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import OpenAI from 'openai';
+import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from '../constants';
 
 export const config = {
   runtime: 'nodejs',
@@ -37,6 +38,10 @@ export default async function handler(
     }
 
     console.log('[Simple Diagnosis] Query:', query);
+    console.log('[Simple Diagnosis] Constants loaded:', {
+      systemInstruction: SYSTEM_INSTRUCTION_REFERRAL.substring(0, 50),
+      blacklistCount: NON_REFERRAL_DIAGNOSES.length
+    });
 
     // Get trimmed API key
     const apiKey = (process.env.OPENROUTER_API_KEY || '').trim();
