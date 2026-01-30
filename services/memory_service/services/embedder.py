@@ -4,6 +4,8 @@ Embedding Service - Generate vector embeddings for semantic search
 
 from typing import List, Optional
 import logging
+import asyncio
+import functools
 from functools import lru_cache
 
 from ..config import get_settings
@@ -51,21 +53,33 @@ class EmbeddingService:
         self._model = None
         self.dimension = settings.embedding_dimension
 
-    def embed(self, text: str) -> List[float]:
+    async def embed(self, text: str) -> List[float]:
         """Generate embedding for single text."""
+        loop = asyncio.get_running_loop()
         if self._model is not None:
-            embedding = self._model.encode(text, convert_to_numpy=True)
+            # Offload CPU-bound encoding to thread pool
+            func = functools.partial(self._model.encode, convert_to_numpy=True)
+            embedding = await loop.run_in_executor(None, func, text)
             return embedding.tolist()
         else:
-            return self._fallback_embed(text)
+            # Fallback is also CPU-bound, though lighter
+            return await loop.run_in_executor(None, self._fallback_embed, text)
 
-    def embed_batch(self, texts: List[str]) -> List[List[float]]:
+    async def embed_batch(self, texts: List[str]) -> List[List[float]]:
         """Generate embeddings for multiple texts."""
+        loop = asyncio.get_running_loop()
         if self._model is not None:
-            embeddings = self._model.encode(texts, convert_to_numpy=True)
+            # Offload CPU-bound encoding to thread pool
+            func = functools.partial(self._model.encode, convert_to_numpy=True)
+            embeddings = await loop.run_in_executor(None, func, texts)
             return embeddings.tolist()
         else:
-            return [self._fallback_embed(t) for t in texts]
+            # Process batch using the same offloading mechanism
+            # We can process the whole list in the executor for efficiency
+            def process_batch():
+                return [self._fallback_embed(t) for t in texts]
+
+            return await loop.run_in_executor(None, process_batch)
 
     def _fallback_embed(self, text: str) -> List[float]:
         """Simple hash-based embedding fallback."""
