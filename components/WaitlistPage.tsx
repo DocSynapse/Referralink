@@ -515,9 +515,15 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({ onBack }) => {
           setIsLoading(false);
           setTimeout(() => setShowResult(true), 100);
         }, remainingTime);
+      } else {
+        // Handle case where response.json is null (error responses)
+        console.error('Diagnosis failed - no result data:', response);
+        alert(`Diagnosis error: ${response.logs?.join('\n') || 'Unknown error'}`);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('Generate error:', error);
+      alert(`Network error: ${error instanceof Error ? error.message : 'Unknown error'}`);
       setIsLoading(false);
     }
   };
