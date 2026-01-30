@@ -19,15 +19,27 @@ export interface PuskesmasDisease {
   sumber_halaman: string;
 }
 
-// Import database
-import databaseJson from '../database/med_database.json';
-const database: PuskesmasDisease[] = databaseJson as PuskesmasDisease[];
+// Database cache
+let database: PuskesmasDisease[] = [];
+
+// Preload database on module initialization
+(async () => {
+  try {
+    const response = await fetch('/data/med_database.json');
+    if (response.ok) {
+      database = await response.json();
+      console.log(`[Puskesmas DB] Loaded ${database.length} diseases`);
+    }
+  } catch (error) {
+    console.warn('[Puskesmas DB] Database not available:', error);
+  }
+})();
 
 /**
  * Find disease by name (case-insensitive, fuzzy match)
  */
 export function findDiseaseByName(diseaseName: string): PuskesmasDisease | null {
-  if (!diseaseName) return null;
+  if (!diseaseName || database.length === 0) return null;
 
   const normalized = diseaseName.toLowerCase().trim();
 

@@ -1,0 +1,3582 @@
+[
+  {
+    "nama_penyakit": "Abortus",
+    "gejala_klinis": [
+      "Terlambat Haid (amenorhea) kurang dari 22 minggu",
+      "Perdarahan pervaginam, mungkin disertai jaringan hasil konsepsi",
+      "Rasa nyeri di daerah atas simpisis",
+      "Pembukaan ostium serviks"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Tirah baring",
+        "dosis": null,
+        "durasi": "2-3 hari (untuk Abortus Imminens)"
+      },
+      {
+        "nama_obat": "Ampisilin i.v",
+        "dosis": null,
+        "durasi": "sebelum tindakan kuretase (untuk Abortus Insipiens)"
+      },
+      {
+        "nama_obat": "Oksitosin 10 IU i.m",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Perdarahan pervaginam banyak, nyeri perut hebat, pembukaan serviks, keluar jaringan hasil konsepsi (Abortus Inkompletus), gangguan fungsi organ berat (indikasi missed abortion)",
+    "sumber_halaman": "5, 6, 7, 8"
+  },
+  {
+    "nama_penyakit": "Abses Gigi",
+    "gejala_klinis": [
+      "Pembengkakan gusi dengan tanda peradangan di sekitar gigi yang sakit",
+      "Demam",
+      "Gigi goyah dan sakit saat mengunyah",
+      "Pembengkakan bervariasi tergantung lokasi abses"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": "Dewasa: 500 mg 3 x sehari; Anak-anak: 250 mg 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "Dewasa: 500 mg 3 x sehari; Anak-anak: 250 mg 3 x sehari",
+        "durasi": "5 hari (jika ada infeksi)"
+      }
+    ],
+    "tanda_bahaya": "Infeksi yang meluas",
+    "sumber_halaman": "9"
+  },
+  {
+    "nama_penyakit": "AIDS",
+    "gejala_klinis": [
+      "Gejala klinis kategori A, B, C (sesuai klasifikasi)",
+      "Sering tanpa gejala pada fase awal",
+      "Kandidiasis",
+      "Herpes zoster",
+      "Pneumonia"
+    ],
+    "pemeriksaan_penunjang": [
+      "Tes HIV (tes langsung atau tes antibodi)",
+      "Pemeriksaan darah tepi"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Nucleoside Reverse Transcriptase Inhibitor (NRTI)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Non-Nucleoside Reverse Transcriptase Inhibitor (NNRTI)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Protease Inhibitor (PI)",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Infeksi oportunistik yang berat",
+    "sumber_halaman": "10, 11, 12"
+  },
+  {
+    "nama_penyakit": "Amubiasis",
+    "gejala_klinis": [
+      "Sindrom disentri (tinja berlendir dan berdarah, tenesmus anus, nyeri perut)",
+      "Diare yang diselingi konstipasi",
+      "Demam, hati membesar disertai nyeri tekan abdomen (pada amubiasis hati)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan tinja (menemukan E.histolytica bentuk histolitika atau kista)",
+      "Pemeriksaan serologi"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Metronidazol",
+        "dosis": "Dewasa: 500-750 mg 3 x sehari; Anak (1 tahun): 50 mg/kgBB 3 x sehari",
+        "durasi": "7-10 hari"
+      }
+    ],
+    "tanda_bahaya": "Amubiasis ekstra-intestinal memerlukan pengobatan lebih lama dan perlu dirujuk",
+    "sumber_halaman": "11, 12, 13"
+  },
+  {
+    "nama_penyakit": "Anemia",
+    "gejala_klinis": [
+      "Lemas",
+      "Sering berdebar",
+      "Lekas lelah",
+      "Sakit kepala",
+      "Pucat",
+      "Takikardia",
+      "Tekanan darah normal atau rendah",
+      "Gejala neurologi (pada defisiensi B12/asam folat)",
+      "Ikterus (pada anemia hemolitik)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan kadar Hb dan darah tepi"
+    ],
+    "kriteria_diagnosis": "Kadar Hb < 12 gr/dl (dewasa)",
+    "tata_laksana": [
+      {
+        "nama_obat": "Transfusi darah",
+        "dosis": "10-20 ml/kgBB (untuk anemia pasca perdarahan)",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Sulfas ferosus",
+        "dosis": "3 x 1 tablet (dewasa) atau 10 mg/kgBB/kali (anak)",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Vitamin B12",
+        "dosis": "100 mcg/hari i.m (terapi awal)",
+        "durasi": "5-10 hari"
+      },
+      {
+        "nama_obat": "Asam folat",
+        "dosis": "0,5-1 mg/hari per oral",
+        "durasi": "10 hari (terapi awal)"
+      },
+      {
+        "nama_obat": "Prednison",
+        "dosis": "2-5 mg/kgBB/hari peroral",
+        "durasi": "jangka panjang (untuk hemolisis autoimun)"
+      }
+    ],
+    "tanda_bahaya": "Syok, kegagalan jantung (pada anemia pasca perdarahan masif)",
+    "sumber_halaman": "13, 14, 15"
+  },
+  {
+    "nama_penyakit": "Angina Pektoris",
+    "gejala_klinis": [
+      "Nyeri dada (rasa terhimpit, terjepit, terbakar)",
+      "Menyebar ke lengan kiri, bahu, leher, rahang",
+      "Disertai keringat dingin, mual, lemas, berdebar",
+      "Timbul saat aktivitas fisik (angina stabil)",
+      "Hilang saat istirahat",
+      "Serangan berlangsung 1-5 menit, bisa lebih dari 20 menit"
+    ],
+    "pemeriksaan_penunjang": [
+      "EKG"
+    ],
+    "kriteria_diagnosis": "Nyeri dada retrosternal",
+    "tata_laksana": [
+      {
+        "nama_obat": "Nitrogliserin sublingual",
+        "dosis": "0,15-0,6 mg",
+        "durasi": "beberapa kali sehari"
+      },
+      {
+        "nama_obat": "Isosorbid dinitrat (ISDN) sublingual",
+        "dosis": "2,5-5 mg",
+        "durasi": "dapat diulang"
+      },
+      {
+        "nama_obat": "Propranolol",
+        "dosis": "Awal: 20 mg 2 x sehari, maksimal: 120 mg sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "ISDN tablet oral",
+        "dosis": "10-20 mg",
+        "durasi": "2 x sehari"
+      },
+      {
+        "nama_obat": "Nifedipin",
+        "dosis": "10-20 mg",
+        "durasi": "4 x sehari"
+      },
+      {
+        "nama_obat": "Diltiazem",
+        "dosis": "30-60 mg",
+        "durasi": "3 x sehari"
+      },
+      {
+        "nama_obat": "Verapamil",
+        "dosis": "40-80 mg",
+        "durasi": "3 x sehari"
+      }
+    ],
+    "tanda_bahaya": "Angina tidak stabil (perubahan intensitas/durasi serangan, timbul saat istirahat, prainfark)",
+    "sumber_halaman": "15, 16, 17, 18"
+  },
+  {
+    "nama_penyakit": "Antraks",
+    "gejala_klinis": [
+      "Antraks kulit: gatal, papel, vesikel, ulkus dengan keropeng hitam (eskar)",
+      "Antraks intestinal: mual, muntah, sakit perut, diare",
+      "Demam, sakit kepala, malaise (pada antraks kulit dan intestinal)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan bakteriologis dari eksudat/tinja"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Procain penisilin",
+        "dosis": "1,2 juta IU 2 x sehari (antraks kulit)",
+        "durasi": "5-7 hari"
+      },
+      {
+        "nama_obat": "Benzilpenisilin",
+        "dosis": "250.000 IU setiap 6 jam",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Tetrasiklin",
+        "dosis": "500 mg 4 x sehari (dewasa), 50 mg/kgBB/hari (anak)",
+        "durasi": "5-7 hari (dewasa)"
+      },
+      {
+        "nama_obat": "Kloramfenikol",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Penisilin G intravena",
+        "dosis": "18-24 juta unit perhari (antraks intestinal)",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Septikemia, kematian",
+    "sumber_halaman": "19, 20, 21"
+  },
+  {
+    "nama_penyakit": "Artritis",
+    "gejala_klinis": [
+      "Nyeri dan pembengkakan pada daerah persendian",
+      "Bengkak, merah dan nyeri pada sendi",
+      "Hilang timbul, simetris bilateral (pada RA)",
+      "Nyeri berhubungan dengan gerak, kaku (pada OA)",
+      "Gejala prodromal (badan lemah, hilang nafsu makan pada RA)",
+      "Deformitas sendi"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan radiologi"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Asetosal",
+        "dosis": "1 gram 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Fenilbutason",
+        "dosis": "200 mg 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Ibuprofen",
+        "dosis": "400 mg 3 x sehari",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Kerusakan sendi yang parah, deformitas",
+    "sumber_halaman": "21, 22"
+  },
+  {
+    "nama_penyakit": "Asma Bronkiale",
+    "gejala_klinis": [
+      "Sesak napas",
+      "Suara mengi",
+      "Ekspirasi memanjang",
+      "Batuk (terutama di malam hari atau pagi hari)",
+      "Status asmatikus (sesak hebat, sianosis, giat otot bantu napas)"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Adrenalin",
+        "dosis": "1:1000, 0,2-0,3 ml subkutan (dewasa); 0,01 mg/kgBB (anak)",
+        "durasi": "dapat diulang setiap 10-15 menit"
+      },
+      {
+        "nama_obat": "Teofilin",
+        "dosis": "Dewasa: 100-150 mg 3 x sehari; Anak: 10-15 mg/kgBB sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Salbutamol",
+        "dosis": "2-4 mg",
+        "durasi": "3 x sehari"
+      },
+      {
+        "nama_obat": "Efedrin",
+        "dosis": "10-15 mg",
+        "durasi": "3 x sehari"
+      },
+      {
+        "nama_obat": "Prednison",
+        "dosis": null,
+        "durasi": "beberapa hari saja (jika obat lain tidak menolong)"
+      }
+    ],
+    "tanda_bahaya": "Status asmatikus (sesak hebat, sianosis, giat otot bantu napas, hipoksia)",
+    "sumber_halaman": "23, 24, 25, 26"
+  },
+  {
+    "nama_penyakit": "Batu Saluran Kemih",
+    "gejala_klinis": [
+      "Nyeri punggung atau kolik renalis (nyeri hebat)",
+      "Mual dan muntah",
+      "Demam, menggigil",
+      "Darah dalam urin (hematuria)",
+      "Sering buang air kecil",
+      "Nyeri saat buang air kecil"
+    ],
+    "pemeriksaan_penunjang": [
+      "Urinalisis (menemukan eritrosit, leukosit, kristal)",
+      "Pengumpulan urin 24 jam",
+      "Pemeriksaan darah (kadar kalsium, sistin, asam urat)"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Atropin",
+        "dosis": "0,5-1 mg i.m (dewasa)",
+        "durasi": "untuk kolik"
+      },
+      {
+        "nama_obat": "Kotrimoksazol",
+        "dosis": "2 x 2 tablet",
+        "durasi": "untuk infeksi"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "500 mg peroral 3 x sehari",
+        "durasi": "untuk infeksi"
+      }
+    ],
+    "tanda_bahaya": "Infeksi saluran kemih berulang, penyumbatan aliran kemih yang lama, kerusakan ginjal (hidronefrosis)",
+    "sumber_halaman": "27, 28"
+  },
+  {
+    "nama_penyakit": "Bronkitis Akut",
+    "gejala_klinis": [
+      "Batuk berdahak (warna bisa putih, kuning, atau hijau)",
+      "Sesak napas saat aktivitas ringan",
+      "Pilek, hidung berlendir",
+      "Demam ringan",
+      "Nyeri tenggorokan",
+      "Nyeri otot, sakit punggung",
+      "Bisa disertai pneumonia"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan auskultasi paru",
+      "Foto toraks (jika perlu)"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Asetosal",
+        "dosis": "Dewasa: 500 mg 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": "Dewasa: 500 mg 3 x sehari; Anak: 10 mg/kgBB/kali",
+        "durasi": "3-4 kali sehari"
+      },
+      {
+        "nama_obat": "Kotrimoksazol",
+        "dosis": "Dewasa: 2 tablet 2 x sehari",
+        "durasi": "7-10 hari"
+      },
+      {
+        "nama_obat": "Tetrasiklin",
+        "dosis": "250-500 mg 4 x sehari",
+        "durasi": "7-10 hari"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "250-500 mg 4 x sehari (dewasa); 40-50 mg/kgBB/hari (anak)",
+        "durasi": "7-10 hari"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Obstruksi jalan napas, pneumonia",
+    "sumber_halaman": "25, 26, 29, 30"
+  },
+  {
+    "nama_penyakit": "Cacingan",
+    "gejala_klinis": [
+      "Diare yang sering diselingi konstipasi",
+      "Anemia",
+      "Penurunan berat badan",
+      "Gangguan pertumbuhan (pada anak)",
+      "Prolapsus rekti (pada infeksi cacing kremi)",
+      "Obstruksi usus (ileus)",
+      "Mual, muntah"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan tinja (menemukan telur cacing atau cacing dewasa)"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Pirantel pamoat",
+        "dosis": "10 mg/kgBB dosis tunggal (Ankilostomiasis, Askariasis, Oksiuriasis)",
+        "durasi": "3 hari (Ankilostomiasis); 2 minggu kemudian (Oksiuriasis)"
+      },
+      {
+        "nama_obat": "Mebendazol",
+        "dosis": "500 mg dosis tunggal atau 100 mg 2 x sehari (Ankilostomiasis, Askariasis, Trikuriasis)",
+        "durasi": "3 hari (Ankilostomiasis, Askariasis); 3 hari (Trikuriasis)"
+      },
+      {
+        "nama_obat": "Albendazol",
+        "dosis": "400 mg dosis tunggal (Ankilostomiasis, Askariasis, Trikuriasis)",
+        "durasi": "1 dosis (Ankilostomiasis, Askariasis); 3 hari (Trikuriasis)"
+      }
+    ],
+    "tanda_bahaya": "Obstruksi usus (ileus) yang merupakan kedaruratan",
+    "sumber_halaman": "26, 27, 29, 31"
+  },
+  {
+    "nama_penyakit": "Demam Berdarah Dengue (DBD)",
+    "gejala_klinis": [
+      "Demam tinggi mendadak 2-7 hari",
+      "Manifestasi perdarahan (petekie, purpura, epistaksis, perdarahan gusi, hematemesis, melena)",
+      "Trombositopeni (< 100.000/mm³)",
+      "Hemokonsentrasi (> 20%)",
+      "Pembesaran hati (hepatomegali)",
+      "Syok dengue (kulit dingin, lembab, gelisah, sianosis, nadi cepat-lemah, tekanan nadi menurun)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Darah perifer lengkap (trombositopenia, hemokonsentrasi)",
+      "Tes NS1 antigen",
+      "Serologi IgM/IgG dengue",
+      "Tes Tourniquet (Rumple Leede)"
+    ],
+    "kriteria_diagnosis": "Demam tinggi mendadak + tanda perdarahan + trombositopeni",
+    "tata_laksana": [
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Pemberian cairan intravena (Ringer Laktat / NaCl 0,9%)",
+        "dosis": "20 ml/kgBB (untuk syok, dapat diulang)",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Oksigen",
+        "dosis": "2-4 liter/menit",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Syok dengue, perdarahan berat, gangguan organ vital, penurunan kesadaran",
+    "sumber_halaman": "31, 32, 33, 42, 43, 44, 45, 46"
+  },
+  {
+    "nama_penyakit": "Demam Rematik",
+    "gejala_klinis": [
+      "Kriteria Mayor: Karditis, Poliartritis migrans, Chorea, Eritema marginatum",
+      "Kriteria Minor: Demam, riwayat demam rematik, artralgia, peninggian LED, peningkatan CRP, interval P-R memanjang pada EKG",
+      "Gejala umum: badan lemah, malaise"
+    ],
+    "pemeriksaan_penunjang": [
+      "EKG",
+      "Ekokardiografi",
+      "Pemeriksaan kultur Streptococcus grup A"
+    ],
+    "kriteria_diagnosis": "2 kriteria mayor atau 1 kriteria mayor + 2 kriteria minor, disertai bukti infeksi Streptococcus sebelumnya",
+    "tata_laksana": [
+      {
+        "nama_obat": "Penisilin prokain",
+        "dosis": "600.000 – 1,2 juta IU i.m (dewasa); 50.000 IU/kgBB i.m (anak)",
+        "durasi": "10 hari"
+      },
+      {
+        "nama_obat": "Penisilin V",
+        "dosis": "500 mg 3 x sehari (dewasa)",
+        "durasi": "10 hari"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "2 gram/hari (dewasa); 125-250 mg 4 x sehari (anak)",
+        "durasi": "10 hari"
+      },
+      {
+        "nama_obat": "Salisilat",
+        "dosis": "100 mg/kg/hari (anak, untuk artritis/karditis tanpa kardiomegali)",
+        "durasi": "2 minggu, lalu diturunkan"
+      },
+      {
+        "nama_obat": "Prednison",
+        "dosis": "2 mg/kg/hari (anak, untuk karditis dengan kardiomegali)",
+        "durasi": "2 minggu, lalu diturunkan"
+      }
+    ],
+    "tanda_bahaya": "Penyakit jantung rematik kronik",
+    "sumber_halaman": "34, 47, 48"
+  },
+  {
+    "nama_penyakit": "Dermatitis Atopik",
+    "gejala_klinis": [
+      "Gatal",
+      "Ruam berkeropeng, merah, berair (pada bayi)",
+      "Ruam pada lengan atas, siku depan, belakang lutut (pada anak/dewasa)",
+      "Kulit kepala, wajah, daerah tertutup popok, tangan, kaki bisa terkena"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Gejala klinis, hasil pemeriksaan fisik, riwayat alergi keluarga",
+    "tata_laksana": [
+      {
+        "nama_obat": "Klorfeniramin maleat",
+        "dosis": "0,34 mg/kg BB 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antibiotik (sistemik/topikal)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Krim Kortikosteroid (potensi sedang/rendah)",
+        "dosis": null,
+        "durasi": "1-2 kali sehari"
+      },
+      {
+        "nama_obat": "Krim Hidrokortison 1%",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Krim Betametason 0,1%",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Emolien",
+        "dosis": null,
+        "durasi": "sesudah mandi"
+      }
+    ],
+    "tanda_bahaya": "Infeksi herpes simpleks yang berat (eksim herpetikum)",
+    "sumber_halaman": "49, 50, 51"
+  },
+  {
+    "nama_penyakit": "Dermatofitosis",
+    "gejala_klinis": [
+      "Tinea kutaneus: tepi bersisik, eritematus, meninggi, berbentuk lingkaran, gatal",
+      "Panu: bercak bersisik halus, putih hingga kecoklatan",
+      "Lesi bisa di mana saja di badan, sering di daerah lipatan"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan mikroskopis kerokan kulit (menggunakan KOH 10% atau pewarnaan Gram)"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Gentian violet 1%",
+        "dosis": null,
+        "durasi": "2-3 kali sehari selama 3 hari"
+      },
+      {
+        "nama_obat": "Nistatin (larutan/oral)",
+        "dosis": "Larutan: 100.000-200.000 IU/ml; Oral: 500.000 IU",
+        "durasi": "3x sehari selama 7-14 hari"
+      },
+      {
+        "nama_obat": "Mikonazol (topikal/sistemik)",
+        "dosis": null,
+        "durasi": "1 bulan (dengan derivat azol)"
+      },
+      {
+        "nama_obat": "Ketokonazol (sistemik)",
+        "dosis": null,
+        "durasi": "1 bulan (dengan derivat azol)"
+      },
+      {
+        "nama_obat": "Asam salisilat 3% + Asam benzoat 6%",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Infeksi jamur yang bersifat kronik-residif",
+    "sumber_halaman": "51, 52, 53"
+  },
+  {
+    "nama_penyakit": "Diabetes Melitus",
+    "gejala_klinis": [
+      "Poliuria (banyak berkemih)",
+      "Polidipsia (banyak minum)",
+      "Polifagia (banyak makan)",
+      "Penurunan berat badan",
+      "Lemas, cepat lelah",
+      "Gatal",
+      "Gangguan penglihatan",
+      "Lemah"
+    ],
+    "pemeriksaan_penunjang": [
+      "Penentuan kadar gula darah sewaktu (> 200 mg/dl)",
+      "Penentuan kadar gula darah puasa (> 126 mg/dl)",
+      "Tes Toleransi Glukosa Oral (TTGO) (> 200 mg/dl setelah 2 jam)"
+    ],
+    "kriteria_diagnosis": "Gejala diabetes dengan 3P (polifagia, poliuria, polidipsia) dan hasil pemeriksaan kadar gula darah yang abnormal",
+    "tata_laksana": [
+      {
+        "nama_obat": "Diet (pembatasan kalori)",
+        "dosis": null,
+        "durasi": "seumur hidup"
+      },
+      {
+        "nama_obat": "Olahraga teratur",
+        "dosis": null,
+        "durasi": "seumur hidup"
+      },
+      {
+        "nama_obat": "Klorpropamid",
+        "dosis": "Mulai 0,1 gr/hari, maksimal 0,5 mg/hari",
+        "durasi": "sesuai kebutuhan"
+      },
+      {
+        "nama_obat": "Glibenklamid",
+        "dosis": "Mulai 5 mg/hari, maksimal 10 mg/hari",
+        "durasi": "sesuai kebutuhan"
+      },
+      {
+        "nama_obat": "Metformin",
+        "dosis": "Mulai 0,5 gr 3 x sehari, maksimal 2 g/hari",
+        "durasi": "sesuai kebutuhan"
+      },
+      {
+        "nama_obat": "Insulin",
+        "dosis": null,
+        "durasi": "seumur hidup (untuk Tipe 1)"
+      }
+    ],
+    "tanda_bahaya": "Komplikasi DM (gagal ginjal, syok, gangrene, kebutaan)",
+    "sumber_halaman": "37, 38"
+  },
+  {
+    "nama_penyakit": "Diare Non Spesifik",
+    "gejala_klinis": [
+      "Buang air besar lembek/cair, lebih sering dari biasanya",
+      "Disertai berlendir, bau amis, berbusa",
+      "Demam",
+      "Mual, muntah",
+      "Nyeri perut"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan feses (mikroskopis, kultur jika dicurigai penyebab spesifik)"
+    ],
+    "kriteria_diagnosis": "Buang air besar berulang kali dengan konsistensi lembek dan cair",
+    "tata_laksana": [
+      {
+        "nama_obat": "Rehidrasi oral (Oralit)",
+        "dosis": "Anak < 1 thn: 50-100 ml; 1-4 thn: 100-200 ml; > 5 thn: 200-300 ml; Dewasa: 300-400 ml",
+        "durasi": "setiap habis BAB"
+      },
+      {
+        "nama_obat": "Rehidrasi oral (Oralit)",
+        "dosis": "75 ml/kg BB",
+        "durasi": "dalam 3 jam (untuk dehidrasi ringan-sedang)"
+      },
+      {
+        "nama_obat": "Ringer Laktat",
+        "dosis": "100 ml/kg BB (dibagi dalam beberapa waktu)",
+        "durasi": "untuk dehidrasi berat"
+      },
+      {
+        "nama_obat": "Zinc",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antibiotik",
+        "dosis": null,
+        "durasi": "jika ada indikasi"
+      }
+    ],
+    "tanda_bahaya": "Dehidrasi berat, syok hipovolemik, diare berdarah masif",
+    "sumber_halaman": "38, 39"
+  },
+  {
+    "nama_penyakit": "Difteri",
+    "gejala_klinis": [
+      "Sakit menelan",
+      "Napas ngorok (stridor)",
+      "Demam",
+      "Mual, muntah, sakit kepala",
+      "Selaput putih keabu-abuan pada faring yang mudah berdarah",
+      "Pembesaran kelenjar limfe di leher (bullneck)",
+      "Napas bau",
+      "Perdarahan hidung",
+      "Sianosis",
+      "Gangguan kesadaran",
+      "Miokarditis, paralisis saraf (komplikasi)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Kultur bakteri dari eksudat",
+      "Sediaan apus",
+      "Pemeriksaan darah (menunjukkan leukositosis, LED tinggi)"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "Dewasa: 500 mg 3 x sehari; Anak: 40-50 mg/kgBB/hari",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "Dewasa: 500 mg 3 x sehari; Anak: 30-50 mg/kgBB/hari",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Penisilin prokain",
+        "dosis": "Dewasa: 2 juta IU i.m; Anak: 50.000 IU/kgBB/hari",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "ADS (Anti Difteri Serum)",
+        "dosis": "Dewasa: 20.000-40.000 IU/hari; Anak: 20.000 IU/hari",
+        "durasi": "3 hari (dewasa); 2 hari (anak)"
+      }
+    ],
+    "tanda_bahaya": "Sumbatan jalan napas, miokarditis, paralisis saraf",
+    "sumber_halaman": "40, 59, 60"
+  },
+  {
+    "nama_penyakit": "Epilepsi",
+    "gejala_klinis": [
+      "Kejang berulang",
+      "Hilangnya kesadaran sementara",
+      "Kejang tonik atau klonik",
+      "Aura (rasa terbenam/melayang)",
+      "Inkontinensia urin/feses",
+      "Mulut berbusa",
+      "Periode pasca-kejang (lemas, tertidur)",
+      "Gerakan abnormal (mioklonik, parsial)",
+      "Status epileptikus (kejang terus menerus)"
+    ],
+    "pemeriksaan_penunjang": [
+      "EKG",
+      "Pemeriksaan darah tepi",
+      "Pemeriksaan cairan serebrospinal (untuk neurosifilis)"
+    ],
+    "kriteria_diagnosis": "Gejala kejang berulang yang disampaikan oleh saksi dan riwayat penyakit",
+    "tata_laksana": [
+      {
+        "nama_obat": "Diazepam",
+        "dosis": "i.v: 0,2-0,3 mg/kgBB/dosis (anak), 2-5 mg (dewasa)",
+        "durasi": "setiap 15-30 menit hingga dosis total 5 mg (anak), 2-3 x sehari (dewasa)"
+      },
+      {
+        "nama_obat": "Fenobarbital",
+        "dosis": "1-5 mg/kgBB/hari (anak); 100 mg s.c setiap jam (dewasa)",
+        "durasi": "1 x sehari (maintenance); hingga kejang terkendali"
+      },
+      {
+        "nama_obat": "Amitriptilin",
+        "dosis": "25 mg 2-3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Injeksi Flufenazin dekanoat",
+        "dosis": null,
+        "durasi": "sekali sebulan"
+      }
+    ],
+    "tanda_bahaya": "Status epileptikus (kejang tanpa henti), cedera akibat kejang",
+    "sumber_halaman": "41, 42, 61, 62"
+  },
+  {
+    "nama_penyakit": "Erisipelas",
+    "gejala_klinis": [
+      "Demam hingga menggigil",
+      "Malaise",
+      "Kulit tampak merah, udematus, batas tegas, nyeri tekan",
+      "Vesikel dan bula pada kulit yang udematus",
+      "Pembesaran kelenjar getah bening regional"
+    ],
+    "pemeriksaan_penunjang": [
+      "Tanda peradangan kulit"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Penisilin prokain",
+        "dosis": "1,2 juta IU",
+        "durasi": "3 hari berturut-turut"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": null,
+        "durasi": "5-6 hari (jika alergi penisilin)"
+      }
+    ],
+    "tanda_bahaya": "Infeksi yang menyebar",
+    "sumber_halaman": "63, 64"
+  },
+  {
+    "nama_penyakit": "Faringitis Akut",
+    "gejala_klinis": [
+      "Sakit menelan",
+      "Nyeri tenggorokan",
+      "Demam atau menggigil",
+      "Faring posterior merah dan bengkak",
+      "Eksudat pada faring",
+      "Pembesaran kelenjar getah bening leher",
+      "Batuk",
+      "Pilek",
+      "Napas ngorok (stridor)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Kultur bakteri dari sekret faring",
+      "Pemeriksaan mikroskopis"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": "Dewasa: 250-500 mg 4 x sehari; Anak: sesuai umur",
+        "durasi": "jika diperlukan"
+      },
+      {
+        "nama_obat": "Ibuprofen",
+        "dosis": "200 mg 4 x sehari",
+        "durasi": "jika diperlukan"
+      },
+      {
+        "nama_obat": "Kotrimoksazol",
+        "dosis": "Dewasa: 2 tablet 2 x sehari; Anak: 2 tablet 2 x sehari",
+        "durasi": "5 hari (jika infeksi bakteri)"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "Dewasa: 500 mg 3 x sehari; Anak: 30-50 mg/kgBB/hari",
+        "durasi": "5 hari (jika infeksi bakteri)"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "Dewasa: 500 mg 3 x sehari; Anak: 20-40 mg/kgBB/hari",
+        "durasi": "5 hari (jika infeksi bakteri)"
+      }
+    ],
+    "tanda_bahaya": "Sumbatan jalan napas, komplikasi difteri",
+    "sumber_halaman": "43, 65, 66"
+  },
+  {
+    "nama_penyakit": "Flu Burung",
+    "gejala_klinis": [
+      "Demam tinggi mendadak (> 38°C)",
+      "Batuk",
+      "Sakit tenggorokan",
+      "Pilek",
+      "Sesak napas",
+      "Malaise",
+      "Nyeri otot, nyeri sendi",
+      "Sakit kepala",
+      "Mual, muntah, diare"
+    ],
+    "pemeriksaan_penunjang": [
+      "Tes darah (leukopenia)",
+      "Uji HI atau ELISA untuk influenza A (subtipe H5)",
+      "Foto toraks (menunjukkan pneumonia)"
+    ],
+    "kriteria_diagnosis": "Demam + gejala pernapasan + riwayat paparan (hewan/manusia/lingkungan) H5N1",
+    "tata_laksana": [
+      {
+        "nama_obat": "Oseltamivir",
+        "dosis": "Dewasa: 75 mg 2 x sehari; Anak: 2 mg/kgBB",
+        "durasi": "5 hari"
+      }
+    ],
+    "tanda_bahaya": "Sesak napas berat, pneumonia yang cepat memburuk",
+    "sumber_halaman": "44, 67, 68, 69"
+  },
+  {
+    "nama_penyakit": "Frambusia",
+    "gejala_klinis": [
+      "Stadium awal: papula menjadi borok berdasar granulasi, mengeluarkan serum bercampur darah",
+      "Stadium lanjut: papula berkelompok, destruksi tulang dan sendi",
+      "Benjolan kecil berwarna merah muda atau ungu di kulit",
+      "Berkurangnya perasaan pada anggota badan",
+      "Radang saraf yang nyeri",
+      "Jari kaki sering hilang"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan kerokan kulit (untuk mencari Treponema pertenue)"
+    ],
+    "kriteria_diagnosis": "Papula yang kemudian membesar membentuk papiloma/ulceropapilloma",
+    "tata_laksana": [
+      {
+        "nama_obat": "Penisilin prokain",
+        "dosis": "2,4 juta IU dosis tunggal (dewasa)",
+        "durasi": "1 dosis"
+      },
+      {
+        "nama_obat": "Aureomisin",
+        "dosis": "0,75-1,5 gr (anak); 2 gr (dewasa)",
+        "durasi": "4 hari (anak); 5 hari (dewasa)"
+      },
+      {
+        "nama_obat": "Teramisin",
+        "dosis": "3 gr (hari I), 2 gr (hari II), 2 gr (hari III)",
+        "durasi": "3 hari"
+      },
+      {
+        "nama_obat": "Tetrasiklin",
+        "dosis": "25 mg/kgBB (anak); 2 gr/hari (dewasa)",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": null,
+        "durasi": "2 minggu"
+      }
+    ],
+    "tanda_bahaya": "Destruksi tulang dan sendi yang parah",
+    "sumber_halaman": "29, 30, 69, 70"
+  },
+  {
+    "nama_penyakit": "Gagal Jantung (Dekompensasio Kordis)",
+    "gejala_klinis": [
+      "Sesak napas (terutama setelah aktivitas, ortopnea, PND)",
+      "Batuk",
+      "Udem di pergelangan kaki",
+      "Hati membesar",
+      "Asites",
+      "Nyeri di kuadran kanan atas perut",
+      "Udem paru akut (sesak napas berat, sianosis, ronki basah)"
+    ],
+    "pemeriksaan_penunjang": [
+      "EKG",
+      "Pemeriksaan denyut jantung"
+    ],
+    "kriteria_diagnosis": "Sesak nafas, takikardia, irama gallop, tanda bendungan paru-paru",
+    "tata_laksana": [
+      {
+        "nama_obat": "Furosemid",
+        "dosis": "40 mg 1-2 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Digitalis (Digoksin)",
+        "dosis": "0,25 mg/hari",
+        "durasi": "secara perlahan"
+      },
+      {
+        "nama_obat": "KCI",
+        "dosis": "500 mg 1-3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Oksigen",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Udem paru akut, gagal ginjal",
+    "sumber_halaman": "46, 58, 59"
+  },
+  {
+    "nama_penyakit": "Gangguan Neurotik",
+    "gejala_klinis": [
+      "Gejala fisik/jasmani yang dirasakan berlebihan",
+      "Gejala kejiwaan tanpa gangguan afek",
+      "Gangguan fobik",
+      "Gangguan panik",
+      "Gangguan ansietas menyeluruh",
+      "Gangguan campuran ansietas dan depresi",
+      "Gangguan obsesif kompulsif",
+      "Gangguan penyesuaian",
+      "Gangguan somatoform"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Tergantung gejala yang menonjol untuk menentukan jenis neurotiknya",
+    "tata_laksana": [
+      {
+        "nama_obat": "Diazepam",
+        "dosis": "2-5 mg 2-3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Amitriptilin",
+        "dosis": "25 mg 2-3 x sehari",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": null,
+    "sumber_halaman": "47, 73, 74"
+  },
+  {
+    "nama_penyakit": "Gangren Pulpa",
+    "gejala_klinis": [
+      "Tidak ada simtom sakit (pada gangren pulpa parsial)",
+      "Jaringan pulpa mati, lisis, berbau busuk",
+      "Gigi berubah warna menjadi abu-abu kehitaman",
+      "Pembengkakan gusi dengan tanda peradangan"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Degenerasi pulpa",
+    "tata_laksana": [
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": "500 mg 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "500 mg 3 x sehari",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Kotrimoksazol",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Peradangan periapikal",
+    "sumber_halaman": "48, 75"
+  },
+  {
+    "nama_penyakit": "Gastritis",
+    "gejala_klinis": [
+      "Nyeri epigastrium (hilang timbul/menetap)",
+      "Mual",
+      "Muntah",
+      "Perut kembung",
+      "Perdarahan lambung (pada gastritis erosif)"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Nyeri ulu hati, mual/muntah, kembung",
+    "tata_laksana": [
+      {
+        "nama_obat": "Antasida",
+        "dosis": null,
+        "durasi": "menjelang tidur, pagi hari, diantara waktu makan"
+      },
+      {
+        "nama_obat": "Metoklopramid",
+        "dosis": "10 mg",
+        "durasi": "1 jam sebelum makan (jika muntah)"
+      },
+      {
+        "nama_obat": "Simetidin",
+        "dosis": "200 mg 2 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Ranitidin",
+        "dosis": "150 mg 2 x sehari",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Perdarahan lambung (hematemesis, melena), perforasi",
+    "sumber_halaman": "48, 76"
+  },
+  {
+    "nama_penyakit": "Ginggivitis",
+    "gejala_klinis": [
+      "Mulut bau",
+      "Gusi bengkak, mudah berdarah",
+      "Gusi kadang terasa gatal",
+      "Radang gusi (ginggiva marginal)",
+      "Mudah berdarah saat disikat"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan gigi dan gusi"
+    ],
+    "kriteria_diagnosis": "Peradangan pada gusi",
+    "tata_laksana": [
+      {
+        "nama_obat": "Obat kumur (Iodium povidon atau H2O2 3%)",
+        "dosis": null,
+        "durasi": "3 x sehari selama 3 hari"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "500 mg 3 x sehari",
+        "durasi": "5 hari (jika tidak sembuh)"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "500 mg 3 x sehari",
+        "durasi": "5 hari (jika tidak sembuh)"
+      }
+    ],
+    "tanda_bahaya": "Perikoronitis (demam, sukar membuka mulut)",
+    "sumber_halaman": "50, 80"
+  },
+  {
+    "nama_penyakit": "Gigitan Ular",
+    "gejala_klinis": [
+      "Efek lokal: bengkak, melepuh, nekrosis, perdarahan",
+      "Efek sistemik: nyeri kepala, mual, muntah, diare, kolaps",
+      "Efek sistemik spesifik: koagulopati (perdarahan), neurotoksik (paralisis), miotoksisitas (nyeri otot, gagal ginjal)"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Riwayat gigitan ular + gejala efek lokal/sistemik",
+    "tata_laksana": [
+      {
+        "nama_obat": "Tali putar (torniket)",
+        "dosis": null,
+        "durasi": "dipasang proksimal dari luka, dikendorkan tiap 15 menit"
+      },
+      {
+        "nama_obat": "Sayatan kecil dan penghisapan luka",
+        "dosis": null,
+        "durasi": "jika gigitan < 30 menit"
+      },
+      {
+        "nama_obat": "Serum Anti Bisa Ular (ABU) polivalen",
+        "dosis": "i.v",
+        "durasi": null
+      },
+      {
+        "nama_obat": "ATS dan penisilin prokain",
+        "dosis": "900.000 IU",
+        "durasi": "sebagai profilaksis"
+      }
+    ],
+    "tanda_bahaya": "Syok, paralisis pernapasan, gagal ginjal",
+    "sumber_halaman": "49, 77, 78"
+  },
+  {
+    "nama_penyakit": "Glaukoma",
+    "gejala_klinis": [
+      "Glaukoma primer sudut terbuka: sering tanpa gejala awal",
+      "Glaukoma primer sudut tertutup: nyeri mata, sakit kepala, mual, muntah, pandangan kabur, melihat halo",
+      "Glaukoma kongenital: mata merah, berair, penglihatan kabur",
+      "Glaukoma sekunder: tergantung penyebab",
+      "Glaukoma absolut: mata merah, pupil lebar, reflek cahaya kurang, kornea keruh"
+    ],
+    "pemeriksaan_penunjang": [
+      "Tonometri (mengukur tekanan intraokular)",
+      "Pemeriksaan lapang pandang",
+      "Pemeriksaan optik disk"
+    ],
+    "kriteria_diagnosis": "Peningkatan tekanan intraokular (> 20 mmHg) dengan atau tanpa kelainan optik disk/lapang pandang",
+    "tata_laksana": [
+      {
+        "nama_obat": "Timolol 0,5%",
+        "dosis": null,
+        "durasi": "2 x sehari"
+      },
+      {
+        "nama_obat": "Pilokarpin 2-4%",
+        "dosis": null,
+        "durasi": "tiap 2 jam"
+      },
+      {
+        "nama_obat": "Asetazolamid",
+        "dosis": "250 mg 3 x sehari",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Kebutaan total yang tidak dapat diobati (Glaukoma akut kongestif)",
+    "sumber_halaman": "51, 81, 82"
+  },
+  {
+    "nama_penyakit": "Glomerulonefritis Akut (GNA)",
+    "gejala_klinis": [
+      "Hematuria (darah dalam urin)",
+      "Proteinuria (protein dalam urin)",
+      "Udem (terutama di wajah, kelopak mata, tungkai)",
+      "Tekanan darah tinggi",
+      "Sakit kepala",
+      "Gangguan penglihatan",
+      "Gangguan fungsi ginjal (oliguria, anuria)",
+      "Penimbunan cairan",
+      "Nyeri perut"
+    ],
+    "pemeriksaan_penunjang": [
+      "Urinalisis (protein, darah)",
+      "Tes fungsi ginjal (urea, kreatinin)",
+      "Antibodi anti-Streptococcus (ASO)",
+      "Analisa gas darah"
+    ],
+    "kriteria_diagnosis": "Hematuria, udem, gangguan fungsi ginjal, peningkatan tekanan darah, bukti infeksi Streptococcus sebelumnya",
+    "tata_laksana": [
+      {
+        "nama_obat": "Antibiotik",
+        "dosis": null,
+        "durasi": "jika ada infeksi bakteri aktif"
+      },
+      {
+        "nama_obat": "Diuretik",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antihipertensi",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Gagal ginjal akut, hipertensi ensefalopati",
+    "sumber_halaman": "52, 83, 84"
+  },
+  {
+    "nama_penyakit": "Gonore",
+    "gejala_klinis": [
+      "Pada pria: Nyeri saat berkemih, keluar cairan putih/kuning dari saluran kemih",
+      "Pada wanita: Nyeri perut bagian bawah, keputihan abnormal, perdarahan tidak normal dari rahim",
+      "Pada kedua jenis kelamin: Rasa tak nyaman pada liang dubur, sakit saat berhubungan seksual",
+      "Infeksi menyebar: Demam, nyeri sendi, ruam kulit, perikarditis, hepatitis"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pewarnaan Gram dan kultur dari sekret uretra/vagina/tenggorokan",
+      "Tes amplifikasi asam nukleat (NAAT)"
+    ],
+    "kriteria_diagnosis": "Gejala klinis + hasil pemeriksaan mikroskopis/kultur/NAAT",
+    "tata_laksana": [
+      {
+        "nama_obat": "Penisilin prokain",
+        "dosis": "Dewasa: 2,4 juta IU i.m (1x suntik), 4,8 juta IU (wanita); Anak: 50.000 IU/kgBB/hari",
+        "durasi": "1 dosis (dewasa); 5 hari (anak)"
+      },
+      {
+        "nama_obat": "Ampisilin",
+        "dosis": "3,5 gram per oral + 1 gram probenesid (dosis tunggal)",
+        "durasi": "1 dosis"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "3 gram + 1 gram probenesid (dosis tunggal)",
+        "durasi": "1 dosis"
+      },
+      {
+        "nama_obat": "Tiamfenikol",
+        "dosis": "2,5-3,5 gram oral (dosis tunggal)",
+        "durasi": "1 dosis (tidak untuk ibu hamil)"
+      },
+      {
+        "nama_obat": "Siprofloksasin",
+        "dosis": "500 mg 2 x sehari",
+        "durasi": "5-7 hari (untuk infeksi dengan komplikasi)"
+      }
+    ],
+    "tanda_bahaya": "Komplikasi menyebar (radang sendi, perikarditis, hepatitis), PID, infertilitas, kehamilan ektopik",
+    "sumber_halaman": "53, 85, 86"
+  },
+  {
+    "nama_penyakit": "Gout",
+    "gejala_klinis": [
+      "Nyeri akut pada sendi (terutama metatarsofalangeal pertama)",
+      "Sendi bengkak, hangat, kemerahan",
+      "Demam, peningkatan LED dan CRP",
+      "Oligoarthritis (melibatkan beberapa sendi)",
+      "Tophus (endapan kristal asam urat)",
+      "Deformitas sendi",
+      "Nyeri saat buang air kecil (jika terkait ginjal)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Kadar asam urat serum (> 7,5 mg/dL)"
+    ],
+    "kriteria_diagnosis": "Nyeri akut pada persendian kecil, kadar urat serum tinggi",
+    "tata_laksana": [
+      {
+        "nama_obat": "Analgesik / Kortikosteroid",
+        "dosis": null,
+        "durasi": "untuk serangan akut"
+      },
+      {
+        "nama_obat": "Allopurinol",
+        "dosis": "Mulai 100 mg 3 x sehari, bisa dinaikkan hingga 10 mg/kgBB/hari",
+        "durasi": "sesuai kebutuhan"
+      },
+      {
+        "nama_obat": "Probenesid",
+        "dosis": "Mulai 2 x 250 mg, bisa dinaikkan hingga 2 g/hari",
+        "durasi": "1 minggu (awal), lalu ditingkatkan"
+      },
+      {
+        "nama_obat": "Natrium Bikarbonat",
+        "dosis": "2 tablet 3 x sehari",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Kerusakan ginjal akibat pengendapan kristal asam urat",
+    "sumber_halaman": "54, 87, 88"
+  },
+  {
+    "nama_penyakit": "Hepatitis Virus",
+    "gejala_klinis": [
+      "Penurunan nafsu makan",
+      "Merasa tidak enak badan",
+      "Mual, muntah",
+      "Demam",
+      "Nyeri sendi",
+      "Urin gelap",
+      "Ikterus (kuning)",
+      "Tinja pucat",
+      "Gatal"
+    ],
+    "pemeriksaan_penunjang": [
+      "Tes serologi (HBsAg, Anti-HBs, Anti-HBc, Anti-HCV, IgM/IgG Hepatitis A/E)",
+      "Tes fungsi hati (SGOT, SGPT)",
+      "Tes virologi (PCR Hepatitis B/C, HCV RNA)"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Interferon alfa",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Analog nukleosida/nukleotida (Tenofovir, Entecavir)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Terapi antivirus kerja langsung (DAA)",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Gagal hati akut, sirosis, karsinoma hepatoseluler",
+    "sumber_halaman": "55, 89, 90"
+  },
+  {
+    "nama_penyakit": "Herpes Simpleks",
+    "gejala_klinis": [
+      "Lesi primer lokal (luka demam/cold sore di sekitar mulut)",
+      "Vesikel berkelompok di daerah mukokutan",
+      "Herpes genitalis (disebabkan HSV-2 atau HSV-1)",
+      "Masa inkubasi 2-10 hari",
+      "Demam dan malaise (pada infeksi primer yang berat)",
+      "Eksema herpetikum (komplikasi pada penderita dermatitis atopik)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Tes Tzank",
+      "Kultur virus"
+    ],
+    "kriteria_diagnosis": "Gambaran klinis lesi primer lokal dan rekuren",
+    "tata_laksana": [
+      {
+        "nama_obat": "Idoksuridin (topikal)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Asiklovir",
+        "dosis": "200-400 mg",
+        "durasi": "5 x sehari selama 5-7 hari (herpes genitalis)"
+      },
+      {
+        "nama_obat": "Asiklovir intravena",
+        "dosis": null,
+        "durasi": "untuk ensefalitis H. simplex dan pasien imunosupresi"
+      }
+    ],
+    "tanda_bahaya": "Eksema herpetikum (penyakit serius pada penderita dermatitis atopik)",
+    "sumber_halaman": "56, 91, 92"
+  },
+  {
+    "nama_penyakit": "Herpes Zoster",
+    "gejala_klinis": [
+      "Demam atau panas",
+      "Nyeri unilateral (satu sisi tubuh)",
+      "Ruam vesikuler yang mengikuti dermatom",
+      "Nyeri hebat yang dapat menetap (nyeri post herpetic)",
+      "Udem kelopak mata",
+      "Konjungtivitis",
+      "Erupsi kulit generalisata"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pewarnaan Gram dari sekret",
+      "Kultur bakteri dari sekret"
+    ],
+    "kriteria_diagnosis": "Vesikel di salah satu sisi tubuh mengikuti dermatom",
+    "tata_laksana": [
+      {
+        "nama_obat": "Obat anti nyeri",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Asiklovir",
+        "dosis": "200-400 mg",
+        "durasi": "5 x sehari selama 7 hari"
+      },
+      {
+        "nama_obat": "Krim asiklovir",
+        "dosis": null,
+        "durasi": "terbatas efikasinya"
+      },
+      {
+        "nama_obat": "Antibiotik",
+        "dosis": null,
+        "durasi": "jika ada infeksi sekunder"
+      }
+    ],
+    "tanda_bahaya": "Nyeri post herpetic yang menetap, infeksi sekunder",
+    "sumber_halaman": "57, 93, 94"
+  },
+  {
+    "nama_penyakit": "Hiperemesis Gravidarum",
+    "gejala_klinis": [
+      "Muntah hebat (segala yang dimakan/diminum dimuntahkan)",
+      "Intoleransi makanan dan minuman",
+      "Penurunan berat badan",
+      "Nyeri epigastrium",
+      "Haus hebat",
+      "Demam ringan (tingkat II)",
+      "Nadi cepat (>100x/menit)",
+      "Tekanan darah sistolik menurun (<80 mmHg)",
+      "Mata cekung, lidah kotor, ikterus, sianosis",
+      "Gangguan kesadaran (apatis-koma)",
+      "Produksi urin berkurang/anuria"
+    ],
+    "pemeriksaan_penunjang": [
+      "Kenaikan relatif hemoglobin dan hematokrit",
+      "Benda keton urin",
+      "Proteinuria"
+    ],
+    "kriteria_diagnosis": "Amenore + muntah hebat + gangguan vital/kesadaran",
+    "tata_laksana": [
+      {
+        "nama_obat": "Diet hiperemesis I, II, III",
+        "dosis": null,
+        "durasi": "sesuai tingkatan"
+      },
+      {
+        "nama_obat": "Infus Dekstrosa 10% atau 5% (RL:D5%=2:1)",
+        "dosis": "40 tetes/menit",
+        "durasi": "24-48 jam (untuk tingkat III)"
+      },
+      {
+        "nama_obat": "Vitamin B1, B2, B6",
+        "dosis": "50-100 mg/hari/infus",
+        "durasi": "setiap hari"
+      },
+      {
+        "nama_obat": "Vitamin B12",
+        "dosis": "200 mcg/hr/infus",
+        "durasi": "setiap hari"
+      },
+      {
+        "nama_obat": "Penenang (Fenobarbital/Klorpromazin/Diazepam)",
+        "dosis": "Fenobarbital: 30 mg i.m 2-3x/hari; Klorpromazin: 25-50 mg/hari; Diazepam: 5 mg i.m 2-3x/hari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antiemetik (Prometazin/Klorpromazin)",
+        "dosis": "Prometazin: 25 mg 2-3x/hari; Klorpromazin: 3 mg 3x/hari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antasida",
+        "dosis": "3x1 tab per oral",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Gangguan kesadaran, syok, gagal ginjal, kematian",
+    "sumber_halaman": "58, 95, 96"
+  },
+  {
+    "nama_penyakit": "Hipertensi",
+    "gejala_klinis": [
+      "Umumnya tanpa gejala",
+      "Sakit kepala",
+      "Lemah",
+      "Telinga berdenging",
+      "Nyeri dada",
+      "Mudah tersinggung",
+      "Mual/muntah",
+      "Tanda-tanda stroke, aneurisma, gagal jantung, kerusakan ginjal"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pengukuran tekanan darah (minimal 2 kali pada 2 hari berbeda)",
+      "Urinalisis",
+      "Pemeriksaan darah (kadar kolesterol, gula darah)"
+    ],
+    "kriteria_diagnosis": "Tekanan darah sistolik ≥ 140 mmHg atau diastolik ≥ 90 mmHg",
+    "tata_laksana": [
+      {
+        "nama_obat": "Perubahan gaya hidup (diet rendah garam, olahraga, berhenti merokok, manajemen stres)",
+        "dosis": null,
+        "durasi": "seumur hidup"
+      },
+      {
+        "nama_obat": "Hidroklorotiazid (HCT)",
+        "dosis": "12,5-25 mg perhari",
+        "durasi": "dosis tunggal pagi hari"
+      },
+      {
+        "nama_obat": "Reserpin",
+        "dosis": "0,1-0,25 mg",
+        "durasi": "dosis tunggal"
+      },
+      {
+        "nama_obat": "Propanolol",
+        "dosis": "Mulai 10 mg 2 x sehari, dapat dinaikkan hingga 20 mg 2 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Kaptopril",
+        "dosis": "12,5-25 mg 2-3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Nifedipin",
+        "dosis": "Mulai 5 mg 2 x sehari, dapat dinaikkan hingga 10 mg 2 x sehari",
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Stroke, gagal jantung, kerusakan ginjal, hipertensi krisis",
+    "sumber_halaman": "59, 60, 61, 62, 63, 97, 98, 99, 100"
+  },
+  {
+    "nama_penyakit": "Hipertensi dalam Kehamilan",
+    "gejala_klinis": [
+      "Tekanan darah diastolik ≥ 90 mmHg atau kenaikan 15 mmHg",
+      "Proteinuria (+)",
+      "Udem (terutama pada preeklampsia berat)",
+      "Sakit kepala hebat",
+      "Gangguan penglihatan",
+      "Nyeri epigastrium",
+      "Kejang (eklampsia)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pengukuran tekanan darah",
+      "Urinalisis (proteinuria)",
+      "Refleks patella",
+      "Pemeriksaan USG (pertumbuhan janin)",
+      "Tes pembekuan darah"
+    ],
+    "kriteria_diagnosis": "Hipertensi pada kehamilan < 20 minggu (kronik) atau > 20 minggu (gestasional)",
+    "tata_laksana": [
+      {
+        "nama_obat": "Antihipertensi (Nifedipin, Labetolol, Kaptopril)",
+        "dosis": "Nifedipin: 5-10 mg oral (dapat diulang)",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Magnesium Sulfat (MgSO4)",
+        "dosis": "Dosis awal: 4 g i.v (40% larutan) selama 5 menit, diikuti 6 g i.m selama 6 jam (dewasa); 2 g i.v jika kejang berulang",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Diazepam",
+        "dosis": "10 mg i.v pelan-pelan (dewasa); 2-5 mg (anak)",
+        "durasi": "setiap 1-2 jam jika kejang berulang"
+      },
+      {
+        "nama_obat": "Oksitosin",
+        "dosis": "5 IU dalam 500 ml (untuk induksi)",
+        "durasi": "10 tetes/menit"
+      }
+    ],
+    "tanda_bahaya": "Eklampsia (kejang), Preeklampsia berat, sindrom HELLP, gagal ginjal, kematian ibu dan janin",
+    "sumber_halaman": "60, 61, 62, 63, 99, 100, 101, 102, 103"
+  },
+  {
+    "nama_penyakit": "Infeksi Post Partum",
+    "gejala_klinis": [
+      "Demam > 38°C antara hari ke-2 hingga ke-10 setelah persalinan",
+      "Nyeri perut",
+      "Keputihan abnormal",
+      "Perdarahan post partum dini atau lanjut",
+      "Nyeri tekan perut bawah dan uterus",
+      "Lokhia mukopurulen dan berbau"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan fisik",
+      "Kultur sekret vagina/uterus",
+      "Pemeriksaan Hb (jika anemia)"
+    ],
+    "kriteria_diagnosis": "Demam + gejala lain yang mendukung infeksi panggul",
+    "tata_laksana": [
+      {
+        "nama_obat": "Antibiotik spektrum luas (Ampisilin, Gentamisin, Metronidazol)",
+        "dosis": "Ampisilin: 2 g i.v awal, lalu 1 g setiap 6 jam; Gentamisin: 5 mg/kgBB/hari i.v; Metronidazol: 500 mg i.v setiap 8 jam",
+        "durasi": "sampai tidak panas selama 24 jam"
+      },
+      {
+        "nama_obat": "Ergometrin",
+        "dosis": "i.m",
+        "durasi": "untuk involusi uterus"
+      }
+    ],
+    "tanda_bahaya": "Sepsis, peritonitis, kegagalan involusi uterus, anemia berat",
+    "sumber_halaman": "66, 93, 94"
+  },
+  {
+    "nama_penyakit": "Influenza",
+    "gejala_klinis": [
+      "Demam mendadak",
+      "Sakit kepala",
+      "Nyeri otot dan sendi",
+      "Nafsu makan hilang",
+      "Batuk kering",
+      "Pilek",
+      "Hidung tersumbat",
+      "Nyeri tenggorokan"
+    ],
+    "pemeriksaan_penunjang": [
+      "Auskultasi paru",
+      "EKG (jika keluhan nyeri dada)"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Istirahat",
+        "dosis": null,
+        "durasi": "penting"
+      },
+      {
+        "nama_obat": "Banyak minum",
+        "dosis": null,
+        "durasi": "penting"
+      },
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": "500 mg 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Asetosal",
+        "dosis": "300-500 mg 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antibiotik",
+        "dosis": null,
+        "durasi": "hanya jika ada infeksi sekunder"
+      }
+    ],
+    "tanda_bahaya": "Infeksi sekunder (misal pneumonia)",
+    "sumber_halaman": "67, 113, 114"
+  },
+  {
+    "nama_penyakit": "Kandidiasis",
+    "gejala_klinis": [
+      "Gatal dan perih pada kulit",
+      "Bercak merah dengan maserasi",
+      "Bercak satelit",
+      "Vulvovaginitis (pada wanita dengan DM)",
+      "Oral thrush (mukosa mulut putih seperti pseudomembran)",
+      "Diare (pada kandidosis usus)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan mikroskopis kerokan kulit/lesi (KOH 10% atau Gram)"
+    ],
+    "kriteria_diagnosis": "Bercak merah dengan maserasi dan bercak satelit",
+    "tata_laksana": [
+      {
+        "nama_obat": "Gentian violet 1%",
+        "dosis": null,
+        "durasi": "2-3 x sehari selama 3 hari (kulit/mukosa)"
+      },
+      {
+        "nama_obat": "Nistatin oral",
+        "dosis": "500.000 IU",
+        "durasi": "3 x sehari selama 7-14 hari"
+      },
+      {
+        "nama_obat": "Mikonazol",
+        "dosis": null,
+        "durasi": "1 bulan"
+      },
+      {
+        "nama_obat": "Ketokonazol",
+        "dosis": null,
+        "durasi": "1 bulan"
+      }
+    ],
+    "tanda_bahaya": "Kandidiasis kronik-residif",
+    "sumber_halaman": "67, 113, 114"
+  },
+  {
+    "nama_penyakit": "Karies Gigi",
+    "gejala_klinis": [
+      "Tidak ada simtom sakit (pada karies awal)",
+      "Nyeri saat minum dingin/makan manis",
+      "Nyeri saat mengunyah",
+      "Gigi berlubang",
+      "Mulut bau",
+      "Gusi bengkak"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan gigi dan gusi"
+    ],
+    "kriteria_diagnosis": "Gigi berlubang",
+    "tata_laksana": [
+      {
+        "nama_obat": "Fluoride (topikal)",
+        "dosis": null,
+        "durasi": "untuk remineralisasi email"
+      },
+      {
+        "nama_obat": "Ca(OH)2 (pelapis dentin)",
+        "dosis": null,
+        "durasi": "jika dentin dekat pulpa"
+      },
+      {
+        "nama_obat": "Penambalan (restorasi)",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Kerusakan pulpa yang tidak dapat diperbaiki, infeksi periapikal",
+    "sumber_halaman": "68, 115, 116"
+  },
+  {
+    "nama_penyakit": "Keilosis",
+    "gejala_klinis": [
+      "Radang dangkal pada sudut mulut",
+      "Sudut mulut pecah-pecah",
+      "Terasa perih bila terkena makanan pedas",
+      "Mulut bau",
+      "Gusi bengkak"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Pecah-pecah pada sudut mulut",
+    "tata_laksana": [
+      {
+        "nama_obat": "Vitamin B2",
+        "dosis": "25-50 mg",
+        "durasi": "selama 1 minggu"
+      },
+      {
+        "nama_obat": "Vitamin B-kompleks",
+        "dosis": "1 tablet",
+        "durasi": "3 x sehari selama 1 minggu"
+      },
+      {
+        "nama_obat": "Vitamin C",
+        "dosis": "50 mg",
+        "durasi": "3 x sehari"
+      }
+    ],
+    "tanda_bahaya": null,
+    "sumber_halaman": "69, 117"
+  },
+  {
+    "nama_penyakit": "Keracunan Jengkol",
+    "gejala_klinis": [
+      "Bau khas jengkol (mulut dan urin)",
+      "Kolik ginjal",
+      "Nyeri saat berkemih",
+      "Hematuria (darah dalam urin)",
+      "Anuria (dalam kasus berat)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan urin (menemukan kristal asam jengkol)"
+    ],
+    "kriteria_diagnosis": "Hematuria, nyeri saat berkemih",
+    "tata_laksana": [
+      {
+        "nama_obat": "Minum banyak air",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Natrium bikarbonat",
+        "dosis": "2 g 4 x sehari",
+        "durasi": "sampai gejala hilang"
+      }
+    ],
+    "tanda_bahaya": "Anuria (dalam kasus berat)",
+    "sumber_halaman": "72, 75"
+  },
+  {
+    "nama_penyakit": "Keracunan Makanan dan Insektisida",
+    "gejala_klinis": [
+      "Botulismus: kelemahan, gangguan penglihatan, disartria, disfagia, diare (jarang), syok",
+      "Keracunan Bongkrek: mual, muntah, sakit perut, demam, sakit kepala, melihat ganda, lemah, gelisah, syok, ikterus, urin keruh",
+      "Keracunan Insektisida Organofosfat: pupil mengecil, keringat meningkat, lakrimasi, salviasi, mual, muntah, diare, sakit perut, batuk, sesak napas, bradikardia, hipotensi, sakit kepala, bingung, konvulsi, koma, kelemahan otot, fascikulasi, kram",
+      "Keracunan Insektisida Organoklorin: muntah-muntah berat, kelemahan, mati rasa, tremor, konvulsi"
+    ],
+    "pemeriksaan_penunjang": [
+      "Riwayat konsumsi makanan/insektisida",
+      "Pemeriksaan urin (untuk organoklorin)"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Induksi muntah / Bilas Lambung",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Karbon aktif",
+        "dosis": "20 tablet",
+        "durasi": "diulang 1 jam kemudian"
+      },
+      {
+        "nama_obat": "Infus glukosa 5%",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Pernapasan buatan",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Atropin sulfat",
+        "dosis": "2 mg i.m",
+        "durasi": "diulang setiap 3-8 menit"
+      },
+      {
+        "nama_obat": "Pralidoksim / Obidoksim",
+        "dosis": "1 g i.v perlahan",
+        "durasi": "diulang setelah 30 menit jika perlu"
+      },
+      {
+        "nama_obat": "Diazepam",
+        "dosis": "10 mg i.v perlahan",
+        "durasi": "untuk mengatasi konvulsi"
+      },
+      {
+        "nama_obat": "Natrium fenobarbital",
+        "dosis": "100 mg s.c setiap jam",
+        "durasi": "hingga 0,5 g atau hingga konvulsi terkendali"
+      }
+    ],
+    "tanda_bahaya": "Syok, paralisis pernapasan, kematian",
+    "sumber_halaman": "72, 73, 74"
+  },
+  {
+    "nama_penyakit": "Keracunan Singkong",
+    "gejala_klinis": [
+      "Bau khas singkong (mulut, urin)",
+      "Pusing",
+      "Muntah",
+      "Sesak napas",
+      "Pingsan"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Na-tiosulfat 25%",
+        "dosis": "20 ml i.v perlahan",
+        "durasi": "diulang setiap 7-10 menit"
+      },
+      {
+        "nama_obat": "Oksigen",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Pernapasan buatan",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Sesak napas, pingsan, kematian",
+    "sumber_halaman": "75"
+  },
+  {
+    "nama_penyakit": "Keratitis (Ulkus Kornea)",
+    "gejala_klinis": [
+      "Penurunan tajam penglihatan",
+      "Mata merah",
+      "Nyeri mata",
+      "Rasa mengganjal",
+      "Lesi putih di kornea",
+      "Pembengkakan kelopak mata"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan mata (menilai tajam penglihatan, kornea)"
+    ],
+    "kriteria_diagnosis": "Penurunan visus dan lesi pada kornea",
+    "tata_laksana": [
+      {
+        "nama_obat": "Kloramfenikol tetes mata",
+        "dosis": null,
+        "durasi": "6 kali sehari selama minimal 3 hari"
+      }
+    ],
+    "tanda_bahaya": "Perforasi kornea, kebutaan",
+    "sumber_halaman": "76, 131"
+  },
+  {
+    "nama_penyakit": "Kolera",
+    "gejala_klinis": [
+      "Diare akut encer seperti air cucian beras (tanpa rasa sakit)",
+      "Muntah-muntah",
+      "Dehidrasi (haus hebat, kram otot, lemah, mata cekung, kulit kering)",
+      "Produksi urin berkurang"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan apus rektum atau tinja segar"
+    ],
+    "kriteria_diagnosis": "Gejala diare akut encer seperti air cucian beras",
+    "tata_laksana": [
+      {
+        "nama_obat": "Rehidrasi Oral (Oralit)",
+        "dosis": "sesuai kebutuhan",
+        "durasi": "hingga diare berhenti"
+      },
+      {
+        "nama_obat": "Infus Ringer Laktat / NaCl 0,9%",
+        "dosis": "75 ml/kg BB selama 3 jam (dehidrasi ringan-sedang); 100 ml/kg BB (dehidrasi berat)",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Tetrasiklin / Tiamfenikol",
+        "dosis": "Tetrasiklin: 500 mg 4x/hari; Tiamfenikol: 3,5 g per oral dosis tunggal",
+        "durasi": "3-7 hari"
+      },
+      {
+        "nama_obat": "Ergometrin",
+        "dosis": "0,2 mg i.m",
+        "durasi": "jika ada perdarahan"
+      }
+    ],
+    "tanda_bahaya": "Dehidrasi berat, syok, gagal ginjal, koma, kematian",
+    "sumber_halaman": "76, 131, 132, 133"
+  },
+  {
+    "nama_penyakit": "Konjungtivitis Bakterial",
+    "gejala_klinis": [
+      "Mata merah",
+      "Sekret mukopurulen yang banyak (kelopak mata lengket)",
+      "Rasa mengganjal dan panas pada mata",
+      "Kelopak mata bengkak dan berkrusta"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan sekret mata (pewarnaan Gram, kultur)"
+    ],
+    "kriteria_diagnosis": "Sekret mukopurulen",
+    "tata_laksana": [
+      {
+        "nama_obat": "Kloramfenikol tetes mata",
+        "dosis": null,
+        "durasi": "4-6 kali sehari"
+      },
+      {
+        "nama_obat": "Kloramfenikol / Tetrasiklin salep mata",
+        "dosis": null,
+        "durasi": "sebelum tidur"
+      }
+    ],
+    "tanda_bahaya": "Infeksi yang menyebar ke kornea (keratitis)",
+    "sumber_halaman": "77, 133, 134"
+  },
+  {
+    "nama_penyakit": "Konjungtivitis Purulenta Neonatorum",
+    "gejala_klinis": [
+      "Kelopak mata bengkak",
+      "Konjungtiva hyperemia hebat",
+      "Sekret mata purulen, kadang bercampur darah",
+      "Bayi baru lahir tertular dari ibu dengan gonore"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan sekret mata (Gram, kultur)"
+    ],
+    "kriteria_diagnosis": "Sekret purulen pada bayi baru lahir + riwayat ibu gonore",
+    "tata_laksana": [
+      {
+        "nama_obat": "Salep mata penisilin",
+        "dosis": null,
+        "durasi": "setiap 15 menit"
+      },
+      {
+        "nama_obat": "Penisilin prokain i.m",
+        "dosis": "50.000 IU/kgBB/hari",
+        "durasi": "5 hari"
+      }
+    ],
+    "tanda_bahaya": "Perforasi kornea, kebutaan",
+    "sumber_halaman": "79, 135"
+  },
+  {
+    "nama_penyakit": "Konjungtivitis Viral",
+    "gejala_klinis": [
+      "Mata merah dan berair",
+      "Biasanya mengenai kedua mata",
+      "Edema kelopak mata",
+      "Sekret serosa (encer)",
+      "Folikel pada konjungtiva"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan sekret mata (melihat folikel, sekret serosa)"
+    ],
+    "kriteria_diagnosis": "Sekret serosa",
+    "tata_laksana": [
+      {
+        "nama_obat": "Steroid topikal (dengan antibiotik)",
+        "dosis": null,
+        "durasi": "jika mata sangat tidak nyaman atau ada keratitis"
+      }
+    ],
+    "tanda_bahaya": "Keratitis (lesi putih di kornea)",
+    "sumber_halaman": "78, 135, 136"
+  },
+  {
+    "nama_penyakit": "Keratokonjungtivitis Vernal",
+    "gejala_klinis": [
+      "Gatal hebat",
+      "Lakrimasi (air mata berlebihan)",
+      "Fotofobia (silau)",
+      "Rasa mengganjal",
+      "Rasa terbakar",
+      "Papil di konjungtiva tarsal superior",
+      "Giant papillae atau cobblestone appearance",
+      "Trantas dot di limbus kornea",
+      "Shield ulceration pada kornea"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan mata"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Kortikosteroid topikal (Fluorometolone)",
+        "dosis": null,
+        "durasi": "jangka pendek (3-5 hari) untuk eksaserbasi akut"
+      },
+      {
+        "nama_obat": "Mast cell stabilizers (Natrium Kromoglikat, Lodoxamid)",
+        "dosis": null,
+        "durasi": "untuk mencegah eksaserbasi"
+      }
+    ],
+    "tanda_bahaya": "Kerusakan kornea (shield ulceration)",
+    "sumber_halaman": "78, 136"
+  },
+  {
+    "nama_penyakit": "Kusta",
+    "gejala_klinis": [
+      "Kelainan kulit: bercak putih (hipopigmentasi) atau kemerahan (eritematosus) yang mati rasa",
+      "Penebalan saraf tepi",
+      "Benjolan kecil berwarna merah muda/ungu di kulit",
+      "Berkurangnya perasaan pada anggota badan",
+      "Radang saraf yang nyeri",
+      "Jari kaki sering hilang",
+      "Demam (akibat reaksi penyakit)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan kulit (mencari kuman Mycobacterium leprae)",
+      "Tes tuberkulin",
+      "Pemeriksaan jaringan saraf",
+      "Pemeriksaan rontgen"
+    ],
+    "kriteria_diagnosis": "Gejala klinis khas (bercak mati rasa, penebalan saraf)",
+    "tata_laksana": [
+      {
+        "nama_obat": "Regimen MDT (Multi Drug Therapy)",
+        "dosis": null,
+        "durasi": "sesuai klasifikasi PB atau MB"
+      },
+      {
+        "nama_obat": "Rifampisin",
+        "dosis": "Dewasa: 600 mg/bulan (supervisi); Anak: 450 mg/bulan",
+        "durasi": "6-18 bulan (tergantung regimen)"
+      },
+      {
+        "nama_obat": "Dapson",
+        "dosis": "Dewasa: 100 mg/hari; Anak: 50 mg/hari",
+        "durasi": "6-18 bulan (tergantung regimen)"
+      },
+      {
+        "nama_obat": "Lampren",
+        "dosis": "Dewasa: 300 mg/bulan; Anak: 150 mg/bulan",
+        "durasi": "12-18 bulan"
+      }
+    ],
+    "tanda_bahaya": "Kerusakan saraf permanen, cacat fisik, penularan",
+    "sumber_halaman": "79, 80"
+  },
+  {
+    "nama_penyakit": "Leptospirosis",
+    "gejala_klinis": [
+      "Demam mendadak (ringan/tinggi)",
+      "Menggigil",
+      "Nyeri kepala",
+      "Mialgia (nyeri otot)",
+      "Nyeri retro-orbital",
+      "Fotofobia",
+      "Mata merah (konjungtivitis)",
+      "Ikterus (jaundice)",
+      "Mual, muntah, anoreksia",
+      "Gangguan ginjal (penurunan urin)",
+      "Gangguan hati"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan darah rutin (leukositosis, neutrofilia)",
+      "Urinalisis (proteinuria, leukosituria)",
+      "Tes fungsi hati (peningkatan SGOT/SGPT, bilirubin)",
+      "Tes serologi (MAT, ELISA, PCR)"
+    ],
+    "kriteria_diagnosis": "Demam mendadak + nyeri kepala + mata merah + riwayat paparan (air/tanah tercemar urin hewan)",
+    "tata_laksana": [
+      {
+        "nama_obat": "Penisilin G dosis tinggi",
+        "dosis": "600.000 unit setiap 4 jam, dapat ditingkatkan hingga 8-12 juta unit/hari",
+        "durasi": "terutama efektif jika diberikan pada hari ke 1-3 infeksi"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "500 mg 3 x sehari",
+        "durasi": "7-10 hari"
+      },
+      {
+        "nama_obat": "Tetrasiklin / Eritromisin",
+        "dosis": "Tetrasiklin: 250 mg setiap 8 jam i.v; Eritromisin: 250 mg setiap jam",
+        "durasi": "24 jam (i.v), lalu dilanjutkan per oral"
+      }
+    ],
+    "tanda_bahaya": "Meningitis, gagal ginjal, gagal hati, perdarahan, kematian",
+    "sumber_halaman": "81, 82, 141, 142"
+  },
+  {
+    "nama_penyakit": "Luka Bakar",
+    "gejala_klinis": [
+      "Luka bakar derajat I: kulit merah, nyeri, sensitif, bengkak, memutih saat ditekan",
+      "Luka bakar derajat II: lepuhan, dasar merah/keputihan, berisi cairan, nyeri",
+      "Luka bakar derajat III: kerusakan dalam, permukaan putih/lembut/hitam/hangus, tidak nyeri (ujung saraf rusak)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan fisik"
+    ],
+    "kriteria_diagnosis": "Cedera akibat panas, bahan kimia, atau arus listrik",
+    "tata_laksana": [
+      {
+        "nama_obat": "Perak sulfadiazin (krim)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antibiotik",
+        "dosis": null,
+        "durasi": "jika ada infeksi sekunder"
+      },
+      {
+        "nama_obat": "Tetanus toxoid booster",
+        "dosis": null,
+        "durasi": "sesuai status imunisasi"
+      },
+      {
+        "nama_obat": "Analgesik",
+        "dosis": null,
+        "durasi": "beberapa hari"
+      }
+    ],
+    "tanda_bahaya": "Syok hipovolemik, luka bakar luas/dalam, mengenai wajah/tangan/alat kelamin/kaki, terkena listrik/api, anak < 2 tahun/> 70 tahun, cedera organ dalam",
+    "sumber_halaman": "82, 83, 143, 144, 145, 146"
+  },
+  {
+    "nama_penyakit": "Malaria",
+    "gejala_klinis": [
+      "Demam (remiten)",
+      "Menggigil",
+      "Berkeringat",
+      "Sakit kepala",
+      "Mual, muntah",
+      "Diare",
+      "Nyeri otot/pegal-pegal",
+      "Gangguan kesadaran (malaria berat)",
+      "Kejang (malaria berat)",
+      "Perdarahan (malaria berat)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Rapid Diagnostic Test (RDT)",
+      "Pemeriksaan mikroskopis darah (menemukan parasit Plasmodium)"
+    ],
+    "kriteria_diagnosis": "Ditemukan parasit Plasmodium pada pemeriksaan darah atau RDT positif",
+    "tata_laksana": [
+      {
+        "nama_obat": "Artesunate + Amodiaguin",
+        "dosis": "Artesunate: 4 mg/kgbb/hari; Amodiaguin: 10 mg/kgbb/hari; Primakuin: 0,75 mg/kgbb/hari (hari I)",
+        "durasi": "3 hari + Primakuin 14 hari"
+      },
+      {
+        "nama_obat": "Kina + Tetrasiklin/Doksisiklin",
+        "dosis": "Kina: 10 mg/kgbb/kali 3x/hari; Doksisiklin: 4 mg/kgbb/kali 2x/hari",
+        "durasi": "7 hari"
+      },
+      {
+        "nama_obat": "Klorokuin",
+        "dosis": "Hr 1&2: 10 mg; Hr 3: 5 mg",
+        "durasi": "3 hari"
+      },
+      {
+        "nama_obat": "Primakuin",
+        "dosis": "0,25-0,5 mg/kgbb/hari",
+        "durasi": "14 hari"
+      }
+    ],
+    "tanda_bahaya": "Malaria berat (gangguan kesadaran, kejang, perdarahan, gagal ginjal)",
+    "sumber_halaman": "84, 147, 148"
+  },
+  {
+    "nama_penyakit": "Migren",
+    "gejala_klinis": [
+      "Nyeri kepala sesisi (unilateral)",
+      "Nyeri berdenyut",
+      "Mual sampai muntah",
+      "Anoreksia",
+      "Fotofobia (silau)",
+      "Fenofobia (sensitif terhadap cahaya)",
+      "Gangguan sensorik/motorik (aura)",
+      "Gangguan mood (gelisah, tidak nafsu makan)"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Nyeri kepala sesisi yang berulang",
+    "tata_laksana": [
+      {
+        "nama_obat": "Asetosal, Parasetamol, Asam mefenamat",
+        "dosis": "500 mg",
+        "durasi": "setiap kali serangan"
+      },
+      {
+        "nama_obat": "Ergotamin",
+        "dosis": "1 mg",
+        "durasi": "sesuai kondisi penyakit"
+      }
+    ],
+    "tanda_bahaya": "Migren yang tidak merespon pengobatan",
+    "sumber_halaman": "85, 149"
+  },
+  {
+    "nama_penyakit": "Morbil (Campak)",
+    "gejala_klinis": [
+      "Fase inkubasi (10-12 hari, tanpa gejala)",
+      "Fase prodromal (mirip flu: batuk, pilek, demam ringan, mata merah, fotofobia, bintik Koplik di mulut)",
+      "Fase erupsi (demam tinggi, bercak merah makulopapuler di wajah, leher, badan, lalu menghitam dan bersisik)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan fisik (melihat bercak merah)"
+    ],
+    "kriteria_diagnosis": "Bercak kemerahan terutama pada bagian atas badan, demam tinggi",
+    "tata_laksana": [
+      {
+        "nama_obat": "Perawatan di rumah (untuk kasus ringan)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Makanan bergizi seimbang",
+        "dosis": null,
+        "durasi": "selama masa penyembuhan dan 1 bulan setelahnya"
+      },
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": null,
+        "durasi": "sesuai gejala"
+      }
+    ],
+    "tanda_bahaya": "Komplikasi (radang tenggorokan, flu, pneumonia)",
+    "sumber_halaman": "85, 86, 150"
+  },
+  {
+    "nama_penyakit": "Otitis Media Akut (OMA)",
+    "gejala_klinis": [
+      "Anak gelisah, menangis saat tidur, memegang telinga",
+      "Demam tinggi",
+      "Muntah, diare",
+      "Pada pemeriksaan otoskopik: membran timpani suram/hiperemis/menonjol/perforasi"
+    ],
+    "pemeriksaan_penunjang": [
+      "Otoskopi (melihat kondisi membran timpani)"
+    ],
+    "kriteria_diagnosis": "Gejala klinis + temuan otoskopi (sesuai stadium)",
+    "tata_laksana": [
+      {
+        "nama_obat": "Antibiotik (Ampisilin, Amoksisilin, Eritromisin, Kotrimoksazol)",
+        "dosis": "Dewasa: 500 mg; Anak: 25 mg/kgBB",
+        "durasi": "7-14 hari (tergantung stadium)"
+      },
+      {
+        "nama_obat": "Dekongestan nasal",
+        "dosis": null,
+        "durasi": "maksimal 5 hari"
+      },
+      {
+        "nama_obat": "Antihistamin",
+        "dosis": null,
+        "durasi": "jika ada tanda alergi"
+      },
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": null,
+        "durasi": "untuk demam/nyeri"
+      }
+    ],
+    "tanda_bahaya": "Perforasi membran timpani, komplikasi intrakranial",
+    "sumber_halaman": "86, 151, 152, 153, 154"
+  },
+  {
+    "nama_penyakit": "Otitis Media Supuratif Kronik (OMSK)",
+    "gejala_klinis": [
+      "Sekret telinga terus menerus (bening/mukopurulen)",
+      "Perforasi membran timpani",
+      "Pendengaran menurun",
+      "Nyeri telinga (bisa hilang timbul)",
+      "Kolesteatoma (pada tipe maligna)",
+      "Polip atau jaringan granulasi di liang telinga"
+    ],
+    "pemeriksaan_penunjang": [
+      "Otoskopi",
+      "Kultur sekret telinga",
+      "Pemeriksaan pendengaran"
+    ],
+    "kriteria_diagnosis": "Sekret telinga kronis + perforasi membran timpani",
+    "tata_laksana": [
+      {
+        "nama_obat": "Cuci telinga (H2O2 3%)",
+        "dosis": null,
+        "durasi": "2-3 kali sehari"
+      },
+      {
+        "nama_obat": "Antibiotik (Ampisilin, Amoksisilin, Eritromisin, Klindamisin)",
+        "dosis": "Dewasa: 500 mg; Anak: 25 mg/kgBB",
+        "durasi": "7-14 hari"
+      },
+      {
+        "nama_obat": "Antihistamin",
+        "dosis": null,
+        "durasi": "jika ada tanda alergi"
+      }
+    ],
+    "tanda_bahaya": "Komplikasi intrakranial, kolesteatoma",
+    "sumber_halaman": "88, 155, 156"
+  },
+  {
+    "nama_penyakit": "Penyakit Paru Obstruktif Kronik (PPOK)",
+    "gejala_klinis": [
+      "Batuk kronik (hilang timbul, berdahak)",
+      "Sesak napas (terutama saat aktivitas)",
+      "Riwayat pajanan faktor risiko (merokok, polusi)",
+      "Dispnea (sesak napas)",
+      "Hiperinflasi paru",
+      "Suara napas melemah, ekspirasi memanjang, mengi, ronki"
+    ],
+    "pemeriksaan_penunjang": [
+      "Foto toraks",
+      "Spirometri",
+      "Analisa gas darah",
+      "Kultur sputum"
+    ],
+    "kriteria_diagnosis": "Batuk kronik + berdahak + sesak napas + faktor risiko",
+    "tata_laksana": [
+      {
+        "nama_obat": "Bronkodilator (inhalasi/oral)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Anti inflamasi (Kortikosteroid)",
+        "dosis": "Deksametason 1mg/kgBB bolus, lalu 0,2-0,5 mg/kgBB tiap 6 jam",
+        "durasi": "3 hari (parenteral); 4 minggu (oral)"
+      },
+      {
+        "nama_obat": "Antibiotik",
+        "dosis": null,
+        "durasi": "hanya jika ada eksaserbasi"
+      },
+      {
+        "nama_obat": "Oksigen",
+        "dosis": null,
+        "durasi": "sesuai kebutuhan"
+      }
+    ],
+    "tanda_bahaya": "Gagal napas kronik, eksaserbasi berat, komplikasi paru lainnya",
+    "sumber_halaman": "90, 91, 92"
+  },
+  {
+    "nama_penyakit": "Pielonefritis",
+    "gejala_klinis": [
+      "Demam mendadak",
+      "Menggigil",
+      "Nyeri punggung bagian bawah",
+      "Mual, muntah",
+      "Nyeri saat berkemih",
+      "Sering berkemih",
+      "Ginjal bisa membesar",
+      "Otot perut berkontraksi kuat"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan urin (mikroskopis, pembiakan)",
+      "USG ginjal",
+      "Rontgen ginjal"
+    ],
+    "kriteria_diagnosis": "Demam + nyeri punggung + gejala ISK",
+    "tata_laksana": [
+      {
+        "nama_obat": "Kotrimoksazol",
+        "dosis": "2 tablet 2 x sehari",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Ampisilin",
+        "dosis": "500 mg 4 x sehari",
+        "durasi": "5 hari"
+      }
+    ],
+    "tanda_bahaya": "Kerusakan ginjal kronik, gagal ginjal",
+    "sumber_halaman": "99, 100"
+  },
+  {
+    "nama_penyakit": "Pioderma",
+    "gejala_klinis": [
+      "Impetigo: vesikel/pustula pecah, menyebar, krusta",
+      "Furunkel: nodus bernanah, nyeri, eritema di sekitar",
+      "Ektima, selulitis, flegmon"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pewarnaan Gram dari lesi",
+      "Kultur dan resistensi spesimen lesi/darah"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Kompres terbuka (Rivanol, Povidon iodine)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Salep/krim garam natrium fusidat 2%",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antibiotik sistemik (Penisilin, Amoksisilin, Ampisilin, Eritromisin, Klindamisin)",
+        "dosis": null,
+        "durasi": "sesuai indikasi"
+      }
+    ],
+    "tanda_bahaya": "Infeksi yang meluas, bakterimia, kerusakan jaringan dalam",
+    "sumber_halaman": "100, 101"
+  },
+  {
+    "nama_penyakit": "Pneumonia",
+    "gejala_klinis": [
+      "Demam",
+      "Sakit kepala",
+      "Lesu",
+      "Batuk (kering atau berdahak mukopurulen/purulen/darah)",
+      "Takipneu (napas cepat)",
+      "Dispneu (sesak napas)",
+      "Retraksi dada",
+      "Napas cuping hidung",
+      "Sianosis",
+      "Perkusi pekak (pneumonia lobaris)",
+      "Ronki basah halus nyaring (bronkopneumonia)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan dada (auskultasi, perkusi)",
+      "Foto toraks",
+      "Pemeriksaan dahak (kultur, pewarnaan Gram)",
+      "Analisa gas darah"
+    ],
+    "kriteria_diagnosis": "Gejala infeksi saluran napas bawah + tanda pneumonia pada pemeriksaan fisik/radiologis",
+    "tata_laksana": [
+      {
+        "nama_obat": "Kotrimoksazol",
+        "dosis": "Dewasa: 2 tablet 2x/hari; Anak: sesuai umur",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "Dewasa: 500 mg 4x/hari; Anak: 25-50 mg/kgBB/hari",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "Dewasa: 500 mg 4x/hari; Anak: 40-50 mg/kgBB/hari",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Penisilin prokain",
+        "dosis": "Dewasa: 600.000-1.200.000 IU; Anak: 50.000 IU/kgBB/hari",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Oksigen",
+        "dosis": null,
+        "durasi": "sesuai kebutuhan"
+      }
+    ],
+    "tanda_bahaya": "Komplikasi (misal empiema, pneumatokel), kegagalan napas",
+    "sumber_halaman": "101, 102, 181, 182, 183, 184"
+  },
+  {
+    "nama_penyakit": "Pterigium",
+    "gejala_klinis": [
+      "Mata merah dan berair",
+      "Rasa mengganjal",
+      "Silau (fotofobia)",
+      "Penurunan tajam penglihatan (jika mencapai pupil)",
+      "Konjungtiva menebal dan keruh",
+      "Kornea keruh"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan mata (menilai konjungtiva dan kornea)"
+    ],
+    "kriteria_diagnosis": "Penebalan konjungtiva berbentuk segitiga mencapai kornea",
+    "tata_laksana": [
+      {
+        "nama_obat": "Astringen-dekongestan tetes mata",
+        "dosis": "Kombinasi seng sulfat 0,25% + fenilefrin 0,12% / nafazolin 0,7%",
+        "durasi": "3-4 kali sehari"
+      }
+    ],
+    "tanda_bahaya": "Gangguan penglihatan yang memerlukan pembedahan",
+    "sumber_halaman": "103, 185"
+  },
+  {
+    "nama_penyakit": "Pulpitis",
+    "gejala_klinis": [
+      "Nyeri berdenyut pada gigi, terutama malam hari",
+      "Nyeri menjalar (ke telinga, sinus, pelipis)",
+      "Nyeri saat minum dingin/manis, mengunyah",
+      "Gigi berlubang dalam, pulpa terbuka"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan gigi dan gusi"
+    ],
+    "kriteria_diagnosis": "Nyeri dan tanda peradangan pulpa",
+    "tata_laksana": [
+      {
+        "nama_obat": "Eugenol (diteteskan ke pulpa)",
+        "dosis": null,
+        "durasi": "setelah pembersihan lubang gigi"
+      },
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": "Dewasa: 3 x 500 mg/hari; Anak: 3 x 250 mg/hari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "3 x 500 mg/hari",
+        "durasi": "5 hari (jika ada peradangan periapikal)"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "3 x 250 mg/hari",
+        "durasi": "5 hari (jika ada peradangan periapikal)"
+      }
+    ],
+    "tanda_bahaya": "Peradangan periapikal, kerusakan tulang rahang",
+    "sumber_halaman": "103, 185, 186"
+  },
+  {
+    "nama_penyakit": "Rabies",
+    "gejala_klinis": [
+      "Stadium prodromal: demam, malaise, mual, nyeri tenggorokan",
+      "Stadium sensoris: nyeri, kesemutan, cemas, reaksi berlebihan terhadap rangsang",
+      "Stadium eksitasi: hiperhidrosis, hipersalivasi, hiperlakrimasi, dilatasi pupil, fobia (hidrofobia, aerofobia, fotofobia), kejang, takikardi, apneu, sianosis",
+      "Stadium paralisis: paralisis otot progresif"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan laboratorium (tes serologis VDRL, tes kulit, biopsi kulit/saraf)"
+    ],
+    "kriteria_diagnosis": "Gejala klinis + riwayat gigitan hewan penular rabies",
+    "tata_laksana": [
+      {
+        "nama_obat": "Pembersihan luka gigitan (air mengalir + sabun/deterjen selama 10-15 menit, alkohol 70%)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Vaksin Anti Rabies (VAR)",
+        "dosis": "0,5 ml x 4 suntikan (dewasa); 0,01 µg/kgBB (anak)",
+        "durasi": "Hari ke-0 (2 dosis), hari ke-7, hari ke-21"
+      },
+      {
+        "nama_obat": "Human Tetanus Immunoglobulin (HTIG)",
+        "dosis": "5000 IU i.m",
+        "durasi": "sekali suntik"
+      },
+      {
+        "nama_obat": "ATS (Anti Tetanus Serum)",
+        "dosis": "20.000-40.000 IU/hari (dewasa); 20.000 IU/hari (anak)",
+        "durasi": "3 hari (dewasa); 2 hari (anak)"
+      },
+      {
+        "nama_obat": "Penisilin prokain",
+        "dosis": "2 juta IU i.m (dewasa); 50.000 IU/kgBB/hari (anak)",
+        "durasi": "10 hari"
+      },
+      {
+        "nama_obat": "Diazepam",
+        "dosis": "10-120 mg/hari",
+        "durasi": "untuk mengendalikan kejang"
+      }
+    ],
+    "tanda_bahaya": "Paralisis pernapasan, henti napas, henti jantung, kematian",
+    "sumber_halaman": "104, 187, 188, 189, 190"
+  },
+  {
+    "nama_penyakit": "Retensio Plasenta",
+    "gejala_klinis": [
+      "Plasenta belum lahir dalam 30 menit setelah bayi lahir",
+      "Perdarahan dari vagina",
+      "Tali pusat putus",
+      "Uterus tidak berkontraksi atau kontraksi lemah",
+      "Plasenta belum lahir setelah dicoba plasenta manual"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan dalam (untuk menilai kelengkapan plasenta dan kontraksi uterus)",
+      "USG (jika dicurigai sisa plasenta)"
+    ],
+    "kriteria_diagnosis": "Plasenta tidak lahir dalam 30 menit setelah bayi lahir",
+    "tata_laksana": [
+      {
+        "nama_obat": "Oksitosin",
+        "dosis": "10 IU i.m (setelah penyuntikan pertama)",
+        "durasi": "setelah bayi lahir"
+      },
+      {
+        "nama_obat": "Ergometrin",
+        "dosis": "0,2 mg i.m",
+        "durasi": "setelah plasenta lahir"
+      },
+      {
+        "nama_obat": "Plasenta manual",
+        "dosis": null,
+        "durasi": "jika plasenta belum lahir setelah 30 menit"
+      }
+    ],
+    "tanda_bahaya": "Perdarahan post partum dini atau lanjut, syok, atonia uteri, infeksi",
+    "sumber_halaman": "94, 96, 107, 171, 172"
+  },
+  {
+    "nama_penyakit": "Rinitis",
+    "gejala_klinis": [
+      "Hidung gatal, meler, tersumbat",
+      "Mata berair, gatal, merah",
+      "Bersin-bersin",
+      "Sakit kepala",
+      "Mengi",
+      "Lutut terasa nyeri saat bergerak"
+    ],
+    "pemeriksaan_penunjang": [
+      "Tes kulit (untuk menentukan alergen)"
+    ],
+    "kriteria_diagnosis": "Gejala timbul pada musim tertentu",
+    "tata_laksana": [
+      {
+        "nama_obat": "Antihistamin",
+        "dosis": null,
+        "durasi": "sesuai kebutuhan"
+      },
+      {
+        "nama_obat": "Dekongestan (Pseudoefedrin, Fenilpropanolamin)",
+        "dosis": null,
+        "durasi": "untuk hidung tersumbat"
+      },
+      {
+        "nama_obat": "Natrium kromolin (semprot hidung)",
+        "dosis": null,
+        "durasi": "terbatas efikasinya"
+      }
+    ],
+    "tanda_bahaya": "Rinitis kronis yang tidak membaik",
+    "sumber_halaman": "105, 190"
+  },
+  {
+    "nama_penyakit": "Sariawan (Stomatitis Aftosa)",
+    "gejala_klinis": [
+      "Luka kecil di dalam mulut yang menimbulkan nyeri",
+      "Ulserasi aftosa",
+      "Nyeri saat menelan",
+      "Bau mulut",
+      "Gusi berdarah"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Nyeri dan lesi pada rongga mulut",
+    "tata_laksana": [
+      {
+        "nama_obat": "Deksametason (larutan)",
+        "dosis": null,
+        "durasi": "2-3 hari"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "500 mg 3 x sehari",
+        "durasi": "5 hari (jika dikombinasikan)"
+      },
+      {
+        "nama_obat": "Vit. B kompleks dan Vit. C",
+        "dosis": "Vit. B kompleks: 1 tablet 3x/hr; Vit. C: 50 mg 3x/hr",
+        "durasi": "selama 1 minggu"
+      }
+    ],
+    "tanda_bahaya": "Gangguan hormonal, infeksi sekunder, gangguan makan",
+    "sumber_halaman": "117, 118, 213, 214"
+  },
+  {
+    "nama_penyakit": "Salpingitis",
+    "gejala_klinis": [
+      "Nyeri perut bagian bawah (unilateral/bilateral)",
+      "Nyeri bertambah pada gerakan",
+      "Perdarahan di luar siklus menstruasi",
+      "Secret vagina berlebihan",
+      "Demam, menggigil (pada salpingitis akut)",
+      "Nyeri tekan abdomen bawah",
+      "Nyeri pada pergerakan serviks"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan dalam ginekologi (nyeri tekan tuba)",
+      "Kultur sekret vagina"
+    ],
+    "kriteria_diagnosis": "Nyeri tekan tuba pada pemeriksaan ginekologi",
+    "tata_laksana": [
+      {
+        "nama_obat": "Tirah baring (posisi Fowler)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antibiotik spektrum luas (Ampisilin, Gentamisin, Metronidazol)",
+        "dosis": "Ampisilin: 2 g i.v awal, lalu 1 g setiap 6 jam; Gentamisin: 5 mg/kgBB/hari i.v; Metronidazol: 500 mg i.v setiap 8 jam",
+        "durasi": "sampai tidak demam selama 24 jam"
+      },
+      {
+        "nama_obat": "Antibiotik (Doksisiklin/Tetrasiklin/Eritromisin)",
+        "dosis": "Doksisiklin: 100 mg 2 x sehari; Tetrasiklin: 500 mg 4 x sehari; Eritromisin: 500 mg 4 x sehari",
+        "durasi": "7-10 hari"
+      }
+    ],
+    "tanda_bahaya": "PID, kehamilan ektopik, infertilitas",
+    "sumber_halaman": "106, 191, 192"
+  },
+  {
+    "nama_penyakit": "Serumen",
+    "gejala_klinis": [
+      "Rasa tersumbat di telinga",
+      "Pendengaran berkurang",
+      "Telinga berdenging"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan fisik liang telinga (menilai jumlah dan konsistensi serumen)"
+    ],
+    "kriteria_diagnosis": "Adanya serumen yang menyumbat liang telinga",
+    "tata_laksana": [
+      {
+        "nama_obat": "Kapas lilit",
+        "dosis": null,
+        "durasi": "untuk serumen cair/lunak"
+      },
+      {
+        "nama_obat": "Larutan permanganat 1/1000 atau karboliserin 10%",
+        "dosis": null,
+        "durasi": "untuk melunakkan serumen liat/keras"
+      },
+      {
+        "nama_obat": "Pompa penghisap / Pengait",
+        "dosis": null,
+        "durasi": "untuk mengeluarkan serumen"
+      }
+    ],
+    "tanda_bahaya": "Riwayat perforasi membran timpani",
+    "sumber_halaman": "107, 193"
+  },
+  {
+    "nama_penyakit": "Sifilis",
+    "gejala_klinis": [
+      "Fase Primer: Luka/ulkus (cangker) tanpa nyeri, kelenjar getah bening membesar",
+      "Fase Sekunder: Ruam kulit, malaise, demam, kelenjar getah bening membesar di seluruh tubuh",
+      "Fase Laten: Tanpa gejala",
+      "Fase Tersier: Gejala bervariasi (neurotoksisitas, kardiovaskular, dll.)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan mikroskopis cairan luka (dark field microscopy)",
+      "Tes serologis (VDRL, TPHA, FTA-ABS)",
+      "Pungsi lumbal (untuk neurosifilis)"
+    ],
+    "kriteria_diagnosis": "Gejala klinis + hasil pemeriksaan laboratorium",
+    "tata_laksana": [
+      {
+        "nama_obat": "Benzatin Penisilin G",
+        "dosis": "Std I & II: 4,8 juta unit (dibagi 2 suntikan); Std Laten: 7,2 juta unit (dibagi 3 suntikan)",
+        "durasi": "Interval 1 minggu"
+      },
+      {
+        "nama_obat": "Tetrasiklin",
+        "dosis": "500 mg 4 x sehari",
+        "durasi": "30 hari"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "500 mg 4 x sehari",
+        "durasi": "30 hari"
+      }
+    ],
+    "tanda_bahaya": "Neurosifilis, sifilis tersier (kerusakan organ)",
+    "sumber_halaman": "108, 194, 195, 196"
+  },
+  {
+    "nama_penyakit": "Sindroma Nefrotik",
+    "gejala_klinis": [
+      "Proteinuria (> 3 gram/24 jam)",
+      "Hipoproteinemia (albumin darah rendah)",
+      "Edema (penimbunan cairan)",
+      "Hipoalbuminemia",
+      "Hiperlipidemia",
+      "Pembengkakan kelopak mata, tungkai, skrotum",
+      "Perut membengkak (asites)",
+      "Efusi pleura",
+      "Penurunan produksi urin / anuria",
+      "Penurunan tekanan darah (pada anak)",
+      "Infeksi oportunistik"
+    ],
+    "pemeriksaan_penunjang": [
+      "Urinalisis (proteinuria)",
+      "Pemeriksaan darah (albumin, lemak, natrium, kalium)",
+      "USG ginjal"
+    ],
+    "kriteria_diagnosis": "Proteinuria, hipoproteinemia, edema, hiperlipidemia",
+    "tata_laksana": [
+      {
+        "nama_obat": "Diet rendah protein dan kalium",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "ACE inhibitors (Enalapril, Kaptopril, Lisinopril)",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Diuretik",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Kortikosteroid (Prednison)",
+        "dosis": "2 mg/kgBB (4 hari pertama), lalu 0,2-0,5 mg/kgBB selang sehari",
+        "durasi": "4 minggu"
+      },
+      {
+        "nama_obat": "Siklofosfamid",
+        "dosis": null,
+        "durasi": "4 minggu"
+      },
+      {
+        "nama_obat": "Antihistamin",
+        "dosis": "Klorfeniramin maleat 0,34 mg/kg BB 3x/hr",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Antikoagulan",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Gagal ginjal, infeksi berat, trombosis, perdarahan",
+    "sumber_halaman": "109, 197, 198"
+  },
+  {
+    "nama_penyakit": "Sindrom Stevens-Johnson (SSJ)",
+    "gejala_klinis": [
+      "Gejala prodromal: demam, malaise, batuk, korizal, sakit menelan, nyeri dada, muntah",
+      "Lesi kulit: erupsi mukokutan (vesikel, bula, erosi, krusta)",
+      "Lesi mukosa: stomatitis ulseratif, krusta hemoragis",
+      "Lesi mata: konjungtivitis, blefaritis, iritis, erosi/perforasi kornea",
+      "Nyeri hebat pada semua area yang terkena"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan darah tepi",
+      "Pemeriksaan imunologi",
+      "Biakan kuman dari lesi kulit/darah"
+    ],
+    "kriteria_diagnosis": "Trias kelainan kulit, mukosa, mata disertai gejala umum berat",
+    "tata_laksana": [
+      {
+        "nama_obat": "Cairan dan elektrolit, kalori, protein parenteral",
+        "dosis": null,
+        "durasi": "sesuai kebutuhan"
+      },
+      {
+        "nama_obat": "Antibiotik spektrum luas",
+        "dosis": null,
+        "durasi": "sesuai hasil kultur dan resistensi"
+      },
+      {
+        "nama_obat": "Kortikosteroid parenteral (Deksametason)",
+        "dosis": "1 mg/kgBB bolus, lalu 0,2-0,5 mg/kgBB tiap 6 jam",
+        "durasi": "3 hari"
+      },
+      {
+        "nama_obat": "Antihistamin",
+        "dosis": "Feniramin hidrogen maleat: 7,5 mg (anak 1-3 th), 15 mg (anak 3-12 th)",
+        "durasi": "3 x sehari"
+      },
+      {
+        "nama_obat": "Kompres basah larutan Burowi",
+        "dosis": null,
+        "durasi": "untuk bula kulit"
+      },
+      {
+        "nama_obat": "Klindamisin i.v",
+        "dosis": "8-16 mg/kgBB",
+        "durasi": "2 x sehari"
+      }
+    ],
+    "tanda_bahaya": "Kebutaan, kerusakan mukosa permanen, infeksi sekunder",
+    "sumber_halaman": "110, 199, 200"
+  },
+  {
+    "nama_penyakit": "Sinusitis",
+    "gejala_klinis": [
+      "Sakit kepala (terutama pagi hari, di dahi, pipi, belakang mata)",
+      "Hidung meler atau tersumbat",
+      "Demam (jika infeksi meluas)",
+      "Letih, lesu",
+      "Batuk (memberat di malam hari)",
+      "Nyeri tekan pada sinus yang terkena",
+      "Sekret hidung mukopurulen"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan fisik (palpasi sinus, pemeriksaan hidung)",
+      "Foto rontgen sinus",
+      "CT scan sinus",
+      "Pemeriksaan gigi (jika dicurigai abses gigi)"
+    ],
+    "kriteria_diagnosis": "Gejala khas + hasil rontgen sinus",
+    "tata_laksana": [
+      {
+        "nama_obat": "Dekongestan",
+        "dosis": null,
+        "durasi": "jangka pendek"
+      },
+      {
+        "nama_obat": "Antibiotik (Amoksisilin/Kotrimoksazol)",
+        "dosis": null,
+        "durasi": "5 hari (sinusitis akut)"
+      },
+      {
+        "nama_obat": "Obat pereda nyeri",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Semprot hidung steroid",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Infeksi yang meluas, penyumbatan saluran napas",
+    "sumber_halaman": "111, 112, 201, 202"
+  },
+  {
+    "nama_penyakit": "Sirosis Hati",
+    "gejala_klinis": [
+      "Asimtomatik (pada sirosis ringan)",
+      "Kehilangan nafsu makan",
+      "Penurunan berat badan",
+      "Malaise",
+      "Ikterus (jaundice)",
+      "Gatal",
+      "Nodul kecil di kulit (ksantelasma)",
+      "Asites (cairan di perut)",
+      "Varises esofagus (batuk darah, muntah darah)",
+      "Hipertensi portal",
+      "Gagal ginjal",
+      "Ensefalopati hepatikum",
+      "Kelemahan otot",
+      "Eritema palmaris",
+      "Jari tabuh",
+      "Spider nevi"
+    ],
+    "pemeriksaan_penunjang": [
+      "USG hati",
+      "Scanning hati (isotop radioaktif)",
+      "Biopsi hati"
+    ],
+    "kriteria_diagnosis": null,
+    "tata_laksana": [
+      {
+        "nama_obat": "Menghilangkan sumber racun (misal: alkohol)",
+        "dosis": null,
+        "durasi": "seumur hidup"
+      },
+      {
+        "nama_obat": "Diet seimbang (rendah protein, kalium, lemak jenuh, natrium)",
+        "dosis": null,
+        "durasi": "seumur hidup"
+      }
+    ],
+    "tanda_bahaya": "Gagal ginjal, ensefalopati hepatikum, perdarahan varises, kematian",
+    "sumber_halaman": "112, 203, 204"
+  },
+  {
+    "nama_penyakit": "Skabies",
+    "gejala_klinis": [
+      "Gatal hebat terutama di malam hari (pruritus nokturna)",
+      "Ruam berupa terowongan (kanalikuli) di kulit",
+      "Lesi papula, vesikel, pustula (jika ada infeksi sekunder)",
+      "Predileksi: sela-sela jari tangan, pergelangan tangan, lipat siku, area kemaluan",
+      "Penularan dalam kelompok (asrama, panti asuhan)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan kerokan kulit mikroskopis (menemukan tungau Sarcoptes scabiei)"
+    ],
+    "kriteria_diagnosis": "Gatal malam hari + adanya terowongan + kutu S.scabies",
+    "tata_laksana": [
+      {
+        "nama_obat": "Klorfeniramin maleat",
+        "dosis": "0,34 mg/kg BB",
+        "durasi": "3 x sehari (untuk mengurangi gatal)"
+      },
+      {
+        "nama_obat": "Antibiotik",
+        "dosis": null,
+        "durasi": "jika ada infeksi sekunder"
+      },
+      {
+        "nama_obat": "Gamaxene (lindane) 1%",
+        "dosis": null,
+        "durasi": "dioleskan sekali, diulang seminggu kemudian jika perlu"
+      },
+      {
+        "nama_obat": "Permetrin HCl 5%",
+        "dosis": null,
+        "durasi": "dioleskan sekali"
+      },
+      {
+        "nama_obat": "Krotamiton 10%",
+        "dosis": null,
+        "durasi": "untuk gatal"
+      }
+    ],
+    "tanda_bahaya": "Infeksi sekunder akibat garukan",
+    "sumber_halaman": "114, 115, 207, 208, 209, 210"
+  },
+  {
+    "nama_penyakit": "Skizofrenia dan Gangguan Psikotik Kronik Lain",
+    "gejala_klinis": [
+      "Perubahan tingkah laku (gaduh gelisah, mengacau)",
+      "Penarikan diri dari sosial",
+      "Gangguan fungsi peran dan perawatan diri",
+      "Afek tumpul/mendatar",
+      "Halusinasi",
+      "Ilusi",
+      "Wahamae",
+      "Inkoherensi",
+      "Perubahan bicara"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Terdapat satu atau lebih gejala (inkoherensi, tingkah laku kacau/disorganized) + penurunan fungsi sosial/pekerjaan + berlangsung minimal 6 bulan",
+    "tata_laksana": [
+      {
+        "nama_obat": "Klorpromazin",
+        "dosis": "Mulai 100 mg 3 x sehari, dapat dinaikkan hingga 200 mg 3 x sehari",
+        "durasi": "4 minggu (dosis pemeliharaan)"
+      },
+      {
+        "nama_obat": "Haloperidol",
+        "dosis": "1-5 mg 3 x sehari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Flufenazin dekanoat injeksi",
+        "dosis": null,
+        "durasi": "sekali sebulan"
+      }
+    ],
+    "tanda_bahaya": "Membahayakan diri sendiri atau orang lain",
+    "sumber_halaman": "116, 211, 212"
+  },
+  {
+    "nama_penyakit": "Syok Anafilaktik",
+    "gejala_klinis": [
+      "Eritema, rasa terbakar pada kulit",
+      "Takikardia",
+      "Rasa tebal di faring, serak",
+      "Batuk, wheezing",
+      "Urtikaria, edema palpebra/bibir",
+      "Nyeri abdomen, mual, muntah, diare",
+      "Hipotensi",
+      "Syok",
+      "Henti napas, henti jantung"
+    ],
+    "pemeriksaan_penunjang": [],
+    "kriteria_diagnosis": "Gejala yang timbul mendadak setelah paparan antigen/obat + tanda syok",
+    "tata_laksana": [
+      {
+        "nama_obat": "Adrenalin",
+        "dosis": "0,3-0,5 mg larutan 1:1000 i.m (dewasa); 0,01 µg/kgBB (anak)",
+        "durasi": "setiap 15 menit sampai membaik"
+      },
+      {
+        "nama_obat": "Aminofilin",
+        "dosis": "5-6 mg/kgBB i.v",
+        "durasi": "sebagai tambahan jika ada spasme bronkus"
+      },
+      {
+        "nama_obat": "Kortikosteroid (Hidrokortison/Deksametason)",
+        "dosis": "Hidrokortison: 100 mg i.v; Deksametason: 5-10 mg i.v",
+        "durasi": "sebagai terapi penunjang"
+      },
+      {
+        "nama_obat": "Cairan intravena (Kristaloid/Koloid)",
+        "dosis": "3-4 kali volume plasma hilang (kristaloid); sesuai volume hilang (koloid)",
+        "durasi": null
+      },
+      {
+        "nama_obat": "Oksigen",
+        "dosis": null,
+        "durasi": "jika perlu"
+      },
+      {
+        "nama_obat": "Kompresi jantung luar",
+        "dosis": null,
+        "durasi": "jika henti jantung"
+      }
+    ],
+    "tanda_bahaya": "Henti napas, henti jantung, kematian",
+    "sumber_halaman": "119, 120, 217, 218"
+  },
+  {
+    "nama_penyakit": "Tetanus",
+    "gejala_klinis": [
+      "Trismus (kekakuan rahang)",
+      "Risus sardonicus (ekspresi seperti menyeringai)",
+      "Opisthotonus (punggung melengkung ke belakang)",
+      "Kekakuan otot perut, leher, punggung",
+      "Kesulitan menelan",
+      "Demam",
+      "Nyeri otot",
+      "Kejang otot",
+      "Retensi urin, konstipasi",
+      "Gangguan pernapasan"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan kultur luka"
+    ],
+    "kriteria_diagnosis": "Riwayat luka + kekakuan otot (terutama rahang)",
+    "tata_laksana": [
+      {
+        "nama_obat": "Human Tetanus Immunoglobulin (HTIG)",
+        "dosis": "5000 IU i.m",
+        "durasi": "sekali suntik"
+      },
+      {
+        "nama_obat": "ATS (Anti Tetanus Serum)",
+        "dosis": "Dewasa: 20.000-40.000 IU/hari; Anak: 20.000 IU/hari",
+        "durasi": "3 hari (dewasa); 2 hari (anak)"
+      },
+      {
+        "nama_obat": "Penisilin prokain",
+        "dosis": "2 juta IU i.m (dewasa); 50.000 IU/kgBB/hari (anak)",
+        "durasi": "10 hari"
+      },
+      {
+        "nama_obat": "Diazepam",
+        "dosis": "Dewasa: 40-120 mg/hari; Anak: 5-10 mg i.v",
+        "durasi": "untuk mengendalikan kejang"
+      },
+      {
+        "nama_obat": "Oksigen",
+        "dosis": null,
+        "durasi": null
+      },
+      {
+        "nama_obat": "Humidifier",
+        "dosis": null,
+        "durasi": null
+      }
+    ],
+    "tanda_bahaya": "Henti napas, henti jantung, kematian",
+    "sumber_halaman": "121, 122, 221, 222"
+  },
+  {
+    "nama_penyakit": "Tetanus Neonatorum",
+    "gejala_klinis": [
+      "Kesulitan menyusu",
+      "Mulut mencucu",
+      "Kaku kuduk",
+      "Kejang (terutama epistotonus)",
+      "Demam tinggi",
+      "Sianosis"
+    ],
+    "pemeriksaan_penunjang": [
+      "Diagnosis klinis"
+    ],
+    "kriteria_diagnosis": "Kejang pada bayi usia < 1 bulan",
+    "tata_laksana": [
+      {
+        "nama_obat": "Infus rumat (Glukosa 5% / NaCl 4:1)",
+        "dosis": "75 cc/kgBB/hari",
+        "durasi": null
+      },
+      {
+        "nama_obat": "ATS",
+        "dosis": "10.000 IU/hari",
+        "durasi": "2 hari berturut-turut"
+      },
+      {
+        "nama_obat": "Ampisilin i.v",
+        "dosis": "100 mg/kgBB/hari",
+        "durasi": "hingga 10 hari"
+      },
+      {
+        "nama_obat": "Diazepam i.v",
+        "dosis": "Maksimal 2,5 mg; dilanjutkan 3-4 mg/kgBB/hari dalam infus",
+        "durasi": "sampai kejang hilang"
+      }
+    ],
+    "tanda_bahaya": "Sepsis, komplikasi (henti napas, henti jantung), kematian",
+    "sumber_halaman": "122, 223, 224"
+  },
+  {
+    "nama_penyakit": "Tifus Abdominalis",
+    "gejala_klinis": [
+      "Demam (naik bertahap, suhu tinggi, demam remiten)",
+      "Sakit kepala",
+      "Nyeri sendi",
+      "Sakit tenggorokan",
+      "Bibir kering dan pecah",
+      "Lidah kotor",
+      "Sembelit atau diare",
+      "Penurunan nafsu makan",
+      "Nyeri perut",
+      "Bradikardia (denyut nadi lambat)",
+      "Bintik-bintik merah muda di dada dan perut (rose spots)",
+      "Delirium, stupor, koma (pada kasus berat)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Biakan darah, tinja, urin (menemukan Salmonella typhii)",
+      "Foto rontgen dada",
+      "Tes widal"
+    ],
+    "kriteria_diagnosis": "Gejala klinis + hasil pemeriksaan fisik + hasil biakan bakteri",
+    "tata_laksana": [
+      {
+        "nama_obat": "Tirah baring",
+        "dosis": null,
+        "durasi": "penting"
+      },
+      {
+        "nama_obat": "Diet lunak, kalori dan protein cukup, rendah serat",
+        "dosis": null,
+        "durasi": "sesuai kemampuan mencerna"
+      },
+      {
+        "nama_obat": "Kloramfenikol",
+        "dosis": "Dewasa: 4 x 500 mg; Anak: 50-100 mg/kgBB",
+        "durasi": "14 hari"
+      },
+      {
+        "nama_obat": "Tiamfenikol",
+        "dosis": "Dewasa: 4 x 500 mg; Anak: 50 mg/kgBB",
+        "durasi": "5-7 hari"
+      },
+      {
+        "nama_obat": "Ampisilin",
+        "dosis": "Dewasa: 500 mg 4 x sehari; Anak: 50-100 mg/kgBB 4 x sehari",
+        "durasi": "10-14 hari"
+      },
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": null,
+        "durasi": "untuk demam"
+      },
+      {
+        "nama_obat": "Infus cairan",
+        "dosis": null,
+        "durasi": "jika perlu"
+      }
+    ],
+    "tanda_bahaya": "Perforasi usus, perdarahan usus, delirium, stupor, koma",
+    "sumber_halaman": "123, 225, 226"
+  },
+  {
+    "nama_penyakit": "Tirotoksikosis",
+    "gejala_klinis": [
+      "Sukardi tidur",
+      "Gelisah",
+      "Rasa takut",
+      "Penurunan berat badan",
+      "Palpitasi (jantung berdebar)",
+      "Tremor",
+      "Transpirasi (keringat berlebih)",
+      "Diare",
+      "Struma (pembesaran kelenjar tiroid)",
+      "Mata menonjol (eksoptalmus)",
+      "Sirkulasi hiperkinetik"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan T3, T4, dan Indeks Tiroksin Bebas",
+      "Pemeriksaan TSH (rendah)",
+      "USG tiroid"
+    ],
+    "kriteria_diagnosis": "Gejala klinis khas + hasil pemeriksaan laboratorium abnormal",
+    "tata_laksana": [
+      {
+        "nama_obat": "Propiltiourasil (PTU)",
+        "dosis": "Permulaan: 70-200 mg 3 x sehari; Pemeliharaan: 50-300 mg/hari",
+        "durasi": "6-8 minggu (permulaan)"
+      },
+      {
+        "nama_obat": "Propranolol",
+        "dosis": "60-120 mg",
+        "durasi": "4 x sehari (pada krisis)",
+        "nama_obat": "Propranolol",
+        "dosis": "20 mg 3 x sehari",
+        "durasi": "sebelum makan"
+      }
+    ],
+    "tanda_bahaya": "Krisis tirotoksikosis",
+    "sumber_halaman": "124, 227, 228"
+  },
+  {
+    "nama_penyakit": "Tonsilitis",
+    "gejala_klinis": [
+      "Sakit menelan",
+      "Lesu seluruh tubuh",
+      "Nyeri sendi",
+      "Demam tinggi (hingga 40°C)",
+      "Tonsil bengkak, merah, dengan detritus/membran",
+      "Pembesaran kelenjar submandibular",
+      "Bau mulut",
+      "Nyeri kepala",
+      "Muntah"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan fisik (tonsil bengkak, merah, detritus/membran)",
+      "Kultur apus tenggorokan"
+    ],
+    "kriteria_diagnosis": "Gejala klinis + pemeriksaan fisik tonsil",
+    "tata_laksana": [
+      {
+        "nama_obat": "Tirah baring",
+        "dosis": null,
+        "durasi": "penting"
+      },
+      {
+        "nama_obat": "Makanan lunak",
+        "dosis": null,
+        "durasi": "selama nyeri menelan"
+      },
+      {
+        "nama_obat": "Penisilin V",
+        "dosis": "1,5 juta IU 2 x sehari (dewasa); 500 mg 3 x sehari (dewasa)",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "40 mg/kgBB/hari (anak); 500 mg 3 x sehari (dewasa)",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Amoksisilin",
+        "dosis": "30-50 mg/kgBB/hari (anak); 500 mg 3 x sehari (dewasa)",
+        "durasi": "5 hari"
+      },
+      {
+        "nama_obat": "Parasetamol/Ibuprofen",
+        "dosis": null,
+        "durasi": "untuk demam/nyeri"
+      },
+      {
+        "nama_obat": "ADS (Anti Difteri Serum)",
+        "dosis": null,
+        "durasi": "jika dicurigai difteri"
+      }
+    ],
+    "tanda_bahaya": "Komplikasi (demam rematik, abses peritonsiler, septikemia)",
+    "sumber_halaman": "125, 126, 229, 230, 231, 232"
+  },
+  {
+    "nama_penyakit": "Tuberkulosis",
+    "gejala_klinis": [
+      "Batuk kronis (> 3 minggu), bisa berdahak (kadang berdarah)",
+      "Demam (terutama sore hari)",
+      "Keringat malam hari",
+      "Penurunan berat badan",
+      "Malaise",
+      "Nyeri dada",
+      "Sesak napas",
+      "Pembesaran kelenjar getah bening leher"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan dahak BTA (+)",
+      "Foto toraks (menunjukkan infiltrat, kavitas, efusi pleura)",
+      "Uji Tuberkulin",
+      "Pemeriksaan darah (LED tinggi, leukositosis)"
+    ],
+    "kriteria_diagnosis": "Ditemukan kuman TB (BTA) pada dahak atau gambaran foto toraks khas TB",
+    "tata_laksana": [
+      {
+        "nama_obat": "Regimen DOTS (Directly Observed Treatment Short-course)",
+        "dosis": null,
+        "durasi": "6-9 bulan (jangka pendek) atau 12 bulan (jangka panjang)"
+      },
+      {
+        "nama_obat": "Kombinasi OAT (Isoniazid, Rifampisin, Pirazinamid, Etambutol, Streptomisin)",
+        "dosis": "sesuai panduan program P2M",
+        "durasi": "tahap intensif + tahap berselang"
+      },
+      {
+        "nama_obat": "Vaksin BCG",
+        "dosis": null,
+        "durasi": "untuk pencegahan"
+      },
+      {
+        "nama_obat": "Isoniazid (profilaksis)",
+        "dosis": null,
+        "durasi": "6-9 bulan"
+      }
+    ],
+    "tanda_bahaya": "Resistensi obat, TB paru yang luas, komplikasi (efusi pleura, pneumotoraks)",
+    "sumber_halaman": "90, 128, 233, 234, 235, 236"
+  },
+  {
+    "nama_penyakit": "Uretritis",
+    "gejala_klinis": [
+      "Nyeri saat berkemih (disuria)",
+      "Sering berkemih (frekuensi meningkat)",
+      "Sekret dari uretra (bisa berair, mukus, purulen)",
+      "Pada wanita: nyeri perut bagian bawah, keputihan abnormal, perdarahan tidak normal dari rahim",
+      "Pada pria: nyeri pada penis",
+      "Pada wanita: seringkali asimtomatik atau gejala ringan (servisitis)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan pewarnaan Gram/biru metilen dari apus uretra",
+      "Tes amplifikasi asam nukleat (PCR, LCR)",
+      "Kultur urine"
+    ],
+    "kriteria_diagnosis": "Gejala klinis + hasil pemeriksaan mikroskopis/NAAT/kultur",
+    "tata_laksana": [
+      {
+        "nama_obat": "Makrolida (Azitromisin)",
+        "dosis": "1 g dosis tunggal",
+        "durasi": "1 dosis"
+      },
+      {
+        "nama_obat": "Tetrasiklin",
+        "dosis": "100 mg 2 x sehari",
+        "durasi": "7 hari"
+      },
+      {
+        "nama_obat": "Eritromisin",
+        "dosis": "500 mg 4 x sehari atau 250 mg 4 x sehari",
+        "durasi": "7-14 hari"
+      },
+      {
+        "nama_obat": "Siprofloksasin",
+        "dosis": "500 mg 2 x sehari",
+        "durasi": "7 hari"
+      }
+    ],
+    "tanda_bahaya": "Komplikasi PID, infertilitas, kehamilan ektopik, artritis reaktif",
+    "sumber_halaman": "129, 237, 238"
+  },
+  {
+    "nama_penyakit": "Urtikaria",
+    "gejala_klinis": [
+      "Bercak gatal putih sampai merah muda, udematus, berbagai bentuk dan ukuran",
+      "Lesi bersifat self-limited (hilang sendiri)",
+      "Gatal hebat, rasa seperti terbakar",
+      "Udem di saluran napas (jika berat)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Diagnosis klinis",
+      "Tes kulit (untuk menentukan alergen)"
+    ],
+    "kriteria_diagnosis": "Ruam kulit gatal yang hilang timbul (akut) atau berlangsung > 6 minggu (kronik)",
+    "tata_laksana": [
+      {
+        "nama_obat": "Antihistamin",
+        "dosis": null,
+        "durasi": "sesuai kebutuhan"
+      },
+      {
+        "nama_obat": "Dekongestan",
+        "dosis": null,
+        "durasi": "jika hidung tersumbat"
+      }
+    ],
+    "tanda_bahaya": "Udem di saluran napas (menyebabkan sumbatan jalan napas)",
+    "sumber_halaman": "130, 239, 240"
+  },
+  {
+    "nama_penyakit": "Varisela",
+    "gejala_klinis": [
+      "Masa inkubasi 13-17 hari",
+      "Gejala awal: pusing, sakit kepala, demam ringan",
+      "Ruam kulit: makula -> papula -> vesikel berisi cairan jernih -> berkrusta",
+      "Berbagai stadium ruam ditemukan bersamaan",
+      "Umumnya lebih banyak di badan",
+      "Sering disertai infeksi sekunder"
+    ],
+    "pemeriksaan_penunjang": [
+      "Diagnosis klinis"
+    ],
+    "kriteria_diagnosis": "Gambaran klinis rash yang khas (makulopapular multiforme, proses sentrifugal)",
+    "tata_laksana": [
+      {
+        "nama_obat": "Parasetamol",
+        "dosis": null,
+        "durasi": "jika demam tinggi"
+      },
+      {
+        "nama_obat": "Bedak salisil 1%",
+        "dosis": null,
+        "durasi": "untuk mencegah pecah dan infeksi sekunder"
+      },
+      {
+        "nama_obat": "Antibiotik (Penisilin prokain/Amoksisilin)",
+        "dosis": null,
+        "durasi": "jika ada infeksi sekunder"
+      },
+      {
+        "nama_obat": "Asiklovir",
+        "dosis": "200-400 mg",
+        "durasi": "5 x sehari selama 7 hari (pada awal penyakit)"
+      }
+    ],
+    "tanda_bahaya": "Infeksi sekunder, sindrom Reye (jika diberi asetosal pada anak)",
+    "sumber_halaman": "131, 132, 241, 242"
+  },
+  {
+    "nama_penyakit": "Xeroftalmia",
+    "gejala_klinis": [
+      "Buta senja (hemerolopia)",
+      "Konjungtiva kering, menebal, berkeriput (xerosis konjungtiva)",
+      "Bercak Bitot",
+      "Kornea kering, menebal, berkeriput",
+      "Ulserasi kornea",
+      "Jaringan parut kornea (sikatriks)"
+    ],
+    "pemeriksaan_penunjang": [
+      "Pemeriksaan mata"
+    ],
+    "kriteria_diagnosis": "Gejala klinis dan pemeriksaan mata",
+    "tata_laksana": [
+      {
+        "nama_obat": "Vitamin A oral",
+        "dosis": "200.000 IU",
+        "durasi": "setiap hari selama 1-2 minggu"
+      },
+      {
+        "nama_obat": "Vitamin A injeksi",
+        "dosis": "100.000 IU",
+        "durasi": "hari berikutnya"
+      }
+    ],
+    "tanda_bahaya": "Ulserasi kornea, sikatriks kornea, kebutaan permanen",
+    "sumber_halaman": "132, 243, 244"
+  }
+]
