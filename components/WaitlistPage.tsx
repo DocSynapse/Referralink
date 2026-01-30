@@ -15,8 +15,9 @@ const WhatsAppIcon = ({ size = 16, style }: { size?: number; style?: React.CSSPr
 );
 import * as XLSX from 'xlsx';
 import { searchICD10Code, clearDiagnosisCache } from '../services/diagnosisApiClient';
-import { searchICD10CodeStreaming } from '../services/geminiService'; // Streaming masih pakai old impl
+// import { searchICD10CodeStreaming } from '../services/geminiService'; // Deprecated
 import { ICD10Result } from '../types';
+import { findDiseaseByName, getFirstAidActions, getDangerSigns } from '../services/puskesmasDatabase';
 import { GeneticGrowthMapLeaflet, getNetworkStats } from './GeneticGrowthMapLeaflet';
 import { CEO_BROADCASTS } from '../constants/ceo-broadcast';
 import { TextScramble } from './ui/text-scramble';
@@ -2021,56 +2022,76 @@ const DiagnosisResultCard = ({
   // Only show what AI returns, don't pad with potentially wrong data
   const displayReferrals = referrals.slice(0, 3);
 
-  // Generate medical interventions for clinicians
+  // Generate medical interventions from Puskesmas database
   const getMedicalInterventions = (idx: number) => {
     if (!result) return [];
 
-    const clinicalNotes = result.clinical_notes || '';
-    const reasoning = displayReferrals[idx]?.clinical_reasoning || '';
-    const assessment = result.assessment;
-
     const interventions: { action: string; detail?: string }[] = [];
 
-    // Parse clinical notes for medical interventions (medications, procedures)
-    if (clinicalNotes) {
-      // Split by comma or period, filter for medical actions
-      const parts = clinicalNotes.split(/[.,]/).map(s => s.trim()).filter(s => s.length > 5);
-      parts.forEach(part => {
-        interventions.push({ action: part });
+    // Get referral diagnosis description
+    const referralDescription = displayReferrals[idx]?.description || result.description;
+
+    // Lookup in Puskesmas database
+    const diseaseData = findDiseaseByName(referralDescription);
+
+    if (diseaseData) {
+      // Found in database - use real treatment protocols
+      const firstAidActions = getFirstAidActions(diseaseData);
+
+      firstAidActions.forEach(action => {
+        interventions.push({ action });
       });
-    }
 
-    // Add from clinical reasoning if available
-    if (reasoning && interventions.length < 4) {
-      interventions.push({ action: reasoning });
-    }
+      // Add danger signs as final action
+      const dangerSigns = getDangerSigns(diseaseData);
+      if (dangerSigns.length > 0) {
+        interventions.push({
+          action: '⚠️ Tanda Bahaya',
+          detail: dangerSigns.join(', ')
+        });
+      }
 
-    // Fallback medical interventions based on urgency
-    if (interventions.length === 0) {
-      if (result.urgency === 'EMERGENCY') {
+      console.log(`[Puskesmas DB] Found treatment for: ${diseaseData.nama_penyakit}`);
+    } else {
+      // Not in database - use urgency-based fallback
+      console.log(`[Puskesmas DB] No match for: ${referralDescription}, using fallback`);
+
+      if (result.urgency === 'URGENT') {
         interventions.push(
           { action: 'Stabilisasi ABC (Airway, Breathing, Circulation)' },
-          { action: 'Pasang IV line, NaCl 0.9% loading' },
-          { action: 'Monitor EKG dan Pulse Oximetry' },
-          { action: 'Persiapan rujuk IGD RS tipe B/A' }
+          { action: 'Pasang IV line, NaCl 0.9% 500 mL bolus' },
+          { action: 'Oksigen masker/nasal kanul 2-4 L/menit' },
+          { action: 'Monitor TTV setiap 15 menit' },
+          { action: '🚨 SEGERA rujuk ke IGD RS' }
         );
       } else if (result.urgency === 'URGENT') {
         interventions.push(
-          { action: 'Pemeriksaan TTV lengkap' },
+          { action: 'Pemeriksaan TTV lengkap (TD, Nadi, RR, Suhu)' },
           { action: 'Anamnesis dan pemeriksaan fisik terfokus' },
           { action: 'Pemeriksaan penunjang sesuai indikasi' },
-          { action: 'Konsultasi Sp. terkait dalam 24 jam' }
+          { action: 'Stabilisasi kondisi pasien' },
+          { action: 'Rujuk ke Poli Spesialis dalam 24 jam' }
         );
       } else {
         interventions.push(
-          { action: 'Edukasi pasien dan keluarga' },
-          { action: 'Resep sesuai formularium FKTP' },
-          { action: 'Jadwalkan kontrol 3-7 hari' }
+          { action: 'Pemeriksaan TTV dan kondisi umum' },
+          { action: 'Edukasi pasien dan keluarga terkait kondisi' },
+          { action: 'Resep obat sesuai formularium FKTP (jika perlu)' },
+          { action: 'Jadwalkan kontrol 3-7 hari atau PRN' },
+          { action: 'Rujuk jika tidak ada perbaikan/ada perburukan' }
         );
+      }
+
+      // Add red flags from AI if available
+      if (result.evidence?.red_flags && result.evidence.red_flags.length > 0) {
+        interventions.push({
+          action: '⚠️ Waspadai Tanda Bahaya',
+          detail: result.evidence.red_flags.slice(0, 3).join(', ')
+        });
       }
     }
 
-    return interventions.slice(0, 5);
+    return interventions.slice(0, 6);
   };
 
   return (
