@@ -58,22 +58,42 @@ function getVectorIndex(): Index {
 
 // Generate embedding for semantic search
 async function generateEmbedding(text: string): Promise<number[]> {
-  const ai = getClient();
+  try {
+    // Check availability of OpenAI API key
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OpenAI API key not configured for embeddings');
+    }
 
-  const normalized = text.toLowerCase().trim().replace(/\s+/g, ' ').substring(0, 500);
+    const ai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const normalized = text.toLowerCase().trim().replace(/\s+/g, ' ').substring(0, 500);
 
-  const response = await ai.embeddings.create({
-    model: "text-embedding-3-small",
-    input: normalized,
-    encoding_format: "float"
-  });
+    const response = await ai.embeddings.create({
+      model: "text-embedding-3-small",
+      input: normalized,
+      encoding_format: "float"
+    });
 
-  return response.data[0].embedding;
+    return response.data[0].embedding;
+  } catch (error: any) {
+    console.error('[Embeddings] Failed to generate:', error.message);
+    throw error; // Re-throw to be caught by checkSemanticCache
+  }
 }
 
 // Check semantic cache
 async function checkSemanticCache(query: string): Promise<{ result: ICD10Result; similarity: number } | null> {
   try {
+    // Check credentials availability first
+    if (!process.env.UPSTASH_VECTOR_REST_URL || !process.env.UPSTASH_VECTOR_REST_TOKEN) {
+      console.warn('[Semantic Cache] Upstash credentials not configured, skipping cache');
+      return null;
+    }
+
+    if (!process.env.OPENAI_API_KEY) {
+      console.warn('[Semantic Cache] OpenAI API key not configured for embeddings, skipping cache');
+      return null;
+    }
+
     const embedding = await generateEmbedding(query);
     const index = getVectorIndex();
 
@@ -84,16 +104,19 @@ async function checkSemanticCache(query: string): Promise<{ result: ICD10Result;
     });
 
     if (results.length === 0 || results[0].score < 0.95) {
+      console.log('[Semantic Cache] MISS');
       return null;
     }
 
     const metadata = results[0].metadata as any;
+    console.log('[Semantic Cache] HIT - Score:', results[0].score);
     return {
       result: metadata.result,
       similarity: results[0].score
     };
-  } catch (error) {
-    console.warn('[Semantic Cache] Error:', error);
+  } catch (error: any) {
+    // Graceful degradation - log error but don't fail request
+    console.warn('[Semantic Cache] Error, proceeding without cache:', error.message);
     return null;
   }
 }
