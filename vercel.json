@@ -5,9 +5,7 @@
       "maxDuration": 60
     }
   },
-  "env": {
-    "VITE_USE_SERVER_DIAGNOSIS": "false"
-  },
+  "env": {},
   "rewrites": [
     {
       "source": "/api/:path*",
