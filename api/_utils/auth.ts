@@ -40,6 +40,15 @@ export function generateVerificationToken(): string {
 }
 
 /**
+ * Generate MCP token
+ * Format: mcp_<64-char-hex>
+ */
+export function generateMcpToken(): string {
+  const randomPart = randomBytes(32).toString('hex');
+  return `mcp_${randomPart}`;
+}
+
+/**
  * Generate session token (JWT alternative for simplicity)
  */
 export function generateSessionToken(userId: string): string {
