@@ -9,7 +9,9 @@
 
 import { MedicalQuery, ICD10Result } from "../types";
 import { diagnosisCache } from "./cacheService";
-import type { AIModelKey } from "./geminiService";
+
+// AIModelKey type definition (moved from deleted geminiService)
+export type AIModelKey = 'DEEPSEEK_V3' | 'DEEPSEEK_R1' | 'GLM_CODING';
 
 export interface SearchOptions {
   skipCache?: boolean;
@@ -167,10 +169,20 @@ export const searchICD10Code = async (
     return result;
 
   } else {
-    console.log('[DiagnosisClient] Using CLIENT-SIDE fallback');
-    // Fallback to old geminiService implementation
-    const { searchICD10Code: oldImplementation } = await import('./geminiService');
-    return oldImplementation(input, modelOverride, options);
+    console.warn('[DiagnosisClient] CLIENT-SIDE mode disabled - geminiService removed');
+    console.warn('[DiagnosisClient] Please enable server-side diagnosis via VITE_USE_SERVER_DIAGNOSIS=true');
+
+    // Return error when server-side is not enabled
+    return {
+      json: null,
+      model: 'Error',
+      fromCache: false,
+      logs: [
+        `[CDSS] Configuration Error`,
+        `[Detail] Client-side diagnosis deprecated (CSP violation)`,
+        `[Action] Enable server-side diagnosis: VITE_USE_SERVER_DIAGNOSIS=true`
+      ]
+    };
   }
 };
 
