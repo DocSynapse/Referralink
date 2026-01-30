@@ -336,7 +336,14 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
     });
 
   } catch (error: any) {
-    console.error('[Diagnosis API] Error:', error);
+    // Enhanced logging with full context
+    console.error('[Diagnosis API] Error occurred:', {
+      message: error?.message,
+      status: error?.status,
+      type: error?.constructor?.name,
+      stack: error?.stack?.split('\n').slice(0, 3), // First 3 lines only
+      timestamp: new Date().toISOString()
+    });
 
     let errorType = "Connection Issue";
     let statusCode = 500;
@@ -350,6 +357,9 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
     } else if (error?.status === 503) {
       errorType = "Service Unavailable";
       statusCode = 503;
+    } else if (error?.message?.includes('credentials')) {
+      errorType = "Configuration Error";
+      statusCode = 500;
     }
 
     return res.status(statusCode).json({
@@ -357,7 +367,10 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
       error: {
         code: errorType.toUpperCase().replace(/\s+/g, '_'),
         message: error?.message || 'Unknown error occurred',
-        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        details: process.env.NODE_ENV === 'development' ? {
+          stack: error.stack,
+          type: error.constructor.name
+        } : undefined
       }
     });
   }
