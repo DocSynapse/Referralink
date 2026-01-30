@@ -372,10 +372,14 @@ OUTPUT: JSON valid, BAHASA INDONESIA. proposed_referrals WAJIB 3 opsi.`;
       error: {
         code: errorType.toUpperCase().replace(/\s+/g, '_'),
         message: error?.message || 'Unknown error occurred',
-        details: process.env.NODE_ENV === 'development' ? {
-          stack: error.stack,
-          type: error.constructor.name
-        } : undefined
+        // TEMPORARY: Show full details in production for debugging
+        details: {
+          stack: error?.stack?.split('\n').slice(0, 10),
+          type: error?.constructor?.name,
+          status: error?.status,
+          statusText: error?.statusText,
+          response: error?.response?.data || error?.response
+        }
       }
     });
   }
