@@ -144,18 +144,23 @@ function getClient(): OpenAI {
 
   // Server-side: Use non-VITE_ prefixed env vars (Vercel serverless)
   const provider = (process.env.AI_PROVIDER || 'deepseek').toLowerCase();
-  const baseURL =
+
+  // Trim to remove trailing whitespace/newlines from env vars
+  const baseURL = (
     process.env.OPENROUTER_API_URL ||
     process.env.API_BASE_URL ||
-    "https://openrouter.ai/api/v1";
+    "https://openrouter.ai/api/v1"
+  ).trim();
 
-  const apiKey =
+  const apiKey = (
     process.env.OPENROUTER_API_KEY ||
     process.env.DEEPSEEK_API_KEY ||
     process.env.QWEN_API_KEY ||
-    process.env.GEMINI_API_KEY;
+    process.env.GEMINI_API_KEY ||
+    ''
+  ).trim();
 
-  if (!apiKey) {
+  if (!apiKey || apiKey === '') {
     console.error('[Diagnosis API] No API key found in environment');
     console.error('[Diagnosis API] Available env vars:', Object.keys(process.env).filter(k => k.includes('API_KEY')));
     throw new Error('No AI API key configured');
