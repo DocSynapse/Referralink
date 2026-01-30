@@ -77,7 +77,21 @@ async function callServerDiagnosis(
 
     const result: ServerResponse = await response.json();
 
-    // Validate response structure
+    // Check success FIRST - error responses won't have metadata/data
+    if (!result.success) {
+      return {
+        json: null,
+        model: 'Error',
+        fromCache: false,
+        logs: [
+          `[CDSS] Server Error`,
+          `[Detail] ${result.error || 'Unknown error'}`,
+          `[Action] Please try again or contact support`
+        ]
+      };
+    }
+
+    // Validate response structure ONLY for successful responses
     if (!result.metadata) {
       console.error('[DiagnosisClient] Invalid response format:', {
         hasMetadata: !!result.metadata,
@@ -90,19 +104,6 @@ async function callServerDiagnosis(
     if (!result.data) {
       console.error('[DiagnosisClient] No data in response:', result);
       throw new Error('Invalid API response format - missing data');
-    }
-
-    if (!result.success) {
-      return {
-        json: null,
-        model: 'Error',
-        fromCache: false,
-        logs: [
-          `[CDSS] Server Error`,
-          `[Detail] ${result.error || 'Unknown error'}`,
-          `[Action] Please try again or contact support`
-        ]
-      };
     }
 
     return {
