@@ -10,8 +10,48 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import OpenAI from "openai";
 import { Index } from "@upstash/vector";
-import { SYSTEM_INSTRUCTION_REFERRAL, NON_REFERRAL_DIAGNOSES } from "../constants";
-import type { ICD10Result } from "../types";
+
+// Inline constants to avoid import issues in Vercel serverless
+const NON_REFERRAL_DIAGNOSES = [
+  "I10 - Hipertensi Esensial (Primer)",
+  "J00 - Nasofaringitis Akut (Common Cold)",
+  "K30 - Dispepsia (Maag)",
+  "R51 - Nyeri Kepala (Tension Headache)",
+  "M79.1 - Myalgia",
+  "A09 - Gastroenteritis (Diare tanpa dehidrasi)",
+  "J06.9 - ISPA Akut",
+  "L20 - Dermatitis Atopik (Ringan)",
+  "E11.9 - Diabetes Melitus Tipe 2 (Tanpa Komplikasi)",
+  "H10.1 - Konjungtivitis Akut"
+];
+
+const SYSTEM_INSTRUCTION_REFERRAL = `CDSS untuk rujukan BPJS. Output JSON valid, Bahasa Indonesia.
+
+ATURAN:
+- Diagnosa 4A (I10,J00,K30,R51,M79.1,A09,J06.9,L20,E11.9,H10.1) JANGAN jadi kode utama
+- Berikan 3 alternatif kompetensi 3B/3A yang LOLOS BPJS
+- Sertakan tindakan medis & red flags
+
+JSON: {code,description,category,urgency,triage_score,clinical_notes,evidence:{red_flags,clinical_reasoning},proposed_referrals:[{code,description,kompetensi,clinical_reasoning}x3]}`;
+
+// ICD10Result type inline
+interface ICD10Result {
+  code: string;
+  description: string;
+  category?: string;
+  urgency?: string;
+  triage_score?: number;
+  clinical_notes?: string;
+  evidence?: {
+    red_flags?: string[];
+    clinical_reasoning?: string;
+  };
+  proposed_referrals?: Array<{
+    code: string;
+    description: string;
+    clinical_reasoning?: string;
+  }>;
+}
 
 // Supported AI Model Providers
 const AI_MODELS = {
