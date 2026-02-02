@@ -49,7 +49,7 @@ class SearchService:
         start_time = time.time()
 
         # Generate query embedding
-        query_embedding = self.embedder.embed(query)
+        query_embedding = await self.embedder.embed(query)
 
         # Format embedding as PostgreSQL vector string
         # Note: We embed the vector directly in SQL to avoid asyncpg parameter conflicts with ::
@@ -163,7 +163,7 @@ class SearchService:
     ) -> Memory:
         """Add new memory with embedding and agent isolation."""
         # Generate embedding
-        embedding = self.embedder.embed(content)
+        embedding = await self.embedder.embed(content)
 
         # Create memory
         memory = Memory(
